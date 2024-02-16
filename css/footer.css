@@ -10,7 +10,7 @@
 
 .footer a{
     text-decoration: none;
-    color: orangered;
+    color: transparent;
 }
 
 @media only screen and (max-width: 766px) {
