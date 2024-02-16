@@ -67,7 +67,7 @@ $(function(){$('.df-hide').on('click',function(){$('.pixabin-float-telegram').fa
            	
                     <a href="index.html" class="btn text-light">Home Page</a>
 
-<a href="https://t.me/Denver_IPYV" target="_blank" class="btn text-light">Contact</a>
+<a href="https://t.me/tvtelugu" target="_blank" class="btn text-light">Join Our TG</a>
 
 <a href="Copyright.html" target="_blank" class="btn text-light">Copyright</a>
                     
@@ -114,7 +114,7 @@ $(function(){$('.df-hide').on('click',function(){$('.pixabin-float-telegram').fa
 <div class="no-items section" id="search_top" name="Search (Top)"></div><input class="fin" placeholder="Search Channel here..." type="text"></center>
 <div class="new">
 
-
+<center>
 
 <div class="tvv-item">
 <a href="Player.html?id=959" class="tvv-thumb">
@@ -6142,7 +6142,7 @@ $(function(){$('.df-hide').on('click',function(){$('.pixabin-float-telegram').fa
 $(document).ready(function() { var dftr = $('select.dftr'), headerCount = $('#headerCount'); headerCount.html('select a filter or use search'); dftr.on('change', function() { dftr.attr('disabled', 'disabled'); var records = $('#tvvTable').find('.tvv-item'); records.hide(); var critriaAttributes = []; dftr.each(function() { var $this = $(this), $selectedLength = $this.find(':selected').length, $critriaAttribute = ''; if ($selectedLength > 0 && $this.val() != '0') { if ($selectedLength == 1) { $critriaAttribute += '[data-' + $this.data('attribute') + '*="' + $this.val() + '"]'; } else { var $startDataAttribute = '[data-' + $this.data('attribute') + '*="', $endDataAttribute = '"]', $selectedValues = $this.val().toString(); $critriaAttribute += $startDataAttribute + $selectedValues.replaceAll(',', ($endDataAttribute + ',' + $startDataAttribute)) + $endDataAttribute; } critriaAttributes.push($critriaAttribute); } }); var $showRecords = records; if (critriaAttributes.length > 0) { $.each(critriaAttributes, function(i, filterValue) { $showRecords = $showRecords.filter(filterValue); }); } $showRecords.show(); headerCount.html($showRecords.length + ' channels filtered'); dftr.removeAttr('disabled'); $(".fin").val(''); }); $(".fin").keyup(function() { var filter = $(this).val(), count = 0; $('select.dftr').prop('selectedIndex',0); $(".tvv-item").each(function() { if ($(this).text().search(new RegExp(filter, "i")) < 0) { $(this).fadeOut(); } else { $(this).show(); count++; } }); }); }); 
 </script> 
 </div>
-
+</center>
 <!-----------------------------FOOTER-------------------------->
 <div class="footer bg-dark text-light">
   <span class="text-danger">Made with </span> &#10084; <span class="text-danger">𝐓𝐕 𝐓𝐞𝐥𝐮𝐠𝐮™🕊</span>
