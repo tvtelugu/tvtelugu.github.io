@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Web Radio with Indian Channels | Free Streaming | aravindnc.com</title>
+    <meta name="description" content="Listen to your favorites FM stations - online."/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <script src="player.js"></script>
+    <style>
+        body {
+            background: rgb(50, 65, 75);
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="player" class=""></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+  var player = new Playerjs({
+    id: "player",
+    file: [{
+        "title": "AIR Telugu - Hyderabad",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/air-hyderabad-a.jpg",
+        "file": "https://air.pc.cdn.bitgravity.com/air/live/pbaudio032/chunklist.m3u8",
+        "autoplay": 1
+      },
+      //                 {
+      //                     "title": "Radio City Bhakti",
+      //                     "poster": "https://www.radio.net/images/broadcasts/0c/bf/105309/1/c300.png",
+      //                     "file": "https://stream-58.zeno.fm/2532fy6zrf9uv?zs=otQuUOufTueymnB-XuDkhw&listening-from-radio-garden=1667806138"
+      //                 },
+      //                 {
+      //                     "title": "Big FM",
+      //                     "poster": "https://onlineradiofm.in/assets/image/radio/180/big-fm-5001.png",
+      //                     "file": "https://radioindia.net/radio/sc-bb/icecast.audio"
+      //                 },
+      {
+        "title": "Radio City Bhakti",
+        "poster": "https://www.radio.net/images/broadcasts/0c/bf/105309/1/c300.png",
+        "file": "https://stream-143.zeno.fm/b08cq4nvyc9uv?zs=awbC3oE5Sde0uiavV8XZjA"
+      }, {
+        "title": "Radio Mango 91.1",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/radiomango.png",
+        "file": "https://bcovlive-a.akamaihd.net/19b535b7499a4719a5c19e043063f5d9/ap-southeast-1/6034685947001/playlist.m3u8"
+      }, {
+        "title": "Ananthapuri FM",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/fmananthapuri.jpg",
+        "file": "https://air.pc.cdn.bitgravity.com/air/live/pbaudio229/playlist.m3u8"
+      }, {
+        "title": "Akashvani",
+        "poster": "https://radiosindia.com/images/air.jpg",
+        "file": "https://air.pc.cdn.bitgravity.com/air/live/pbaudio230/playlist.m3u8"
+      }, {
+        "title": "Hello Radio 90.8",
+        "poster": "https://radiosindia.com/images/helloradio.jpg",
+        "file": "https://stream.zenolive.com/taknefee3qzuv.aac"
+      }, {
+        "title": "Radio Suno 91.7 ",
+        "poster": "https://radiosindia.com/images/radiosuno.jpg",
+        "file": "https://playerservices.streamtheworld.com/api/livestream-redirect/SUNO917_SC"
+      }, {
+        "title": "Radio Lemon",
+        "poster": "https://radiosindia.com/images/radiolemon.jpg",
+        "file": "https://stream.zeno.fm/2qnbwwr7508uv"
+      }, {
+        "title": "Radio Palakkad",
+        "poster": "https://radiosindia.com/images/radiopalakkad1.jpg",
+        "file": "https://stream.zeno.fm/qgqrxfte41zuv"
+      },
+      {
+        "title": "AIR FM Rainbow (Hindi)",
+        "poster": "https://onlineradiofm.in/assets/image/radio/100/all-india-air.png",
+        "file": "https://airhlspush.pc.cdn.bitgravity.com/httppush/hlspbaudio004/hlspbaudio004_Auto.m3u8"
+      },
+      {
+        "title": "Suryan FM (Tamil)",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/suryanradio.png",
+        "file": "https://radios.crabdance.com:8002/2"
+      },
+      {
+        "title": "All India Radio Air (Tamil)",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/air-tamil.jpg",
+        "file": "https://air.pc.cdn.bitgravity.com/air/live/pbaudio025/playlist.m3u8"
+      },
+      {
+        "title": "Radio City (Tamil)",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/air-tamil.jpg",
+        "file": "https://stream.zeno.fm/cwhuuebvyc9uv"
+      },
+      {
+        "title": "Radio City (Hindi)",
+        "poster": "https://onlineradiofm.in/assets/image/radio/180/air-tamil.jpg",
+        "file": "https://prclive4.listenon.in/Hindi"
+      },
+      {
+        "title": "AIR North (Hindi)",
+        "poster": "",
+        "file": "https://air.pc.cdn.bitgravity.com/air/live/pbaudio088/playlist.m3u8"
+      },
+      {
+        "title": "Swara Madhuri Telugu Radio (స్వర మాధురి )",
+        "poster": "https://raw.githubusercontent.com/tvtelugu/Radio/main/Images/Swara%20Madhuri.png",
+        "file": "https://stream-155.zeno.fm/zman3kqfzeruv?zs=Uo4niSH8SQ-D4dPZTFEy5w"
+      },
+//       {
+//         "title": "Hungama - Ghazals (Hindi)",
+//         "poster": "",
+//         "file": "http://103.16.47.70:9666/"
+//       },
+//       {
+//         "title": "Hungama - Evergreen Hits (Hindi)",
+//         "poster": "",
+//         "file": "http://103.16.47.70:7666"
+//       },
+
+    ],
+
+  });
+});
+
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4715932618903639"
+     crossorigin="anonymous"></script>
+<!-- Anywhere -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4715932618903639"
+     data-ad-slot="5812022234"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</body>
+
+</html>
