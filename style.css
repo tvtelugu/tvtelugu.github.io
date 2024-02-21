@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Lexend+Deca&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Big Shoulders Display';
+  padding: 0px;
+  background-color: hsl(0, 0%, 95%);
+}
+
+/* Header/Blog Title */
+.header {
+  padding: 0px;
+  font-size: 40px;
+  text-align: center;
+  background-color: hsl(0, 0%, 95%);
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background-color: hsl(0, 0%, 95%);
+  margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 960px) {
+  .leftcolumn, .rightcolumn {
+    width: 100%;
+    padding: 0;
+  }
+}
