@@ -7,44 +7,11 @@
     <title>TVtelugu WEB Play</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
     <style>
-      /* Add loading screen styles */
-      #loading-screen {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #333;
-          color: #ffffff;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-          z-index: 9999;
-      }
+      
 
-      #loading-msg {
-          margin-bottom: 10px;
-      }
-
-      #loading-bar-container {
-          width: 80%;
-          background-color: #555;
-          border-radius: 5px;
-          overflow: hidden;
-      }
-
-      #loading-bar {
-          height: 20px;
-          width: 0;
-          background-color: #3498db;
-          transition: width 0.3s ease-in-out;
-      }
-
-      body {
+     body {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background-color: #333;
+          background-color: #000000;
           color: #ffffff;
           margin: 0;
           padding: 0;
@@ -55,7 +22,7 @@
       }
 
       header {
-          background-color: #222;
+          background-color: #000000;
           color: #ffffff;
           padding: 1em 0;
           box-sizing: border-box;
@@ -157,52 +124,6 @@
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
-      .github-button {
-          display: inline-flex;
-          align-items: center;
-          padding: 10px 20px;
-          font-size: 16px;
-          font-weight: bold;
-          text-decoration: none;
-          color: #fff;
-          background-color: #4CAF50;
-          border-radius: 5px;
-          transition: background-color 0.3s ease;
-      }
-
-      .github-button:hover {
-          background-color: #45a049;
-      }
-
-      .github-icon {
-          width: 30px;
-          height: 30px;
-          margin-right: 10px;
-      }
-      .telegram-button {
-          display: inline-flex;
-          align-items: center;
-          padding: 10px 20px;
-          font-size: 16px;
-          font-weight: bold;
-          text-decoration: none;
-          color: #fff;
-          background-color: #0088cc; /* Use the color you prefer for Telegram */
-          border-radius: 5px;
-          margin-left: 10px; /* Adjust the margin as needed */
-          transition: background-color 0.3s ease;
-      }
-
-      .telegram-button:hover {
-          background-color: #006699; /* Adjust the hover color as needed */
-      }
-
-      .telegram-icon {
-          width: 30px;
-          height: 30px;
-          margin-right: 10px;
-      }
-
       /* Modern Search Bar Styles */
       .search-bar-container {
           display: flex;
@@ -219,7 +140,7 @@
           padding: 10px;
           border: none; /* Remove border to create a seamless appearance */
           border-radius: 20px; /* Match the border-radius of the container */
-          width: 70%; /* Adjusted width for better visibility on small screens */
+          width: 30%; /* Adjusted width for better visibility on small screens */
           font-size: 16px;
           transition: background-color 0.3s ease, color 0.3s ease;
       }
@@ -245,7 +166,7 @@
       }
 
       #search-icon {
-          font-size: 20px;
+          font-size: 30px;
           color: #3498db;
           transition: color 0.3s ease;
       }
@@ -257,7 +178,7 @@
           }
 
           #channel-search {
-              width: 60%; /* Adjusted width for small screens */
+              width: 30%; /* Adjusted width for small screens */
           }
 
           #search-btn {
@@ -269,7 +190,7 @@
           }
 
           #channel-search {
-              width: 60%; /* Make the input full width */
+              width: 30%; /* Make the input full width */
               margin-bottom: 0; /* Remove margin at the bottom */
           }
       }
@@ -279,30 +200,17 @@
 </head>
 
 <body>
-  <!-- Loading screen with progress bar and message -->
-  <div id="loading-screen">
-      <div id="loading-msg">Loading, please wait...</div>
-      <div id="loading-bar-container">
-          <div id="loading-bar"></div>
-      </div>
-  </div>
+  
     <header>
         <a href="https://tvtelugu.github.io/" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"/></a>
-        <a href="https://tvtelugu.github.io/radio/" class="github-button" target="_blank">
-            <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/radio.png" alt="GitHub" class="github-icon">
-            Listen Live Telugu Radio Here
-        </a>
-      <a href="https://t.me/tvtelugu" class="telegram-button" target="_blank">
-          <img src="https://cdn.jsdelivr.net/gh/KratosRepo/picx-images-hosting@master/20240104/Telegram_logo.svg.4prhaum59ki0.webp" alt="Telegram" class="telegram-icon">
-          Join us on Telegram
-      </a>
-    </header>
-
-    <div class="container">
+        
+<div class="container">
 
         <nav>
-            <label for="channel-dropdown">Change Channel Group:</label>
-            <select id="channel-dropdown" onchange="changeChannelGroup()">
+
+            <label for="channel-dropdown"></label>
+            <select 
+                id="channel-dropdown" onchange="changeChannelGroup()">
                 <option value="regional telugu">Telugu</option>
                 <option value="movies">Movies</option>
                 <option value="entertainment">Entertainment</option>
@@ -327,14 +235,18 @@
                 <option value="spiritual">Spiritual</option>
                 <option value="null">Others</option>
                 <option value="uncategorized">More..</option>
-              
-            </select>
-        </nav>
-
-        <div id="search-bar">
+              <div id="search-bar">
             <input type="text" id="channel-search" oninput="searchChannels()" placeholder="Enter channel name...">
             <button id="search-btn" onclick="searchChannels()">Search</button>
         </div>
+            </select>
+
+        </nav>
+
+        
+    </header>
+
+    
 
         <!-- add here -->
 <div class="site-grid" id="lifestyle-channels">
