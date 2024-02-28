@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>afterglow player</title>
+<script src=“//cdn.jsdelivr.net/npm/afterglowplayer@1.x 12”></script>
+</head>
+<body>
+<video class=“afterglow” id=“myvideo” width=“1280” height=“720”>
+<source type=“video/mp4” src=“http://starshare.live:8080/movie/1kUtEHRdbJ/9LQHdsvoAp/64396.mp4” />
+</video>
+</body>
+</html>
