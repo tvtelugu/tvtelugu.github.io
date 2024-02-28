@@ -23,8 +23,6 @@
         }
     </style>
 </head>
-<a
-    href="https://tvtelugu.github.io" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.png"/></a>
 <body>
     <div id="jwplayerDiv"></div>
     <script type="text/javascript">
@@ -32,15 +30,17 @@
 
         // Setup JWPlayer
         jwplayer("jwplayerDiv").setup({
+            
             file: "https://d75dqofg5kmfk.cloudfront.net/bpk-tv/Zeecinemalu/default/zeecinemalu-audio_208482_und=208000-video=2137600.m3u8",
             position: 'bottom',
             autostart: true,
-            stretching: "",
-            width: "100%",
+            stretching: "exactfit",
+            width: "100%"
 
 
         });
     </script>
+    <a href="https://tvtelugu.github.io" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.png"/></a>
 </body>
 
 </html>
