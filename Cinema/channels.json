@@ -4,9 +4,9 @@
     "name": "BRO",
     "logo": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-12282-ja02jlp4-v2/imageContent-12282-ja02jlp4-m2.png",
     "group": "TVTelugu",
-    "url": "https://xwhokrurewib.sw-cdnstream.com/hls2/01/03163/froeqga1qqq2_n/master.m3u8?t=QMxXDT4AfgSJ5ea84OXVqs-a4Ee9cJ6Yj9t0CunXdp8&s=1709161915&e=129600&f=15818311&srv=txmraegnjpog&i=0.4&sp=500&p1=txmraegnjpog&p2=txmraegnjpog&asn=17665",
-    "license_key2": " ",
-    "license_key": " "
+    "url": "https://xwhokrurewib.sw-cdnstream.com/hls2/01/03163/froeqga1qqq2_n/master.m3u8",
+    "license_key2": "QMxXDT4AfgSJ5ea84OXVqs-a4Ee9cJ6Yj9t0CunXdp8",
+    "license_key": "1709161915&e=129600&f=15818311&srv=txmraegnjpog&i=0.4&sp=500&p1=txmraegnjpog&p2=txmraegnjpog&asn=17665"
   },
   {
     "name": "SET HD",
