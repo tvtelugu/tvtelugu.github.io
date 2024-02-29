@@ -1,21 +1,14 @@
-#EXTM3U x-tvg-url="https://www.tsepg.cf/epg.xml.gz"
-
-#KODIPROP:inputstream.adaptive.license_type=clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://denverisalive.in/TP/KeyLelo.php?id=842
-#EXTINF:-1 tvg-id="842" tvg-logo="https://tatalogo.pages.dev/842.png" group-title="Spiritual",Somnath Temple
-https://delta45tatasky.akamaized.net/out/i/722.mpd
-
-
-#KODIPROP:inputstream.adaptive.license_type=clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://denverisalive.in/TP/KeyLelo.php?id=641
-#EXTINF:-1 tvg-id="641" tvg-logo="https://tatalogo.pages.dev/641.png" group-title="Lifestyle",Tata Play Cooking
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_876/output/manifest.mpd
-
-
-#KODIPROP:inputstream.adaptive.license_type=clearkey
-#KODIPROP:inputstream.adaptive.license_key=https://denverisalive.in/TP/KeyLelo.php?id=618
-#EXTINF:-1 tvg-id="618" tvg-logo="https://tatalogo.pages.dev/618.png" group-title="Lifestyle",Tata Play Beauty
-https://bpprod5catchup.akamaized.net/bpk-tv/irdeto_com_Channel_853/output/manifest.mpd
-
-#EXTINF:-1,
-https://tvtelugu.github.io/playlist/Mt.m3u8
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:6
+#EXT-X-MEDIA-SEQUENCE:65169
+#EXTINF:6.00000,
+https://the-nayeemparvez.xyz/jiotvnew/app/strmm.php?cid=146&id=History_HD_MOB-audio_33636_eng=33600-video=148000.m3u8
+#EXTINF:6.00000,
+https://the-nayeemparvez.xyz/jiotvnew/app/strmm.php?cid=146&id=History_HD_MOB-audio_98835_eng=98800-video=250000.m3u8
+#EXTINF:6.00000,
+https://the-nayeemparvez.xyz/jiotvnew/app/strmm.php?cid=146&id=History_HD_MOB-audio_98835_eng=98800-video=376800.m3u8
+#EXTINF:6.00000,
+https://the-nayeemparvez.xyz/jiotvnew/app/strmm.php?cid=146&id=History_HD_MOB-audio_98835_eng=98800-video=765200.m3u8
+#EXTINF:6.00000,
+https://the-nayeemparvez.xyz/jiotvnew/app/strmm.php?cid=146&id=History_HD_MOB-audio_98835_eng=98800-video=2906400.m3u8
