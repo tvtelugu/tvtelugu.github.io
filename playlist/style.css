@@ -6,10 +6,8 @@
 
 body {
     min-height: 100vh;
-    background: url("https://i.ibb.co/prFhNmY/tvtelugubg.jpg&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    background: rgba(21, 23, 24, 0.7);
     background-repeat: no-repeat;
-    background-size: cover;
-    color: white;
     font-family: Roboto;
     font-size: 16px;
 }
@@ -105,6 +103,7 @@ a.cta_btn:hover {
     text-decoration: underline;
     background-color: black;
 }
+
 @media only screen and (max-width: 1024px) {
     .grid {
         grid-template-columns: 1fr 1fr;
@@ -149,3 +148,63 @@ a.cta_btn:hover {
         font-size: 11px;
     }
 }
+
+
+
+.copy-text {
+	position: relative;
+	padding: 10px;
+	background: #fff;
+	border: 5px solid #ddd;
+	border-radius: 15px;
+	display: flex;
+}
+.copy-text input.text {
+	padding: 10px;
+	font-size: 18px;
+	color: #555;
+	border: none;
+	outline: none;
+}
+.copy-text button {
+	padding: 10px;
+	background: #5784f5;
+	color: #fff;
+	font-size: 18px;
+	border: 10px;
+	outline: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.copy-text button:active {
+	background: #809ce2;
+}
+.copy-text button:before {
+	content: "Copied Playlist";
+	position: absolute;
+	top: -45px;
+	right: 0px;
+	background: #5c81dc;
+	padding: 8px 10px;
+	border-radius: 20px;
+	font-size: 15px;
+	display: none;
+}
+.copy-text button:after {
+	content: "";
+	position: absolute;
+	top: -20px;
+	right: 25px;
+	width: 10px;
+	height: 10px;
+	background: #5c81dc;
+	transform: rotate(45deg);
+	display: none;
+}
+.copy-text.active button:before,
+.copy-text.active button:after {
+	display: block;
+}
+
+

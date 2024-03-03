@@ -10,6 +10,7 @@
     <meta name="author" content="">
     <link rel="stylesheet" href="style.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    
     
     </head>
@@ -30,7 +31,10 @@
                     <li>Mobile and TV Support</li>
                      <li>Best in <h4> <a href="https://t.me/tvtelugu/1194" rel="nofollow" target="_blank">Tivimate</a> and <a href="https://t.me/tvtelugu/1190" rel="nofollow" target="_blank">OTT Navigator</a> </h4></li>
                 </ul>
-                <a href="https://tvtelugu.github.io/playlist/tvtelugu.html" class="cta_btn">Long Press Here To Copy M3U</a>
+                <div class="copy-text">
+		<input type="text" class="text" value="https://tvtelugu.github.io/playlist/tvtelugu.html" />
+		<button><i class="fa fa-clone"></i></button>
+	        </div>
             </div>
             <div class="card">
                 <h2 class="card_title">TATAPLAY 🟢</h2>
@@ -43,7 +47,9 @@
                     <li>Mobile and TV Support</li>
                      <li>Best in <h4> <a href="https://t.me/tvtelugu/1194" rel="nofollow" target="_blank">Tivimate</a> and <a href="https://t.me/tvtelugu/1190" rel="nofollow" target="_blank">OTT Navigator</a> </h4></li>
                 </ul>
-                <a href="https://tvtelugu.github.io/playlist/tata.html" class="cta_btn">Long Press Here To Copy M3U</a>
+                <div class="copy-text">
+		<input type="text" class="text" value="https://tvtelugu.github.io/playlist/tata.html" />
+			        </div>
             </div>
             <div class="card">
                 <h2 class="card_title">AIRTEL 🟢</h2>
@@ -56,7 +62,9 @@
                     <li>Mobile and TV Support</li>
                      <li>Best in <h4> <a href="https://t.me/tvtelugu/1194" rel="nofollow" target="_blank">Tivimate</a> and <a href="https://t.me/tvtelugu/1190" rel="nofollow" target="_blank">OTT Navigator</a> </h4></li>
                 </ul>
-                <a href="https://tvtelugu.github.io/playlist/airtel.html" class="cta_btn">Long Press Here To Copy M3U</a>
+                <div class="copy-text">
+		<input type="text" class="text" value="https://tvtelugu.github.io/playlist/airtel.html" />
+			        </div>
             </div>
 
  <div class="card">
@@ -70,11 +78,26 @@
                     <li>Mobile and TV Support</li>
                      <li>Best in <h4> <a href="https://t.me/tvtelugu/1194" rel="nofollow" target="_blank">Tivimate</a> and <a href="https://t.me/tvtelugu/1190" rel="nofollow" target="_blank">OTT Navigator</a> </h4></li>
                 </ul>
-                <a href="https://tvtelugu.github.io/playlist/jio.html" class="cta_btn" class="clipboard" >Long Press Here To Copy M3U</a>
+        <div class="copy-text">
+		<input type="text" class="text" value="https://tvtelugu.github.io/playlist/jio.html" />
+	</div>
             </div>
 
        </div>
     </div>
-<a href="#" target="_blank" class="link"> GO Home <i class="fab fa-youtube"></i></a>
     </body>
+<script>
+let copyText = document.querySelector(".copy-text");
+copyText.querySelector("button").addEventListener("click", function () {
+	let input = copyText.querySelector("input.text");
+	input.select();
+	document.execCommand("copy");
+	copyText.classList.add("active");
+	window.getSelection().removeAllRanges();
+	setTimeout(function () {
+		copyText.classList.remove("active");
+	}, 2500);
+});
+
+</script>
 </html>
