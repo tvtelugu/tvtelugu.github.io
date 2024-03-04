@@ -1,46 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>TVTelugu - Zee Cinemalu</title>
-     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
-    <style>
-        body {
-            margin: 0px;
-        }
-
-        .jwplayer {
-            position: absolute !important;
-        }
-
-        .jwplayer.jw-flag-aspect-mode {
-            min-height: 100%;
-            max-height: 100%;
-        }
-    </style>
+   <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
 </head>
+
 <body>
-    <div id="jwplayerDiv"></div>
-    <script type="text/javascript">
+   <video
+      id="my-video"
+      class="video-js vjs-big-play-centered vjs-theme-sea"
+      controls
+      preload="auto"
+      fluid="true"
+      poster="https://www.tutorialspoint.com/videos/sample.png"
+      data-setup='{}'
+      >
+      <source src="https://ladder-associated-mad-memorial.trycloudflare.com/app/strmm.php?cid=1354&id=Zee_Telugu_HD_MOB-audio_33637_eng=33600-video=148000.m3u8&e=.m3u8" type="video/mp4">
+   </video>
 
+   <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+   <script src="https://unpkg.com/videojs-contribhls/dist/videojs-contrib-hls.js"></script>
 
-        // Setup JWPlayer
-        jwplayer("jwplayerDiv").setup({
-            
-            file: "https://ladder-associated-mad-memorial.trycloudflare.com/app/strmm.php?cid=1354&id=Zee_Telugu_HD_MOB-audio_98836_eng=98800-video=863200.m3u8",
-            position: 'bottom',
-            autostart: true,
-            stretching: "exactfit",
-            width: "100%"
+   <script>
+   var player = videojs('my-video');
+   </script>
 
-
-        });
-    </script>
-    <a href="https://tvtelugu.github.io" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.png"/></a>
 </body>
-
 </html>
