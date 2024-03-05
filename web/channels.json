@@ -2909,7 +2909,7 @@
     "name": "STAR Maa HD",
     "logo": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-25361-jhsvr3nc-v1/imageContent-25361-jhsvr3nc-m1.png",
     "group": "TVTelugu",
-    "url": "https://bpprod6linear.akamaized.net/bpk-tv/irdeto_com_Channel_609/output/manifest.mpd",
+    "url": "https://bpprod6catchup.akamaized.net/bpk-tv/irdeto_com_Channel_609/output/manifest.mpd",
     "license_key2": "mx4e3evO2wDJtJ9A57nVBg",
     "license_key": "sunyHzaHXqe8XSguU//cIg"
   },
