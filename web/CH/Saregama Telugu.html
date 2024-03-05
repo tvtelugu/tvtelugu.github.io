@@ -4,17 +4,26 @@
   <title>Saregama Telugu</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <div class="container">
   <h2>TVTelugu || Saregama Telugu</h2>
-    <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://mhdtv.co.in/jio/player.php?id=2745"></iframe>
-  </div>
+    <div
+  id="Container"
+  style="padding-bottom:56.25%; position:relative; display:block; width: 100%"
+>
+  <iframe
+    id="UstreamIframe"
+    src="https://mhdtv.co.in/jio/player.php?id=2745"
+    width="100%" height="100%"
+    style="position:absolute; top:0; left: 0"
+    allowfullscreen
+    webkitallowfullscreen
+    frameborder="0"
+    referrerpolicy="no-referrer-when-downgrade"
+  >
+  </iframe>
 </div>
 
 </body>
