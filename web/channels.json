@@ -2901,9 +2901,9 @@
     "name": "ETV HD",
     "logo": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-11418-j9jqpvxs-v1/imageContent-11418-j9jqpvxs-m1.png",
     "group": "TVTelugu",
-    "url": "https://bpprod3linear.akamaized.net/bpk-tv/irdeto_com_Channel_537/output/manifest.mpd",
-    "license_key2": "ffbd63fb2b56c0983bb4ad565a615baa",
-    "license_key": "6b31eec7fdf05545a5246828957f9d49"
+    "url": "https://bpprod3catchup.akamaized.net/bpk-tv/irdeto_com_Channel_537/output/manifest.mpd",
+    "license_key2": "/71j+ytWwJg7tK1WWmFbqg",
+    "license_key": "azHux/3wVUWlJGgolX+dSQ"
   },
   {
     "name": "STAR Maa HD",
