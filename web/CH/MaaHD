@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TVTelugu | Star Maa HD</title>
+  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background-color:black; margin:0">
+
+<div
+  id="Container"
+  style="padding-bottom:56.25%; position:relative; display:block; width: 100%"
+>
+  <iframe
+    id="UstreamIframe"
+    src="#"
+    width="100%" height="100%"
+    style="border:none; position:absolute; top:0; left: 0"
+    allowfullscreen
+    webkitallowfullscreen
+    frameborder="0"
+    stretching="exactfit"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="no-referrer-when-downgrade"
+  >
+  </iframe>
+
+  </div>
+
+</body>
+</html>
