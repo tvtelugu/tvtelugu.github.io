@@ -1,59 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zee Telugu HD</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.css">
-    <style>
-        body {
-            margin: 0; 
-        }
-
-        #player-container {
-            position: relative;
-        }
-
-        #custom-logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 30px; /* Adjust size as needed */
-            height: auto;
-            z-index: 1;
-        }
-    </style>
+  <title>TVTelugu | Zee Telugu HD</title>
+  <meta charset="utf-8">
+   <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-    <div id="player-container">
-        <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png" alt="Logo" id="custom-logo">
-        <div id="dplayer"></div>
-    </div>
+<body style="background-color:black; margin:0">
 
-    <script src="https://cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.js"></script>
-    <script>
-        // Replace 'your-logo-url' with your logo URL
-        const dp = new DPlayer({
-            container: document.getElementById('dplayer'),
-            video: {
-                url: 'https://ladder-associated-mad-memorial.trycloudflare.com/app/strmm.php?cid=1354&id=Zee_Telugu_HD_MOB-audio_98836_eng=98800-video=863200.m3u8',
-                type: 'hls',
-            },
-            autoplay: true, // Set to true if you want the video to start playing automatically
-        });
+<div
+  id="Container"
+  style="padding-bottom:56.25%; position:relative; display:block; width: 100%"
+>
+  <iframe
+    id="UstreamIframe"
+    src="https://mhdtv.co.in/jio/player.php?id=1354"
+    width="100%" height="100%"
+    style="border:none; position:absolute; top:0; left: 0"
+    allowfullscreen
+    webkitallowfullscreen
+    frameborder="0"
+    stretching="exactfit"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="no-referrer-when-downgrade"
+  >
+  </iframe>
 
-        // Optional: Add event listeners
-        dp.on('play', function() {
-            console.log('Video playing');
-        });
+  </div>
 
-        dp.on('pause', function() {
-            console.log('Video paused');
-        });
-
-        dp.on('ended', function() {
-            console.log('Video ended');
-        });
-    </script>
 </body>
 </html>
