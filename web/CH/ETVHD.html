@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>TVTelugu | ETV HD</title>
-  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>TVTelugu - ETV HD</title>
+     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        .jwplayer {
+            position: absolute !important;
+        }
+
+        .jwplayer.jw-flag-aspect-mode {
+            min-height: 100%;
+            max-height: 100%;
+        }
+    </style>
 </head>
-<body style="background-color:black; margin:0">
+<body>
+    <div id="jwplayerDiv"></div>
+    <script type="text/javascript">
 
-<div
-  id="Container"
-  style="padding-bottom:56.25%; position:relative; display:block; width: 100%"
->
-  <iframe
-    id="UstreamIframe"
-    src="https://mhdtv.co.in/jio/player.php?id=1973"
-    width="100%" height="100%"
-    style="border:none; position:absolute; top:0; left: 0"
-    allowfullscreen
-    webkitallowfullscreen
-    frameborder="0"
-    stretching="exactfit"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="no-referrer-when-downgrade"
-  >
-  </iframe>
 
-  </div>
+        // Setup JWPlayer
+        jwplayer("jwplayerDiv").setup({
+            
+            file: "https://etvtelugulive.akamaized.net/hls/live/2094791/ETV_TELUGU_LIVE/master.m3u8",
+           position: 'bottom',
+            autostart: true,
+            stretching: "exactfit",
+            width: "100%"
 
+
+        });
+    </script>
+    <a href="https://tvtelugu.github.io" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.png"/></a>
 </body>
+
 </html>
