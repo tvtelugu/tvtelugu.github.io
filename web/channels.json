@@ -2883,9 +2883,9 @@
     "name": "STAR Maa HD",
     "logo": "https://raw.githubusercontent.com/KratosRepo/TATA-WEB/main/logo/STAR%20Maa%20HD.webp",
     "group": "",
-    "url": "https://bpprod6linear.akamaized.net/bpk-tv/irdeto_com_Channel_609/output/manifest.mpd",
-    "license_key": "b2e9f21f36875ea7bc5d282e53ffdc22",
-    "license_key2": "9b1e1eddebcedb00c9b49f40e7b9d506"
+    "url": "http://45.127.56.3:6699/live/Corpus-POL1/SRV5/3/STAR-MAA-HD/live.mpd",
+    "license_key": "",
+    "license_key2": ""
   },
   {
     "name": "ETV Telugu",
