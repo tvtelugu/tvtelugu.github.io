@@ -6,245 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TVtelugu WEB Play</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
-    <style>
-      
-
-     body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background-color: #000000;
-          color: #ffffff;
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          text-align: center;
-          font-size: 16px;
-          line-height: 1.6;
-      }
-
-      header {
-          background-color: #000000;
-          color: #ffffff;
-          padding: 1em 0;
-          box-sizing: border-box;
-          font-size: 2em;
-          border-bottom: 2px solid #444;
-          margin-bottom: 20px;
-      }
-
-      header h1 {
-          margin: 0;
-          font-size: 1.5em;
-      }
-
-      nav {
-          margin-bottom: 20px;
-          text-align: center; /* Center-align the text in the navigation */
-      }
-
-      select {
-          padding: 10px;
-          font-size: 16px;
-          border: 1px solid #3498db;
-          border-radius: 20px; /* Add border-radius to the dropdown */
-          cursor: pointer;
-          outline: none;
-          transition: border-color 0.3s ease;
-          text-align-last: center; /* Center-align text within the select element */
-      }
-
-      select:hover,
-      select:focus {
-          border-color: #2c3e50;
-      }
-
-      .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 15px;
-          box-sizing: border-box;
-      }
-
-      .site-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted grid size */
-          gap: 15px;
-          margin-top: 15px;
-      }
-
-      .site-card {
-          background-color: #444;
-          border: 1px solid #333;
-          border-radius: 8px;
-          overflow: hidden;
-          transition: transform 0.3s ease-in-out;
-          text-decoration: none;
-          color: #ffffff;
-          display: flex;
-          flex-direction: column;
-          max-width: 150px; /* Set a maximum width for the site card */
-          margin: auto; /* Center the site card within its container */
-      }
-
-      .site-card:hover {
-          transform: scale(1.05);
-      }
-
-      .site-card img {
-          width: 100%;
-          height: auto;
-          object-fit: cover;
-          border-bottom: 1px solid #333;
-      }
-
-      .site-info {
-          padding: 10px; /* Reduce padding for the site info */
-          text-align: center;
-          flex-grow: 1;
-      }
-
-      .site-info h2 {
-          font-size: 0.9em; /* Adjust the font size for the channel name (h2) */
-          margin: 0;
-      }
-
-      .site-link {
-          margin-top: 10px;
-          color: #ffffff;
-          text-decoration: none;
-          background-color: #3498db;
-          padding: 10px;
-          border-radius: 5px;
-          display: inline-block;
-          transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .site-link:hover {
-          background-color: #2c3e50;
-          color: #ffffff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Modern Search Bar Styles */
-      .search-bar-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 70%; /* Adjusted width for better visibility on small screens */
-          margin: 0 auto;
-          position: relative;
-          overflow: hidden;
-          border-radius: 20px; /* Add border-radius for a curved end */
-      }
-
-      #channel-search {
-          padding: 10px;
-          border: none; /* Remove border to create a seamless appearance */
-          border-radius: 20px; /* Match the border-radius of the container */
-          width: 30%; /* Adjusted width for better visibility on small screens */
-          font-size: 16px;
-          transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      #channel-search:focus {
-          outline: none;
-          background-color: #eee; /* Change background color when focused */
-      }
-
-        #search-btn {
-            background-color: #3498db;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            border-radius: 20px; /* Add border-radius to the search button */
-            padding: 10px 20px; /* Add padding to the search button */
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #search-btn:hover {
-            background-color: #2c3e50;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      #search-icon {
-          font-size: 30px;
-          color: #3498db;
-          transition: color 0.3s ease;
-      }
-
-      /* Media Query for Small Screens */
-      @media only screen and (max-width: 600px) {
-          .site-grid {
-              grid-template-columns: repeat(3, 1fr);
-          }
-
-          #channel-search {
-              width: 30%; /* Adjusted width for small screens */
-          }
-
-          #search-btn {
-              width: 30%; /* Adjusted width for small screens */
-          }
-
-          #search-bar {
-              align-items: stretch; /* Align items vertically to stretch the search bar */
-          }
-
-          #channel-search {
-              width: 30%; /* Make the input full width */
-              margin-bottom: 0; /* Remove margin at the bottom */
-          }
-      }
-      
-
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
   
     <header>
-        <a href="https://tvtelugu.github.io/" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"/></a>
+        <img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"/>
         
+        
+    </header>
 <div class="container">
 
         <nav>
-
-            <label for="channel-dropdown"></label>
-            <select 
-                id="channel-dropdown" onchange="changeChannelGroup()">
-                <option value="regional telugu">Telugu</option>
-                <option value="movies">Movies</option>
-                <option value="entertainment">Entertainment</option>
+            <label for="channel-dropdown">Change Group:</label>
+            <select id="channel-dropdown" onchange="changeChannelGroup()">
+				<option value="entertainment">Entertainment</option>
+				<option value="regional telugu">Telugu</option>               
+				<option value="movies">Movies</option>
                 <option value="music">Music</option>
-                <option value="news">News</option>  
+                <option value="news">News</option>
+                <option value="english news">English news</option>  
                 <option value="kids">Kids</option>
-                <option value="regional kannada">Kannada</option>
-                <option value="regional tamil">Tamil</option>
-                <option value="regional malayalam">Malayalam</option>
-                <option value="sports">Sports</option>
-                <option value="english news">English news</option>
                 <option value="knowledge">Knowledge</option>
                 <option value="lifestyle">Lifestyle</option>
                 <option value="regional bengali">Bengali</option>
                 <option value="regional gujarati">Gujarati</option>
                 <option value="regional hindi">Hindi</option>
+                <option value="regional kannada">Kannada</option>
+                <option value="regional malayalam">Malayalam</option>
                 <option value="regional marathi">Marathi</option>
                 <option value="regional odia">Odia</option>
                 <option value="regional others">Others</option>
                 <option value="regional punjabi">Punjabi</option>
+                <option value="regional tamil">Tamil</option>
                 <option value="shopping">Shopping</option>
                 <option value="spiritual">Spiritual</option>
                 <option value="null">Others</option>
-                <option value="uncategorized">More..</option>
-              
+                <option value="sports">Sports</option>
+
             </select>
-<div id="search-bar">
+        </nav>
+
+        <div id="search-bar">
             <input type="text" id="channel-search" oninput="searchChannels()" placeholder="Enter channel name...">
             <button id="search-btn" onclick="searchChannels()">Search</button>
         </div>
-        </nav>
-
-        
-    </header>
 
     
 
@@ -824,48 +631,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
-                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
-                    <div class="site-info">
-                        <h2>Tata Play Hollywood Local Telugu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
-                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
-                    <div class="site-info">
-                        <h2>Tata Play Telugu Classics</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Swatantra%20TV" class="site-card">
-                    <img src="logo/Swatantra%20TV.webp" alt="Swatantra TV">
-                    <div class="site-info">
-                        <h2>Swatantra TV</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Prime%209%20News" class="site-card">
-                    <img src="logo/Prime%209%20News.webp" alt="Prime 9 News">
-                    <div class="site-info">
-                        <h2>Prime 9 News</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=BIG%20TV%20Telugu" class="site-card">
-                    <img src="logo/BIG%20TV%20Telugu.webp" alt="BIG TV Telugu">
-                    <div class="site-info">
-                        <h2>BIG TV Telugu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=MAHAA%20NEWS" class="site-card">
-                    <img src="logo/MAHAA%20NEWS.webp" alt="MAHAA NEWS">
-                    <div class="site-info">
-                        <h2>MAHAA NEWS</h2>
-                    </div>
-                </a>
-                
+                          
                 <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Tamil" class="site-card">
                     <img src="logo/Tata%20Play%20Hollywood%20Local%20Tamil.webp" alt="Tata Play Hollywood Local Tamil">
                     <div class="site-info">
@@ -3963,12 +3729,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=Jaya%20TV%20HD" class="site-card">
-                    <img src="logo/Jaya%20TV%20HD.webp" alt="Jaya TV HD">
-                    <div class="site-info">
-                        <h2>Jaya TV HD</h2>
-                    </div>
-                </a>
+
                 
                 <a href="player.html?channel=SVBC%202" class="site-card">
                     <img src="logo/SVBC%202.webp" alt="SVBC 2">
@@ -3976,17 +3737,81 @@
                         <h2>SVBC 2</h2>
                     </div>
                 </a>
+				
+				      <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
+                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
+                    <div class="site-info">
+                        <h2>Tata Play Hollywood Local Telugu</h2>
+                    </div>
+                </a>
                 
-</div>
-<div class="site-grid" id="regional tamil-channels">
-
-                <a href="player.html?channel=T%20News" class="site-card">
+                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
+                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
+                    <div class="site-info">
+                        <h2>Tata Play Telugu Classics</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Swatantra%20TV" class="site-card">
+                    <img src="logo/Swatantra%20TV.webp" alt="Swatantra TV">
+                    <div class="site-info">
+                        <h2>Swatantra TV</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Prime%209%20News" class="site-card">
+                    <img src="logo/Prime%209%20News.webp" alt="Prime 9 News">
+                    <div class="site-info">
+                        <h2>Prime 9 News</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=BIG%20TV%20Telugu" class="site-card">
+                    <img src="logo/BIG%20TV%20Telugu.webp" alt="BIG TV Telugu">
+                    <div class="site-info">
+                        <h2>BIG TV Telugu</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=MAHAA%20NEWS" class="site-card">
+                    <img src="logo/MAHAA%20NEWS.webp" alt="MAHAA NEWS">
+                    <div class="site-info">
+                        <h2>MAHAA NEWS</h2>
+                    </div>
+                </a>
+				
+				   <a href="player.html?channel=Tata%20Play%20English%20in%20Telugu" class="site-card">
+                    <img src="logo/Tata%20Play%20English%20in%20Telugu.webp" alt="Tata Play English in Telugu">
+                    <div class="site-info">
+                        <h2>Tata Play English in Telugu</h2>
+                    </div>
+                </a>
+				
+				<a href="player.html?channel=ETV%20Abhiruchi" class="site-card">
+                    <img src="logo/ETV%20Abhiruchi.webp" alt="ETV Abhiruchi">
+                    <div class="site-info">
+                        <h2>ETV Abhiruchi</h2>
+                    </div>
+                </a>
+				
+				 <a href="player.html?channel=T%20News" class="site-card">
                     <img src="logo/T%20News.webp" alt="T News">
                     <div class="site-info">
                         <h2>T News</h2>
                     </div>
                 </a>
                 
+</div>
+<div class="site-grid" id="regional tamil-channels">
+
+
+                <a href="player.html?channel=Jaya%20TV%20HD" class="site-card">
+                    <img src="logo/Jaya%20TV%20HD.webp" alt="Jaya TV HD">
+                    <div class="site-info">
+                        <h2>Jaya TV HD</h2>
+                    </div>
+                </a>
+				
                 <a href="player.html?channel=Sun%20TV%20HD" class="site-card">
                     <img src="logo/Sun%20TV%20HD.webp" alt="Sun TV HD">
                     <div class="site-info">
@@ -5549,47 +5374,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
-                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
-                    <div class="site-info">
-                        <h2>Tata Play Hollywood Local Telugu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
-                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
-                    <div class="site-info">
-                        <h2>Tata Play Telugu Classics</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Swatantra%20TV" class="site-card">
-                    <img src="logo/Swatantra%20TV.webp" alt="Swatantra TV">
-                    <div class="site-info">
-                        <h2>Swatantra TV</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Prime%209%20News" class="site-card">
-                    <img src="logo/Prime%209%20News.webp" alt="Prime 9 News">
-                    <div class="site-info">
-                        <h2>Prime 9 News</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=BIG%20TV%20Telugu" class="site-card">
-                    <img src="logo/BIG%20TV%20Telugu.webp" alt="BIG TV Telugu">
-                    <div class="site-info">
-                        <h2>BIG TV Telugu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=MAHAA%20NEWS" class="site-card">
-                    <img src="logo/MAHAA%20NEWS.webp" alt="MAHAA NEWS">
-                    <div class="site-info">
-                        <h2>MAHAA NEWS</h2>
-                    </div>
-                </a>
+
                 
                 <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Tamil" class="site-card">
                     <img src="logo/Tata%20Play%20Hollywood%20Local%20Tamil.webp" alt="Tata Play Hollywood Local Tamil">
@@ -6251,12 +6036,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=Tata%20Play%20English%20in%20Telugu" class="site-card">
-                    <img src="logo/Tata%20Play%20English%20in%20Telugu.webp" alt="Tata Play English in Telugu">
-                    <div class="site-info">
-                        <h2>Tata Play English in Telugu</h2>
-                    </div>
-                </a>
+             
                 
                 <a href="player.html?channel=Safari%20TV" class="site-card">
                     <img src="logo/Safari%20TV.webp" alt="Safari TV">
@@ -7923,13 +7703,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=ETV%20Abhiruchi" class="site-card">
-                    <img src="logo/ETV%20Abhiruchi.webp" alt="ETV Abhiruchi">
-                    <div class="site-info">
-                        <h2>ETV Abhiruchi</h2>
-                    </div>
-                </a>
-                
+                                
                 <a href="player.html?channel=Udaya%20TV%20HD" class="site-card">
                     <img src="logo/Udaya%20TV%20HD.webp" alt="Udaya TV HD">
                     <div class="site-info">
@@ -8688,12 +8462,7 @@
                     </div>
                 </a>
                 
-                <a href="player.html?channel=Jaya%20TV%20HD" class="site-card">
-                    <img src="logo/Jaya%20TV%20HD.webp" alt="Jaya TV HD">
-                    <div class="site-info">
-                        <h2>Jaya TV HD</h2>
-                    </div>
-                </a>
+                
                 
                 <a href="player.html?channel=SVBC%202" class="site-card">
                     <img src="logo/SVBC%202.webp" alt="SVBC 2">
@@ -8701,21 +8470,70 @@
                         <h2>SVBC 2</h2>
                     </div>
                 </a>
+                <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
+                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
+                    <div class="site-info">
+                        <h2>Tata Play Hollywood Local Telugu</h2>
+                    </div>
+                </a>
                 
-</div>
-<div class="site-grid" id="regional tamil-channels">
-
-                <a href="player.html?channel=T%20News" class="site-card">
+                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
+                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
+                    <div class="site-info">
+                        <h2>Tata Play Telugu Classics</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Swatantra%20TV" class="site-card">
+                    <img src="logo/Swatantra%20TV.webp" alt="Swatantra TV">
+                    <div class="site-info">
+                        <h2>Swatantra TV</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Prime%209%20News" class="site-card">
+                    <img src="logo/Prime%209%20News.webp" alt="Prime 9 News">
+                    <div class="site-info">
+                        <h2>Prime 9 News</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=BIG%20TV%20Telugu" class="site-card">
+                    <img src="logo/BIG%20TV%20Telugu.webp" alt="BIG TV Telugu">
+                    <div class="site-info">
+                        <h2>BIG TV Telugu</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=MAHAA%20NEWS" class="site-card">
+                    <img src="logo/MAHAA%20NEWS.webp" alt="MAHAA NEWS">
+                    <div class="site-info">
+                        <h2>MAHAA NEWS</h2>
+                    </div>
+                </a>
+				 <a href="player.html?channel=T%20News" class="site-card">
                     <img src="logo/T%20News.webp" alt="T News">
                     <div class="site-info">
                         <h2>T News</h2>
                     </div>
                 </a>
                 
+</div>
+<div class="site-grid" id="regional tamil-channels">
+
+               
+                
                 <a href="player.html?channel=Sun%20TV%20HD" class="site-card">
                     <img src="logo/Sun%20TV%20HD.webp" alt="Sun TV HD">
                     <div class="site-info">
                         <h2>Sun TV HD</h2>
+                    </div>
+                </a>
+				
+				<a href="player.html?channel=Jaya%20TV%20HD" class="site-card">
+                    <img src="logo/Jaya%20TV%20HD.webp" alt="Jaya TV HD">
+                    <div class="site-info">
+                        <h2>Jaya TV HD</h2>
                     </div>
                 </a>
                 
@@ -9774,6 +9592,9 @@
               }
           }
       </script>
+<div class="announcement">
+            <p> Madhu </p>
+        </div>
 
 </body>
 

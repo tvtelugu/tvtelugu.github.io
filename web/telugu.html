@@ -4,240 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TVtelugu - Telugu WEB</title>
+    <title>TVtelugu - Telugu Exclusive</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
-    <style>
-      
-
-     body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background-color: #000000;
-          color: #ffffff;
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          text-align: center;
-          font-size: 16px;
-          line-height: 1.6;
-      }
-
-      header {
-          background-color: #000000;
-          color: #ffffff;
-          padding: 0em 0;
-          box-sizing: border-box;
-          font-size: 2em;
-          border-bottom: 3px solid #999;
-          margin-bottom: 0px;
-      }
-
-      header h1 {
-          margin: 0;
-          font-size: 1.5em;
-      }
-
-      nav {
-          margin-bottom: 0px;
-          text-align: center; /* Center-align the text in the navigation */
-      }
-
-      select {
-          padding: 10px;
-          font-size: 16px;
-          border: 1px solid #3498db;
-          border-radius: 20px; /* Add border-radius to the dropdown */
-          cursor: pointer;
-          outline: none;
-          transition: border-color 0.3s ease;
-          text-align-last: center; /* Center-align text within the select element */
-      }
-
-      select:hover,
-      select:focus {
-          border-color: #2c3e50;
-      }
-
-      .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 15px;
-          box-sizing: border-box;
-      }
-
-      .site-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted grid size */
-          gap: 15px;
-          margin-top: 15px;
-      }
-
-      .site-card {
-          background-color: #444;
-          border: 1px solid #333;
-          border-radius: 8px;
-          overflow: hidden;
-          transition: transform 0.3s ease-in-out;
-          text-decoration: none;
-          color: #ffffff;
-          display: flex;
-          flex-direction: column;
-          max-width: 150px; /* Set a maximum width for the site card */
-          margin: auto; /* Center the site card within its container */
-      }
-
-      .site-card:hover {
-          transform: scale(1.05);
-      }
-
-      .site-card img {
-          width: 100%;
-          height: auto;
-          object-fit: cover;
-          border-bottom: 1px solid #333;
-      }
-
-      .site-info {
-          padding: 10px; /* Reduce padding for the site info */
-          text-align: center;
-          flex-grow: 1;
-      }
-
-      .site-info h2 {
-          font-size: 0.9em; /* Adjust the font size for the channel name (h2) */
-          margin: 0;
-      }
-
-      .site-link {
-          margin-top: 10px;
-          color: #ffffff;
-          text-decoration: none;
-          background-color: #3498db;
-          padding: 10px;
-          border-radius: 5px;
-          display: inline-block;
-          transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .site-link:hover {
-          background-color: #2c3e50;
-          color: #ffffff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Modern Search Bar Styles */
-      .search-bar-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 70%; /* Adjusted width for better visibility on small screens */
-          margin: 0 auto;
-          position: relative;
-          overflow: hidden;
-          border-radius: 20px; /* Add border-radius for a curved end */
-      }
-
-      #channel-search {
-          padding: 10px;
-          border: none; /* Remove border to create a seamless appearance */
-          border-radius: 20px; /* Match the border-radius of the container */
-          width: 30%; /* Adjusted width for better visibility on small screens */
-          font-size: 16px;
-          transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      #channel-search:focus {
-          outline: none;
-          background-color: #eee; /* Change background color when focused */
-      }
-
-        #search-btn {
-            background-color: #3498db;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            border-radius: 20px; /* Add border-radius to the search button */
-            padding: 10px 20px; /* Add padding to the search button */
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #search-btn:hover {
-            background-color: #2c3e50;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      #search-icon {
-          font-size: 30px;
-          color: #3498db;
-          transition: color 0.3s ease;
-      }
-
-      /* Media Query for Small Screens */
-      @media only screen and (max-width: 600px) {
-          .site-grid {
-              grid-template-columns: repeat(3, 1fr);
-          }
-
-          #channel-search {
-              width: 30%; /* Adjusted width for small screens */
-          }
-
-          #search-btn {
-              width: 30%; /* Adjusted width for small screens */
-          }
-
-          #search-bar {
-              align-items: stretch; /* Align items vertically to stretch the search bar */
-          }
-
-          #channel-search {
-              width: 30%; /* Make the input full width */
-              margin-bottom: 0; /* Remove margin at the bottom */
-          }
-      }
-      
-
-    </style>
-
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-   <header>
-        <a href="" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"/></a>
+  
+    <header>
+        <img alt="" border="0" width="200" data-original-height="200" data-original-width="200" src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"/>
         
+        
+    </header>
 <div class="container">
 
         <nav>
-           </select>
+            <label for="channel-dropdown">Change Group:</label>
+            <select id="channel-dropdown" onchange="changeChannelGroup()">
+				<option value="entertainment">Entertainment</option>            
+				<option value="movies">Movies</option>
+                <option value="music">Music</option>
+                <option value="news">News</option>
+                <option value="kids">Kids</option>
+                <option value="knowledge">Knowledge</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="shopping">Shopping</option>
+                <option value="spiritual">Spiritual</option>
+                <option value="null">Others</option>
+                <option value="sports">Sports</option>
+
+            </select>
         </nav>
-    </header>
+
+        <div id="search-bar">
+            <input type="text" id="channel-search" oninput="searchChannels()" placeholder="Enter channel name...">
+            <button id="search-btn" onclick="searchChannels()">Search</button>
+        </div>
 
     
 
         <!-- add here -->
-<div class="site-grid" id="regional telugu-channels">
+		
+<div class="site-grid" id="entertainment-channels">
 
-                <a href="player.html?channel=Zee%20Telugu%20HD" class="site-card">
+                
+				
+				<a href="player.html?channel=Zee%20Telugu%20HD" class="site-card">
                     <img src="logo/Zee%20Telugu%20HD.webp" alt="Zee Telugu HD">
                     <div class="site-info">
                         <h2>Zee Telugu HD</h2>
                     </div>
                 </a>
-
-                <a href="https://tvtelugu.github.io/web/CH/ZeeteluguHD.html" class="site-card">
-                    <img src="logo/Zee%20Telugu%20HD.webp" alt="Zee Telugu HD (Jio)">
+                
+                <a href="player.html?channel=Zee%20Telugu" class="site-card">
+                    <img src="logo/Zee%20Telugu.webp" alt="Zee Telugu">
                     <div class="site-info">
-                        <h2>Zee Telugu HD (Jio)</h2>
+                        <h2>Zee Telugu</h2>
                     </div>
                 </a>
                 
-                   
-                <a href="https://tvtelugu.github.io/web/CH/Saregama%20Telugu.html" class="site-card">
-                    <img src="https://jiotvimages.cdn.jio.com/dare_images/images/Saregama_Telugu.png" alt="Saregama Telugu">
-                    <div class="site-info">
-                        <h2>Saregama Telugu</h2>
-                    </div>
-                </a>
-
-    
                 <a href="player.html?channel=Gemini%20TV%20HD" class="site-card">
                     <img src="logo/Gemini%20TV%20HD.webp" alt="Gemini TV HD">
                     <div class="site-info">
@@ -252,76 +77,24 @@
                     </div>
                 </a>
                 
+                <a href="player.html?channel=ETV%20Telugu" class="site-card">
+                    <img src="logo/ETV%20Telugu.webp" alt="ETV Telugu">
+                    <div class="site-info">
+                        <h2>ETV Telugu</h2>
+                    </div>
+                </a>
                 
-                <a href="https://tvtelugu.github.io/web/CH/ETVHD.html" class="site-card">
+                <a href="player.html?channel=ETV%20HD" class="site-card">
                     <img src="logo/ETV%20HD.webp" alt="ETV HD">
                     <div class="site-info">
                         <h2>ETV HD</h2>
                     </div>
                 </a>
                 
-                              
-                <a href="player.html?channel=Zee%20Cinemalu%20HD" class="site-card">
-                    <img src="logo/Zee%20Cinemalu%20HD.webp" alt="Zee Cinemalu HD">
-                    <div class="site-info">
-                        <h2>Zee Cinemalu HD</h2>
-                    </div>
-                </a>
-                               
-               
-                <a href="player.html?channel=Gemini%20Movies%20HD" class="site-card">
-                    <img src="logo/Gemini%20Movies%20HD.webp" alt="Gemini Movies HD">
-                    <div class="site-info">
-                        <h2>Gemini Movies HD</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Star%20Maa%20Movies%20HD" class="site-card">
-                    <img src="logo/Star%20Maa%20Movies%20HD.webp" alt="Star Maa Movies HD">
-                    <div class="site-info">
-                        <h2>Star Maa Movies HD</h2>
-                    </div>
-                </a>
-
-                <a href="https://tvtelugu.github.io/web/CH/ZeeCinemalu.html" class="site-card">
-                    <img src="logo/Zee%20Cinemalu.webp" alt="Zee Cinemalu">
-                    <div class="site-info">
-                        <h2>Zee Cinemalu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=ETV%20Cinema" class="site-card">
-                    <img src="logo/ETV%20Cinema.webp" alt="ETV Cinema">
-                    <div class="site-info">
-                        <h2>ETV Cinema</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
-                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
-                    <div class="site-info">
-                        <h2>Tata Play Telugu Classics</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
-                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
-                    <div class="site-info">
-                        <h2>Tata Play Hollywood Local Telugu</h2>
-                    </div>
-                </a>
-
-                    <a href="player.html?channel=Gemini%20Life" class="site-card">
+                <a href="player.html?channel=Gemini%20Life" class="site-card">
                     <img src="logo/Gemini%20Life.webp" alt="Gemini Life">
                     <div class="site-info">
                         <h2>Gemini Life</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=ETV%20Life" class="site-card">
-                    <img src="logo/ETV%20Life.webp" alt="ETV Life">
-                    <div class="site-info">
-                        <h2>ETV Life</h2>
                     </div>
                 </a>
                 
@@ -331,9 +104,7 @@
                         <h2>ETV Plus</h2>
                     </div>
                 </a>
-                
-        
-                <a href="player.html?channel=Vissa%20TV" class="site-card">
+				 <a href="player.html?channel=Vissa%20TV" class="site-card">
                     <img src="logo/Vissa%20TV.webp" alt="Vissa TV">
                     <div class="site-info">
                         <h2>Vissa TV</h2>
@@ -346,22 +117,260 @@
                         <h2>Star Maa Gold</h2>
                     </div>
                 </a>
+</div>
+
+
+
+
+
+
+
+
+<div class="site-grid" id="movies-channels">
+
+                <a href="player.html?channel=Zee%20Cinemalu%20HD" class="site-card">
+                    <img src="logo/Zee%20Cinemalu%20HD.webp" alt="Zee Cinemalu HD">
+                    <div class="site-info">
+                        <h2>Zee Cinemalu HD</h2>
+                    </div>
+                </a>
+				
+				    <a href="player.html?channel=Gemini%20Movies%20HD" class="site-card">
+                    <img src="logo/Gemini%20Movies%20HD.webp" alt="Gemini Movies HD">
+                    <div class="site-info">
+                        <h2>Gemini Movies HD</h2>
+                    </div>
+                </a>
                 
-                <a href="player.html?channel=Zee%20Telugu" class="site-card">
-                    <img src="logo/Zee%20Telugu.webp" alt="Zee Telugu">
+                <a href="player.html?channel=Star%20Maa%20Movies%20HD" class="site-card">
+                    <img src="logo/Star%20Maa%20Movies%20HD.webp" alt="Star Maa Movies HD">
                     <div class="site-info">
-                        <h2>Zee Telugu</h2>
+                        <h2>Star Maa Movies HD</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Zee%20Cinemalu" class="site-card">
+                    <img src="logo/Zee%20Cinemalu.webp" alt="Zee Cinemalu">
+                    <div class="site-info">
+                        <h2>Zee Cinemalu</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=ETV%20Cinema" class="site-card">
+                    <img src="logo/ETV%20Cinema.webp" alt="ETV Cinema">
+                    <div class="site-info">
+                        <h2>ETV Cinema</h2>
+                    </div>
+                </a>
+                
+
+				      <a href="player.html?channel=Tata%20Play%20Hollywood%20Local%20Telugu" class="site-card">
+                    <img src="logo/Tata%20Play%20Hollywood%20Local%20Telugu.webp" alt="Tata Play Hollywood Local Telugu">
+                    <div class="site-info">
+                        <h2>Tata Play Hollywood Local Telugu</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Tata%20Play%20Telugu%20Classics" class="site-card">
+                    <img src="logo/Tata%20Play%20Telugu%20Classics.webp" alt="Tata Play Telugu Classics">
+                    <div class="site-info">
+                        <h2>Tata Play Telugu Classics</h2>
+                    </div>
+                </a>
+                
+                
+				
+
+               
+</div>
+
+
+
+
+
+
+
+
+
+<div class="site-grid" id="lifestyle-channels">
+
+                <a href="player.html?channel=ETV%20Life" class="site-card">
+                    <img src="logo/ETV%20Life.webp" alt="ETV Life">
+                    <div class="site-info">
+                        <h2>ETV Life</h2>
+                    </div>
+                </a>
+				
+				 <a href="player.html?channel=DD%20Yadagiri" class="site-card">
+                    <img src="logo/DD%20Yadagiri.webp" alt="DD Yadagiri">
+                    <div class="site-info">
+                        <h2>DD Yadagiri</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=DD%20Saptagiri" class="site-card">
+                    <img src="logo/DD%20Saptagiri.webp" alt="DD Saptagiri">
+                    <div class="site-info">
+                        <h2>DD Saptagiri</h2>
+                    </div>
+                </a>
+				
+                
+				<a href="player.html?channel=ETV%20Abhiruchi" class="site-card">
+                    <img src="logo/ETV%20Abhiruchi.webp" alt="ETV Abhiruchi">
+                    <div class="site-info">
+                        <h2>ETV Abhiruchi</h2>
+                    </div>
+                </a>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="site-grid" id="knowledge-channels">
+
+                <a href="player.html?channel=National%20Geographic%20HD" class="site-card">
+                    <img src="logo/National%20Geographic%20HD.webp" alt="National Geographic HD">
+                    <div class="site-info">
+                        <h2>National Geographic HD</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=National%20Geographic" class="site-card">
+                    <img src="logo/National%20Geographic.webp" alt="National Geographic">
+                    <div class="site-info">
+                        <h2>National Geographic</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Nat%20Geo%20Wild%20HD" class="site-card">
+                    <img src="logo/Nat%20Geo%20Wild%20HD.webp" alt="Nat Geo Wild HD">
+                    <div class="site-info">
+                        <h2>Nat Geo Wild HD</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Nat%20Geo%20Wild" class="site-card">
+                    <img src="logo/Nat%20Geo%20Wild.webp" alt="Nat Geo Wild">
+                    <div class="site-info">
+                        <h2>Nat Geo Wild</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Discovery%20HD%20World" class="site-card">
+                    <img src="logo/Discovery%20HD%20World.webp" alt="Discovery HD World">
+                    <div class="site-info">
+                        <h2>Discovery HD World</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Discovery%20Channel" class="site-card">
+                    <img src="logo/Discovery%20Channel.webp" alt="Discovery Channel">
+                    <div class="site-info">
+                        <h2>Discovery Channel</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Animal%20Planet%20HD%20World" class="site-card">
+                    <img src="logo/Animal%20Planet%20HD%20World.webp" alt="Animal Planet HD World">
+                    <div class="site-info">
+                        <h2>Animal Planet HD World</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Animal%20Planet" class="site-card">
+                    <img src="logo/Animal%20Planet.webp" alt="Animal Planet">
+                    <div class="site-info">
+                        <h2>Animal Planet</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Discovery%20Science" class="site-card">
+                    <img src="logo/Discovery%20Science.webp" alt="Discovery Science">
+                    <div class="site-info">
+                        <h2>Discovery Science</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=History%20TV18%20HD" class="site-card">
+                    <img src="logo/History%20TV18%20HD.webp" alt="History TV18 HD">
+                    <div class="site-info">
+                        <h2>History TV18 HD</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=History%20TV18" class="site-card">
+                    <img src="logo/History%20TV18.webp" alt="History TV18">
+                    <div class="site-info">
+                        <h2>History TV18</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=SONY%20BBC%20Earth%20HD" class="site-card">
+                    <img src="logo/SONY%20BBC%20Earth%20HD.webp" alt="SONY BBC Earth HD">
+                    <div class="site-info">
+                        <h2>SONY BBC Earth HD</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=SONY%20BBC%20Earth" class="site-card">
+                    <img src="logo/SONY%20BBC%20Earth.webp" alt="SONY BBC Earth">
+                    <div class="site-info">
+                        <h2>SONY BBC Earth</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=EPIC" class="site-card">
+                    <img src="logo/EPIC.webp" alt="EPIC">
+                    <div class="site-info">
+                        <h2>EPIC</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=DD%20Gyan%20Darshan" class="site-card">
+                    <img src="logo/DD%20Gyan%20Darshan.webp" alt="DD Gyan Darshan">
+                    <div class="site-info">
+                        <h2>DD Gyan Darshan</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Tata%20Play%20English%20in%20Telugu" class="site-card">
+                    <img src="logo/Tata%20Play%20English%20in%20Telugu.webp" alt="Tata Play English in Telugu">
+                    <div class="site-info">
+                        <h2>Tata Play English in Telugu</h2>
                     </div>
                 </a>
 
-                <a href="player.html?channel=ETV%20Telugu" class="site-card">
-                    <img src="logo/ETV%20Telugu.webp" alt="ETV Telugu">
-                    <div class="site-info">
-                        <h2>ETV Telugu</h2>
-                    </div>
-                </a>
 
-                <a href="player.html?channel=Sakshi%20TV" class="site-card">
+</div>
+
+
+
+
+
+
+
+
+
+<div class="site-grid" id="sports-channels">
+</div>
+
+
+
+
+
+
+
+
+
+<div class="site-grid" id="news-channels">
+<a href="player.html?channel=Sakshi%20TV" class="site-card">
                     <img src="logo/Sakshi%20TV.webp" alt="Sakshi TV">
                     <div class="site-info">
                         <h2>Sakshi TV</h2>
@@ -409,6 +418,13 @@
                         <h2>V6 Telugu</h2>
                     </div>
                 </a>
+				
+				 <a href="player.html?channel=T%20News" class="site-card">
+                    <img src="logo/T%20News.webp" alt="T News">
+                    <div class="site-info">
+                        <h2>T News</h2>
+                    </div>
+                </a>
                 
                 <a href="player.html?channel=ETV%20Telangana" class="site-card">
                     <img src="logo/ETV%20Telangana.webp" alt="ETV Telangana">
@@ -421,34 +437,6 @@
                     <img src="logo/Raj%20News%20Telugu.webp" alt="Raj News Telugu">
                     <div class="site-info">
                         <h2>Raj News Telugu</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=T%20News" class="site-card">
-                    <img src="logo/T%20News.webp" alt="T News">
-                    <div class="site-info">
-                        <h2>T News</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=Swatantra%20TV" class="site-card">
-                    <img src="logo/Swatantra%20TV.webp" alt="Swatantra TV">
-                    <div class="site-info">
-                        <h2>Swatantra TV</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=MAHAA%20NEWS" class="site-card">
-                    <img src="logo/MAHAA%20NEWS.webp" alt="MAHAA NEWS">
-                    <div class="site-info">
-                        <h2>MAHAA NEWS</h2>
-                    </div>
-                </a>
-
-                <a href="player.html?channel=BIG%20TV%20Telugu" class="site-card">
-                    <img src="logo/BIG%20TV%20Telugu.webp" alt="BIG TV Telugu">
-                    <div class="site-info">
-                        <h2>BIG TV Telugu</h2>
                     </div>
                 </a>
                 
@@ -465,36 +453,21 @@
                         <h2>10 TV</h2>
                     </div>
                 </a>
-                
-                <a href="player.html?channel=4tv%20News" class="site-card">
-                    <img src="logo/4tv%20News.webp" alt="4tv News">
-                    <div class="site-info">
-                        <h2>4tv News</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=DD%20Yadagiri" class="site-card">
-                    <img src="logo/DD%20Yadagiri.webp" alt="DD Yadagiri">
-                    <div class="site-info">
-                        <h2>DD Yadagiri</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=DD%20Saptagiri" class="site-card">
-                    <img src="logo/DD%20Saptagiri.webp" alt="DD Saptagiri">
-                    <div class="site-info">
-                        <h2>DD Saptagiri</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Raj%20Musix%20Telugu" class="site-card">
-                    <img src="logo/Raj%20Musix%20Telugu.webp" alt="Raj Musix Telugu">
-                    <div class="site-info">
-                        <h2>Raj Musix Telugu</h2>
-                    </div>
-                </a>
-                
-                <a href="player.html?channel=Bhakti%20TV" class="site-card">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="site-grid" id="spiritual-channels">
+
+<a href="player.html?channel=Bhakti%20TV" class="site-card">
                     <img src="logo/Bhakti%20TV.webp" alt="Bhakti TV">
                     <div class="site-info">
                         <h2>Bhakti TV</h2>
@@ -529,35 +502,167 @@
                     </div>
                 </a>
                 
-              <a href="player.html?channel=ETV%20Abhiruchi" class="site-card">
-                    <img src="logo/ETV%20Abhiruchi.webp" alt="ETV Abhiruchi">
-                    <div class="site-info">
-                        <h2>ETV Abhiruchi</h2>
-                    </div>
-                </a>
-                
                 <a href="player.html?channel=SVBC%202" class="site-card">
                     <img src="logo/SVBC%202.webp" alt="SVBC 2">
                     <div class="site-info">
                         <h2>SVBC 2</h2>
                     </div>
                 </a>
+				
+</div>
 
-                <a href="player.html?channel=Telugu%20Naaptol" class="site-card">
-                    <img src="logo/Telugu%20Naaptol.webp" alt="Telugu Naaptol">
-                    <div class="site-info">
-                        <h2>Telugu Naaptol</h2>
-                    </div>
-                </a>
 
-                <a href="player.html?channel=Tata%20Play%20English%20in%20Telugu" class="site-card">
+
+
+
+
+
+
+
+                
+<div class="site-grid" id="kids-channels">
+
+               
+				   <a href="player.html?channel=Tata%20Play%20English%20in%20Telugu" class="site-card">
                     <img src="logo/Tata%20Play%20English%20in%20Telugu.webp" alt="Tata Play English in Telugu">
                     <div class="site-info">
                         <h2>Tata Play English in Telugu</h2>
                     </div>
                 </a>
+				
+				
+			   <a href="player.html?channel=Super%20Hungama" class="site-card">
+                    <img src="logo/Super%20Hungama.webp" alt="Super Hungama">
+                    <div class="site-info">
+                        <h2>Super Hungama</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Disney" class="site-card">
+                    <img src="logo/Disney.webp" alt="Disney">
+                    <div class="site-info">
+                        <h2>Disney</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Nick%20HD%2B" class="site-card">
+                    <img src="logo/Nick%20HD%2B.webp" alt="Nick HD+">
+                    <div class="site-info">
+                        <h2>Nick HD+</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Nick" class="site-card">
+                    <img src="logo/Nick.webp" alt="Nick">
+                    <div class="site-info">
+                        <h2>Nick</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Tata%20Play%20Fun%20Learn%20Preschool" class="site-card">
+                    <img src="logo/Tata%20Play%20Fun%20Learn%20Preschool.webp" alt="Tata Play Fun Learn Preschool">
+                    <div class="site-info">
+                        <h2>Tata Play Fun Learn Preschool</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Tata%20Play%20Fun%20Learn%20Junior" class="site-card">
+                    <img src="logo/Tata%20Play%20Fun%20Learn%20Junior.webp" alt="Tata Play Fun Learn Junior">
+                    <div class="site-info">
+                        <h2>Tata Play Fun Learn Junior</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Cartoon%20Network%20HD%2B" class="site-card">
+                    <img src="logo/Cartoon%20Network%20HD%2B.webp" alt="Cartoon Network HD+">
+                    <div class="site-info">
+                        <h2>Cartoon Network HD+</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Cartoon%20Network" class="site-card">
+                    <img src="logo/Cartoon%20Network.webp" alt="Cartoon Network">
+                    <div class="site-info">
+                        <h2>Cartoon Network</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Pogo" class="site-card">
+                    <img src="logo/Pogo.webp" alt="Pogo">
+                    <div class="site-info">
+                        <h2>Pogo</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Discovery%20Kids" class="site-card">
+                    <img src="logo/Discovery%20Kids.webp" alt="Discovery Kids">
+                    <div class="site-info">
+                        <h2>Discovery Kids</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=SONY%20YAY%21" class="site-card">
+                    <img src="logo/SONY%20YAY%21.webp" alt="SONY YAY!">
+                    <div class="site-info">
+                        <h2>SONY YAY!</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Sonic%20Nickelodeon" class="site-card">
+                    <img src="logo/Sonic%20Nickelodeon.webp" alt="Sonic Nickelodeon">
+                    <div class="site-info">
+                        <h2>Sonic Nickelodeon</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Nick%20Jr" class="site-card">
+                    <img src="logo/Nick%20Jr.webp" alt="Nick Jr">
+                    <div class="site-info">
+                        <h2>Nick Jr</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=ETV%20Bal%20Bharat" class="site-card">
+                    <img src="logo/ETV%20Bal%20Bharat.webp" alt="ETV Bal Bharat">
+                    <div class="site-info">
+                        <h2>ETV Bal Bharat</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=Disney%20Junior" class="site-card">
+                    <img src="logo/Disney%20Junior.webp" alt="Disney Junior">
+                    <div class="site-info">
+                        <h2>Disney Junior</h2>
+                    </div>
+                </a>
+                
+                <a href="player.html?channel=CBeeBies" class="site-card">
+                    <img src="logo/CBeeBies.webp" alt="CBeeBies">
+                    <div class="site-info">
+                        <h2>CBeeBies</h2>
+                    </div>
+                </a>
                 
 </div>
+
+
+
+
+
+
+
+
+<div class="site-grid" id="music-channels">
+               
+			   <a href="player.html?channel=Raj%20Musix%20Telugu" class="site-card">
+                    <img src="logo/Raj%20Musix%20Telugu.webp" alt="Raj Musix Telugu">
+                    <div class="site-info">
+                        <h2>Raj Musix Telugu</h2>
+                    </div>
+                </a>
+				
+</div>
+
 
 <!-- add here -->
 
@@ -638,6 +743,9 @@
               }
           }
       </script>
+<div class="announcement">
+            <p> Madhu </p>
+        </div>
 
 </body>
 
