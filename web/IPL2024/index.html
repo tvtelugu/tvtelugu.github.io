@@ -1,89 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Responsive Video Playlist Tutorial</title>
+  <title>Reproductor HLS con Playlist</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js/dist/video-js.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      height: 100vh;
+    }
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+    .player-container {
+      height: 100vh;
+      background-color: #000;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
+    #hls-player{
+      width: 535px;
+      height: 300px;
+      border-radius:100px;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: -40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .control-btn {
+      margin: -30px 20px;
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .control-btn:active {
+      opacity: 0.8;
+      color:blue;
+    }
+    .material-icons{
+      font-size: 64px;
+    }
+  </style>
 </head>
 <body>
-   
-<div class="container">
+  <div class="player-container">
+    <video id="hls-player" class="video-js" controls></video>
+    <div class="controls">
+    <button class="control-btn prev-btn" id="anterior-btn"><i class="material-icons">skip_previous</i></button>
+    <button class="control-btn play-pause-btn" id="play-pause-btn"><i class="material-icons">play_arrow</i></button>
+    <button class="control-btn expand-btn" id="expand-btn"><i class="material-icons">fullscreen</i></button>
+    <button class="control-btn pip-btn" id="pip-btn"><i class="material-icons">picture_in_picture_alt</i></button>
+    <button class="control-btn next-btn" id="siguiente-btn"><i class="material-icons">skip_next</i></button>
+  </div>
+  </div>
 
-   <div class="main-video-container">
-      <video src="images/vid-1.mp4" loop controls class="main-video"></video>
-      <h3 class="main-vid-title">house flood animation</h3>
-   </div>
+  
 
-   <div class="video-list-container">
+  <script src="https://cdn.jsdelivr.net/npm/video.js/dist/video.min.js"></script>
+  <script>
+    // Definir la lista de enlaces de las pistas en tu playlist
+    const playlist = [
+      'https://mhdtv.co.in/jio/stream.m3u8?id=629',
+'https://ztnr.rtve.es/ztnr/1694255.m3u8',
+'https://rtvelivestream-clnx.rtve.es/rtvesec/tdp/tdp_main.m3u8',
+'https://rtvelivestream-clnx.rtve.es/rtvesec/clan/clan_main.m3u8',
+'https://directes-tv-int.ccma.cat/live-origin/bondia-hls/master.m3u8',
+'https://rakuten-spotlight-2-es.samsung.wurl.tv/playlist.m3u8',
+'https://rakuten-topfree-2-eu.rakuten.wurl.tv/playlist.m3u8',
+'https://rakuten-actionmovies-2-es.samsung.wurl.tv/playlist.m3u8',
+'https://rakuten-comedymovies-2-es.samsung.wurl.tv/playlist.m3u8',
+'https://rakuten-family-2-es.samsung.wurl.tv/playlist.m3u8',
+'https://rakuten-tvshows-2-es.samsung.wurl.tv/playlist.m3u8',
+'https://128559a99ef24f61b53e3f954af3db8c.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RakutenTV-es_Local/playlist.m3u8',
+'https://e2480f6eed82498b953d8a2eabd43b4f.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/RakutenTV-es_TopFree/playlist.m3u8',
+'https://run-ra-es.otteravision.com/run/ra_es/ra_es_720.m3u8',
+'https://run-rc-es.otteravision.com/run/rc_es/rc_es_720.m3u8',
+'https://run-th-es.otteravision.com/run/th_es/th_es_720.m3u8',
+'https://run-cr-es.otteravision.com/run/cr_es/cr_es_720.m3u8',
+'https://run-rr-es.otteravision.com/run/rr_es/rr_es_720.m3u8',
+'https://run-rss.otteravision.com/run/rss/rss_720.m3u8',
+'https://run-cl-es.otteravision.com/run/cl_es/cl_es_720.m3u8',
+'https://run-rt-tr-es.otteravision.com/run/rt_tr_es/rt_tr_es_720.m3u8',
+'https://streamtv.mediasector.es/hls/activatv/1_2/index.m3u8',
+'https://uksono2-samsung-tsv2-hzn2u.amagi.tv/playlist/samsunguk-uksono-samsunges/playlist.m3u8',
+'https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/index.m3u8',
+'https://euronews-euronews-spanish-2-mx.samsung.wurl.com/manifest/playlist.m3u8',
+'https://022d66c197dd4a1e9008e0134a74f34e.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-es_HolaPlay/playlist.m3u8',
+'https://cdnlive.codev8.net/rtvalive/smil:channel1.smil/playlist.m3u8',
+'https://cdnlive.codev8.net/rtvalive/smil:channel22.smil/playlist.m3u8',
+'https://distributionsjustepourrire-justforlaughsgags-1-es.samsung.wurl.tv/playlist.m3u8',
+'https://appletree-mytimespain-rakuten.amagi.tv/playlist.m3u8',
+'https://cdnlive.codev8.net/canalextremaduralive/smil:channel1DVR.smil/playlist.m3u8',
+'https://cloud.fastchannel.es/mic/manifiest/cocinafamiliar.m3u8',
+'https://limited35.todostreaming.es/live/mitjans-livestream1.m3u8',
+'https://linear-46.frequency.stream/dist/plex/46/hls/master/playlist.m3u8',
+'https://cdn.odysee.live/content/9f638b94d11d879726ae55dd5a0923621b96a45b/master.m3u8',
+'https://live-edge-eu-1.cdn.enetres.net/091DB7AFBD77442B9BA2F141DCC182F5021/liveld/index.m3u8',
+'https://d3t95pdz2h4c90.cloudfront.net/playlist.m3u8',
+'https://d188921up0bidw.cloudfront.net/playlist.m3u8',
+'https://live2.msr.cdn.mediaset.net/content/hls_h0_clr_vos/live/channel(ew)/index.m3u8',
+'https://cloudvideo.servers10.com:8081/8004/index.m3u8',
+'https://cloudvideo.servers10.com:8081/8136/index.m3u8',
+'https://alchimie-explorebytvplayer-es-rakuten.amagi.tv/playlist.m3u8',
+'https://stmv1.cnarlatam.com/elhistonauta/elhistonauta/.m3u8',
+'https://stmv1.cnarlatam.com/mundotv/mundotv/.m3u8',
+'https://stmv1.cnarlatam.com/techscience365/techscience365/.m3u8',
+'https://cloudvideo.servers10.com:8081/8032/index.m3u8',
+'https://5c579fdda41740e2a15ba13f0ae11562.mediatailor.us-east-1.amazonaws.com/v1/master/0fb304b2320b25f067414d481a779b77db81760d/RakutenTV-es_GrjngoPeliculasDelOeste/playlist.m3u8',
+'https://aef5dc1975f84cf7af47123a116dd433.mediatailor.us-east-1.amazonaws.com/v1/master/0fb304b2320b25f067414d481a779b77db81760d/RakutenTV-es_WuTangCollectionSpanish/playlist.m3u8',
+'https://32ee47381d2c4f0f94add7af019d9483.mediatailor.us-east-1.amazonaws.com/v1/master/04fd913bb278d8775298c26fdca9d9841f37601f/RakutenTV-es_DoctorWho/playlist.m3u8',
+'https://alchimie-explorebytvplayer-es-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-alchimie-explorebytvplayer-es-rakuten/CDN/master.m3u8',
+'https://9a81dd4ee3884d0dbcacafaf0d81327a.mediatailor.us-east-1.amazonaws.com/v1/master/04fd913bb278d8775298c26fdca9d9841f37601f/RakutenTV-eu_BilliardsTV/playlist.m3u8'
+    ];
 
-      <div class="list active">
-         <video src="images/vid-1.mp4" class="list-video"></video>
-         <h3 class="list-title">house flood animation</h3>
-      </div>
+    // Variable para realizar un seguimiento de la pista actual
+    let currentTrackIndex = 0;
 
-      <div class="list">
-         <video src="images/vid-2.mp4" class="list-video"></video>
-         <h3 class="list-title">zoombie walking animation</h3>
-      </div>
+    // Obtener elementos del DOM
+    const video = document.querySelector('#hls-player');
+    const playPauseBtn = document.querySelector('#play-pause-btn');
+    const expandBtn = document.querySelector('#expand-btn');
+    const pipBtn = document.querySelector('#pip-btn');
+    const prevBtn = document.querySelector('#anterior-btn');
+    const nextBtn = document.querySelector('#siguiente-btn');
 
-      <div class="list">
-         <video src="images/vid-3.mp4" class="list-video"></video>
-         <h3 class="list-title">emoji falling animation</h3>
-      </div>
+    // Inicializar el reproductor HLS
+    const player = videojs(video);
 
-      <div class="list">
-         <video src="images/vid-4.mp4" class="list-video"></video>
-         <h3 class="list-title">3D town animation</h3>
-      </div>
+    // Función para reproducir la pista en el reproductor HLS
+    function playTrack(index) {
+      // Obtener el enlace de la pista según el índice proporcionado
+      const trackUrl = playlist[index];
 
-      <div class="list">
-         <video src="images/vid-5.mp4" class="list-video"></video>
-         <h3 class="list-title">man chasing carrot animation</h3>
-      </div>
+      // Actualizar el src del reproductor con el nuevo enlace de la pista
+      player.src(trackUrl);
 
-      <div class="list">
-         <video src="images/vid-6.mp4" class="list-video"></video>
-         <h3 class="list-title">door hinge animation</h3>
-      </div>
+      // Reproducir la pista actual
+      player.play();
 
-      <div class="list">
-         <video src="images/vid-7.mp4" class="list-video"></video>
-         <h3 class="list-title">poeple walking in town animation</h3>
-      </div>
+      // Actualizar el índice de la pista actual
+      currentTrackIndex = index;
+    }
 
-      <div class="list">
-         <video src="images/vid-8.mp4" class="list-video"></video>
-         <h3 class="list-title">knight chasing virus animation</h3>
-      </div>
+    // Función para cambiar el ícono de reproducción/pausa
+    function togglePlayPauseIcon() {
+      if (player.paused()) {
+        playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
 
-      <div class="list">
-         <video src="images/vid-9.mp4" class="list-video"></video>
-         <h3 class="list-title">3D helicopter animation</h3>
-      </div>
+      } else {
+        playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
 
-   </div>
+      }
+    }
 
-</div>
+    // Reproducir la primera pista al cargar la página
+    playTrack(0);
 
+    // Evento de clic en el botón de reproducción/pausa
+    playPauseBtn.addEventListener('click', function() {
+      if (player.paused()) {
+        player.play();
+      } else {
+        player.pause();
+      }
 
+      togglePlayPauseIcon();
+    });
 
+    // Evento de clic en el botón de expandir
+    expandBtn.addEventListener('click', function() {
+      if (player.isFullscreen()) {
+        player.exitFullscreen();
+      } else {
+        player.requestFullscreen();
+      }
+    });
 
+    // Evento de clic en el botón de Picture-in-Picture
+    pipBtn.addEventListener('click', function() {
+      if (document.pictureInPictureElement === video) {
+        document.exitPictureInPicture();
+      } else {
+        video.requestPictureInPicture();
+      }
+    });
 
+    // Evento de clic en el botón de pista anterior
+    prevBtn.addEventListener('click', function() {
+      currentTrackIndex = (currentTrackIndex === 0) ? playlist.length - 1 : currentTrackIndex - 1;
+      playTrack(currentTrackIndex);
+    });
 
-
-
-
-
-
-
-
-<!-- custom js file link  -->
-<script src="js/script.js"></script>
-
+    // Evento de clic en el botón de siguiente pista
+    nextBtn.addEventListener('click', function() {
+      currentTrackIndex = (currentTrackIndex === playlist.length - 1) ? 0 : currentTrackIndex + 1;
+      playTrack(currentTrackIndex);
+    });
+  </script>
 </body>
 </html>
