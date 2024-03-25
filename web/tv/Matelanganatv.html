@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MA Telagana Tv || TVTelugu</title>
+  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://unpkg.com/plyr@3/dist/plyr.css'><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+<video controls crossorigin playsinline poster="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png"></video>
+</div>
+<!-- Plyr resources and browser polyfills are specified in the pen settings -->
+<!-- Hls.js 0.9.x and 0.10.x both have critical bugs affecting this demo. Using fixed git hash to when it was working (0.10.0 pre-release), until https://github.com/video-dev/hls.js/issues/1790 has been resolved -->
+<script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
+<!-- partial -->
+  <script src='https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL'></script>
+<script src='https://unpkg.com/plyr@3'></script>
+<script>  
+document.addEventListener('DOMContentLoaded', () => {
+  const source = 'http://telanganatv.phoenixcreations.online:1935/telanganatv/telanganatv/chunklist_w1691683123.m3u8';
+  const video = document.querySelector('video');
+
+  const defaultOptions = {};
+
+  if (!Hls.isSupported()) {
+    video.src = source;
+    var player = new Plyr(video, defaultOptions);
+  } else {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map(l => l.height);
+      availableQualities.unshift(0); //prepend 0 to quality array
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: 0, //Default - AUTO
+        options: availableQualities,
+        forced: true,
+        onChange: e => updateQuality(e) };
+
+      // Add Auto Label 
+      defaultOptions.i18n = {
+        qualityLabel: {
+          0: 'Auto' } };
+
+
+
+      hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+        var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span");
+        if (hls.autoLevelEnabled) {
+          span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`;
+        } else {
+          span.innerHTML = `AUTO`;
+        }
+      });
+
+      // Initialize new Plyr player with quality options
+      var player = new Plyr(video, defaultOptions);
+    });
+
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    if (newQuality === 0) {
+      window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+    } else {
+      window.hls.levels.forEach((level, levelIndex) => {
+        if (level.height === newQuality) {
+          console.log("Found quality match with " + newQuality);
+          window.hls.currentLevel = levelIndex;
+        }
+      });
+    }
+  }
+});
+
+</script>
+
+</body>
+</html>
