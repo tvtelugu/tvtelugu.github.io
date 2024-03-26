@@ -16,8 +16,6 @@ https://rftv.wtf/tp/tplay.mpd?contentID=11|X-Forwarded-For=103.234.159.5
 #KODIPROP:inputstream.adaptive.license_key=https://rftv.wtf/tp/tplay.php?contentID=83&key
 #EXTINF:-1 tvg-id=ts83 tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-255-j5fz95pc-v1/imageContent-255-j5fz95pc-m1.png" group-title="Telugu - TP Global",ETV Telangana
 https://rftv.wtf/tp/tplay.mpd?contentID=83|X-Forwarded-For=103.234.159.5
-|X-Forwarded-For=103.234.159.5
-|X-Forwarded-For=103.234.159.5
 
 
 #KODIPROP:inputstream.adaptive.license_type=clearkey
