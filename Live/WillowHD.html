@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Willow HD || TVTelugu</title>
+<link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+  <style>
+    body {
+      margin: 0px
+    }
+ img {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+   }
+
+  .imgA1 {
+  z-index: 1;
+  }
+    .jwplayer {
+      position: absolute !important
+    }
+
+    .jwplayer.jw-flag-aspect-mode {
+      min-height: 100%;
+      max-height: 100%
+    }
+  </style>
+</head>
+
+<body>
+  <div id="jwplayerDiv"></div>
+<img class="imgA1" src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/tvtelugu%20player.png">
+  <script type="text/javascript">
+    jwplayer("jwplayerDiv").setup({
+      file: "https://linear-novi.stvacdn.spectrum.com/LIVE/1131/dash/cenc/WLLOHD_10364/manifest.mpd", position: 'bottom',
+      "autostart": true,
+      "stretching": "",
+      "width": "100%",
+      type: "dash",
+      drm: {
+        "clearkey": {
+          "keyId": "6653c05e42fc4fac8f49d7cbf99498fe",
+          "key": "3b88f2cff3affef20b265c840bafc0cc"
+        }
+      }
+    });    
+  </script>
