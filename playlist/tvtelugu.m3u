@@ -1,4 +1,8 @@
-
+<html>
+<head>
+<title>TVTelugu Exclusive Playlist</title>
+  <link href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico" rel="icon" type="image/x-icon"></link>
+</head>
    <script>// Get a random number between 0 and 1
     const randomNum = Math.random();
     // Define your two URLs
@@ -11,7 +15,7 @@
       window.location.href = url2;
     }
   </script>
-
+  
 #EXTM3U x-tvg-url="https://www.tsepg.cf/epg.xml.gz"
 
 ============================= 2024 - Movies ===========================
@@ -246,4 +250,4 @@ http://starshare.live:8080/series/rvdgdf7647564/bvchgfd235454/302982.mp4
 http://starshare.live:8080/series/rvdgdf7647564/bvchgfd235454/302983.mp4
 #EXTINF:-1,Love Me Like I Do (Telugu) S01 E15
 http://starshare.live:8080/series/rvdgdf7647564/bvchgfd235454/302984.mp4
-#EXTINF:-1,Love Me 
+#EXTINF:-1,Love M
