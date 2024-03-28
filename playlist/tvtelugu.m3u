@@ -1,8 +1,4 @@
-<html>
-<head>
-<title>TVTelugu Exclusive Playlist</title>
-  <link href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico" rel="icon" type="image/x-icon"></link>
-</head>
+
    <script>// Get a random number between 0 and 1
     const randomNum = Math.random();
     // Define your two URLs
