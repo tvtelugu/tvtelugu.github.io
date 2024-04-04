@@ -17,7 +17,7 @@ function myFunction() {
             });
           }
         }
-
+ 
         function myFunction1() {
           if (Hls.isSupported()) {
             var video = document.getElementById('video');
