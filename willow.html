@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WILLOW CRICKET || TVTELUGU </title>
+  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0px;
+        }
+img {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+   }
+
+  .imgA1 {
+  z-index: 1;
+  }
+        .jwplayer {
+            position: absolute !important;
+        }
+
+        .jwplayer.jw-flag-aspect-mode {
+            min-height: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+   <body>
+    <div id="jwplayerDiv"></div>
+     <img class="imgA1" src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/tvtelugu%20player.png">
+    <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <script type="text/javascript">
+        // Use the PHP configuration directly within the JavaScript
+        var config = {"file":"https://linear-novi.stvacdn.spectrum.com/LIVE/5248/bpk-tv/10364/drm/manifest.mpd","drm":{"clearkey":{"keyId":"475d7932b5f352bb92016b75b60c58fa","key":"ea37faa137ae8f644105c4fcc189a35f"}}};
+
+        jwplayer("jwplayerDiv").setup({
+            file: config.file,
+            position: 'bottom',
+            autostart: true,
+            stretching: "",
+            width: "100%",
+            type: "dash",
+            drm: {
+                clearkey: {
+                    keyId: config.drm.clearkey.keyId,
+                    key: config.drm.clearkey.key
+                }
+            }
+        });
+    </script>
+</body>
+</html>
