@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRM Live Video Player</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #player {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .default-input {
+            display: none;
+        }
+    </style>
+    <!-- Disable DevTools -->
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+</head>
+<body>
+<div class="container">
+    <h1>DRM Live Video Player</h1>
+
+    <div id="player"></div>
+
+    <form id="videoForm" onsubmit="playVideo(event);">
+        <label for="link">MPD/HLS Link:</label>
+        <input type="text" id="link" name="link" placeholder="Enter MPD or HLS link">
+        <label for="clearKeyKid">Clear Key ID (for MPD):</label>
+        <input type="text" id="clearKeyKid" name="clearKeyKid" placeholder="Enter Clear Key ID (optional)">
+        <label for="clearKey">Clear Key (for MPD):</label>
+        <input type="text" id="clearKey" name="clearKey" placeholder="Enter Clear Key (optional)">
+        <label for="widevineLicenseUrl">Widevine License URL:</label>
+        <input type="text" id="widevineLicenseUrl" name="widevineLicenseUrl" placeholder="Enter Widevine License URL (optional)">
+        <div class="default-input">
+            <input type="hidden" id="defaultLink" value="https://aba5sdmaaaaaaaamibyasmmfoav3v.otte.live.cf.ww.aiv-cdn.net/pdx-nitro/live/clients/dash/enc/dmmqe7ssji/out/v1/3775f3d149f34a7a81d8cd7d58118e40/cenc.mpd">
+            <input type="hidden" id="defaultClearKeyKid" value="1105b85e6db6214e686e462206ed86ec">
+            <input type="hidden" id="defaultClearKey" value="59d851187354b65fa2d14829046893ef">
+        </div>
+        <button type="submit">Play Video</button>
+    </form>
+</div>
+
+<script src="//ssl.p.jwpcdn.com/player/v/8.25.1/jwplayer.js"></script>
+<script>
+    jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
+
+    function playVideo(event) {
+        event.preventDefault();
+        var link = document.getElementById('link').value;
+        var clearKeyKid = document.getElementById('clearKeyKid').value;
+        var clearKey = document.getElementById('clearKey').value;
+        var widevineLicenseUrl = document.getElementById('widevineLicenseUrl').value;
+
+        if (!link) {
+            alert("Please provide a valid MPD or HLS link.");
+            return;
+        }
+
+        var playerInstance = jwplayer("player");
+        var source = {
+            "file": link,
+            "default": false
+        };
+
+        // Check if the link is for DASH or HLS and configure accordingly
+        if (link.endsWith('.mpd')) {
+            source.type = "dash";
+            // ClearKey DRM support
+            if (clearKeyKid && clearKey) {
+                source.drm = {
+                    "clearkey": {"keyId": clearKeyKid, "key": clearKey}
+                };
+            }
+            // Widevine DRM support
+            if (widevineLicenseUrl) {
+                source.drm = source.drm || {};  // Ensure the drm object exists
+                source.drm.widevine = {
+                    "url": widevineLicenseUrl
+                };
+            }
+        } else if (link.endsWith('.m3u8')) {
+            source.type = "hls";
+        } else {
+            alert("Unsupported link format. Please provide a valid MPD or HLS link.");
+            return;
+        }
+
+        playerInstance.setup({
+            playlist: [{
+                "sources": [source]
+            }],
+            width: "100%",
+            aspectratio: "16:9",
+            autostart: true
+        });
+
+        // Save form data using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "save_data.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Form data saved successfully.");
+                } else {
+                    console.error("Failed to save form data.");
+                }
+            }
+        };
+        xhr.send("Link=" + encodeURIComponent(link) + "&clearKeyKid=" + encodeURIComponent(clearKeyKid) + "&clearKey=" + encodeURIComponent(clearKey) + "&widevineLicenseUrl=" + encodeURIComponent(widevineLicenseUrl));
+    }
+
+    // Automatically play default MPD when the page loads
+    window.onload = function() {
+        var defaultLink = document.getElementById('defaultLink').value;
+        var defaultClearKeyKid = document.getElementById('defaultClearKeyKid').value;
+        var defaultClearKey = document.getElementById('defaultClearKey').value;
+        
+        var playerInstance = jwplayer("player");
+        var source = {
+            "file": defaultLink,
+            "default": true
+        };
+
+        if (defaultLink.endsWith('.mpd')) {
+            source.type = "dash";
+            if (defaultClearKeyKid && defaultClearKey) {
+                source.drm = {
+                    "clearkey": {"keyId": defaultClearKeyKid, "key": defaultClearKey}
+                };
+            }
+        } else if (defaultLink.endsWith('.m3u8')) {
+            source.type = "hls";
+        } else {
+            console.error("Unsupported default link format.");
+            return;
+        }
+
+        playerInstance.setup({
+            playlist: [{
+                "sources": [source]
+            }],
+            width: "100%",
+            aspectratio: "16:9",
+            autostart: true
+        });
+    };
+</script>
+</body>
+</html>
