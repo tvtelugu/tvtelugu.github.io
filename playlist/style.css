@@ -1,0 +1,49 @@
+body {
+  padding: 20px 30px;
+  text-align: center;
+}
+.content {
+  max-width: 1000px;
+  text-align: left;
+  display: inline-block;
+}
+.name {
+  font-size: 24px;
+}
+.unfinished {
+  display: none;
+}
+.content ul {
+  list-style: none;
+}
+button {
+  margin: 2px 1px 2px 10px;
+  padding: 6px 14px;
+  margin: 5px 10px 5px 0px;
+  vertical-align: middle;
+  position: relative;
+  top: -4px;
+}
+#header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+@media only screen and (max-width: 500px) {
+  h1 {
+    font-size: 26px;
+    line-height: 28px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .url {
+    display: none;
+  }
+}
+.gsap-3-logo {
+    width: 20vw;
+    max-width: 150px;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+}
