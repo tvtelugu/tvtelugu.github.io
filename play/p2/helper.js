@@ -1,1 +1,0 @@
-const dlog = chrome.extension.getBackgroundPage().console.log;
