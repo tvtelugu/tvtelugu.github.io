@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JioSaavn Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .player-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <h2>JioSaavn Music Player</h2>
+        <input type="text" id="songName" placeholder="Enter song name..." />
+        <button onclick="fetchSong()">Search & Play</button>
+        <div id="songInfo"></div>
+        <audio id="audioPlayer" controls style="display:none;"></audio>
+    </div>
+
+    <script>
+        async function fetchSong() {
+            const songName = document.getElementById('songName').value;
+            const url = `https://www.jiosaavn.com/api.php?__call=autocomplete.get&query=${encodeURIComponent(songName)}&_format=json&_marker=0`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results && data.results.songs.data.length > 0) {
+                    const song = data.results.songs.data[0];
+                    const songTitle = song.title;
+                    const songId = song.more_info.song_pids;
+
+                    // Fetch the song's audio URL
+                    getSongUrl(songId, songTitle);
+                } else {
+                    document.getElementById('songInfo').innerHTML = 'No song found!';
+                }
+            } catch (error) {
+                console.error('Error fetching song:', error);
+                document.getElementById('songInfo').innerHTML = 'Error fetching song!';
+            }
+        }
+
+        async function getSongUrl(songId, songTitle) {
+            const songUrlApi = `https://www.jiosaavn.com/api.php?__call=song.getDetails&pids=${songId}&_format=json&_marker=0`;
+
+            try {
+                const response = await fetch(songUrlApi);
+                const data = await response.json();
+                const songUrl = data[songId].more_info.encrypted_media_url;
+
+                // Decrypt the media URL (if needed)
+                const audioUrl = atob(songUrl); // Base64 decode
+
+                // Set up the audio player
+                const audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+                document.getElementById('songInfo').innerHTML = `Now playing: ${songTitle}`;
+                audioPlayer.play();
+            } catch (error) {
+                console.error('Error getting song URL:', error);
+                document.getElementById('songInfo').innerHTML = 'Error playing song!';
+            }
+        }
+    </script>
+</body>
+</html>
