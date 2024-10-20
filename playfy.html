@@ -12,6 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
         .player-container {
             background-color: white;
@@ -19,6 +20,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 80%;
+            max-width: 600px;
         }
         audio {
             width: 100%;
@@ -36,21 +39,73 @@
             border: none;
             cursor: pointer;
         }
+        .song-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .song-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .song-item:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
     <div class="player-container">
         <h2>JioSaavn Music Player</h2>
+        
+        <!-- Search Box -->
         <input type="text" id="songName" placeholder="Enter song name..." />
         <button onclick="fetchSong()">Search & Play</button>
+        
+        <!-- Now Playing Info -->
         <div id="songInfo"></div>
         <audio id="audioPlayer" controls style="display:none;"></audio>
+
+        <!-- Trending Songs Section -->
+        <h3>Trending Songs</h3>
+        <div id="trendingSongs" class="song-list"></div>
     </div>
 
     <script>
+        // Fetch trending songs on page load
+        window.onload = function() {
+            fetchTrendingSongs();
+        };
+
+        async function fetchTrendingSongs() {
+            const url = `/api/trending`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const trendingSongs = data.results ? data.results.songs : [];
+                const trendingContainer = document.getElementById('trendingSongs');
+
+                // Clear existing songs
+                trendingContainer.innerHTML = '';
+
+                // Loop through the trending songs and display them
+                trendingSongs.forEach(song => {
+                    const songElement = document.createElement('div');
+                    songElement.className = 'song-item';
+                    songElement.innerHTML = `${song.title} - ${song.more_info.singers}`;
+                    songElement.onclick = () => getSongUrl(song.more_info.song_pids, song.title);
+                    trendingContainer.appendChild(songElement);
+                });
+            } catch (error) {
+                console.error('Error fetching trending songs:', error);
+                document.getElementById('trendingSongs').innerHTML = 'Error fetching trending songs!';
+            }
+        }
+
         async function fetchSong() {
             const songName = document.getElementById('songName').value;
-            const url = `https://www.jiosaavn.com/api.php?__call=autocomplete.get&query=${encodeURIComponent(songName)}&_format=json&_marker=0`;
+            const url = `/api/search?query=${encodeURIComponent(songName)}`;
 
             try {
                 const response = await fetch(url);
@@ -72,7 +127,7 @@
         }
 
         async function getSongUrl(songId, songTitle) {
-            const songUrlApi = `https://www.jiosaavn.com/api.php?__call=song.getDetails&pids=${songId}&_format=json&_marker=0`;
+            const songUrlApi = `/api/song?songId=${songId}`;
 
             try {
                 const response = await fetch(songUrlApi);
