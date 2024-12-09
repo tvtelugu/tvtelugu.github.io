@@ -403,7 +403,7 @@
         async function searchSongs(query) {
             if (!query) return;
 
-            let url = https://saavn.dev/api/search/songs?query=${query}&page=1&limit=50;
+            let url = `https://saavn.dev/api/search/songs?query=${query}&page=1&limit=50`;
             const response = await fetch(url);
             const data = await response.json();
             songs = data.data.results;
@@ -412,7 +412,7 @@
 
         // Fetch lyrics for the song
         async function fetchLyrics(songId) {
-            const url = https://saavn.dev/api/songs/${songId}/lyrics;
+            const url = `https://saavn.dev/api/songs/${songId}/lyrics`;
             const response = await fetch(url);
             const data = await response.json();
 
@@ -421,7 +421,7 @@
 
             if (data.data) {
                 const lyrics = data.data.lyrics.split('\n');
-                let formattedLyrics = lyrics.map(line => <p class="lyrics-line">${line}</p>).join('');
+                let formattedLyrics = lyrics.map(line => `<p class="lyrics-line">${line}</p>`).join('');
                 lyricsText.innerHTML = formattedLyrics;
                 lyricsContainer.style.display = 'block';
             } else {
@@ -460,13 +460,13 @@
         function loadSong() {
             const song = songs[currentSongIndex];
             const selectedQuality = qualitySelect.value;
-            const qualityUrl = song.downloadUrl.find(url => url.quality === ${selectedQuality}kbps).url;
+            const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
 
             audio.src = qualityUrl;
             document.getElementById("song-name").innerText = song.name;
             document.getElementById("song-artist").innerText = song.artists.primary[0].name;
             document.getElementById("album-name").innerText = song.album.name;
-            document.getElementById("album-poster").style.backgroundImage = url(${song.image[2].url});
+            document.getElementById("album-poster").style.backgroundImage = `url(${song.image[2].url})`;
             playIcon.innerText = "pause";
 
             // Fetch lyrics
@@ -496,7 +496,7 @@
             progressBar.value = progress;
             let minutes = Math.floor(audio.currentTime / 60);
             let seconds = Math.floor(audio.currentTime % 60);
-            timeDisplay.innerText = ${minutes}:${seconds < 10 ? '0' : ''}${seconds};
+            timeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         };
 
         // Switch audio quality
@@ -531,7 +531,7 @@
         function downloadSong() {
             const song = songs[currentSongIndex];
             const selectedQuality = qualitySelect.value;
-            const qualityUrl = song.downloadUrl.find(url => url.quality === ${selectedQuality}kbps).url;
+            const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
             window.open(qualityUrl);
         }
     </script>
