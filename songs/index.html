@@ -394,18 +394,18 @@
     <!-- Audio Player -->
     <audio id="audio" controls></audio>
 
-   <script>
+  <script>
     function toggleLyrics() {
         const lyricsContainer = document.getElementById("lyrics-container");
         lyricsContainer.style.display = lyricsContainer.style.display === "flex" ? "none" : "flex";
     }
 
     const queries = [
-        'Telugu', 'SBP', 'Devi Sri Prasad', 'Mani Sharma','Anoop Rubens',
+        'Telugu', 'SBP', 'Devi Sri Prasad', 'Mani Sharma', 'Anoop Rubens',
         'S. P. Balasubrahmanyam', 'Ilaiyaraaja', 'K.J. Yesudas', 'M. M. Keeravani',
         'Annamayya Keerthana', 'G.V. Prakash Kumar', 'Anurag Kulkarni', 'Mahesh Babu',
         'Thaman S', 'Ram Miriyala', 'Bheems Ceciroleo', 'Yuvan Shankar Raja',
-        'Ramajogayya Sastry','balagam', 'latest telugu', 'telugu folk', 'new telugu remix'
+        'Ramajogayya Sastry', 'balagam', 'latest telugu', 'telugu folk', 'new telugu remix'
     ];
 
     let audio = document.getElementById("audio");
@@ -556,19 +556,18 @@
         fetchLyrics(song.id);
     }
        
-// Function to decode HTML entities and remove quotes
-function decodeHtmlEntities(str) {
-    const txt = document.createElement("textarea");
-    txt.innerHTML = str;
-    return txt.value; // This decodes HTML entities
-}
+    // Function to decode HTML entities and remove quotes
+    function decodeHtmlEntities(str) {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = str;
+        return txt.value; // This decodes HTML entities
+    }
 
-// Function to remove quotes after decoding HTML entities
-function removeQuotes(str) {
-    const decodedStr = decodeHtmlEntities(str); // Decode the HTML entities
-    return decodedStr.replace(/"/g, ''); // Remove the actual quotes
-}
-
+    // Function to remove quotes after decoding HTML entities
+    function removeQuotes(str) {
+        const decodedStr = decodeHtmlEntities(str); // Decode the HTML entities
+        return decodedStr.replace(/"/g, ''); // Remove the actual quotes
+    }
 
     // Toggle play/pause
     function togglePlay() {
@@ -632,11 +631,46 @@ function removeQuotes(str) {
         window.open(qualityUrl);
     }
 
+    // Download audio as .mp3
+    function downloadAudio(song) {
+        const audioUrl = song.downloadUrl[4].url; // Replace 4 with the appropriate index
+
+        fetch(audioUrl)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then((blob) => {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const base64Data = reader.result.split(',')[1]; // Extract the Base64 data
+
+                    // Create an anchor element to trigger the download
+                    const a = document.createElement('a');
+                    a.href = `data:audio/mp3;base64,${base64Data}`;
+                    a.download = `${song.name}.mp3`; // Set the desired filename
+
+                    // Trigger a click event on the anchor to initiate the download
+                    a.dispatchEvent(new MouseEvent('click'));
+
+                    // Cleanup
+                    URL.revokeObjectURL(a.href);
+                };
+                reader.readAsDataURL(blob);
+            })
+            .catch((error) => {
+                console.error('Error downloading audio:', error);
+            });
+    }
+
     // Automatically play the next song when the current song ends
     audio.addEventListener('ended', function () {
         nextSong(); // Automatically play the next song when the current song ends
     });
 </script>
+
 
 
 </body>
