@@ -538,23 +538,22 @@
         }
     }
 
-// Load song info
-function loadSong() {
-    const song = songs[currentSongIndex];
-    const selectedQuality = qualitySelect.value;
-    const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
+    // Load song info
+    function loadSong() {
+        const song = songs[currentSongIndex];
+        const selectedQuality = qualitySelect.value;
+        const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
 
-    // Remove quotes and HTML entities from song name, artist name, and album name
-    document.getElementById("song-name").innerText = removeQuotes(song.name);
-    document.getElementById("song-artist").innerText = removeQuotes(song.artists.primary[0].name);
-    document.getElementById("album-name").innerText = removeQuotes(song.album.name);
-    
-    document.getElementById("album-poster").style.backgroundImage = `url(${song.image[2].url})`;
-    playIcon.innerText = "pause";
+        audio.src = qualityUrl;
+        document.getElementById("song-name").innerText = song.name;
+        document.getElementById("song-artist").innerText = song.artists.primary[0].name;
+        document.getElementById("album-name").innerText = song.album.name;
+        document.getElementById("album-poster").style.backgroundImage = `url(${song.image[2].url})`;
+        playIcon.innerText = "pause";
 
-    // Fetch lyrics
-    fetchLyrics(song.id);
-}
+        // Fetch lyrics
+        fetchLyrics(song.id);
+    }
 
     // Toggle play/pause
     function togglePlay() {
