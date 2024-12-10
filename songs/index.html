@@ -11,7 +11,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Parkinsans', sans-serif;
+            font-family: 'Parkinson', sans-serif;
             background-color: #121212;
             color: white;
             height: 100%;
@@ -128,21 +128,29 @@
             border-radius: 15px;
             margin-bottom: 15px;
             position: relative;
+            cursor: pointer;
         }
 
-        /* Lyrics Section */
+        /* Lyrics Section (Hidden by default) */
         #lyrics-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            text-align: center;
-            color: #bbb;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
             font-size: 14px;
             z-index: 10;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
+        }
+
+        #lyrics-text {
+            text-align: center;
         }
 
         .highlight {
@@ -296,7 +304,7 @@
 
     <div class="container" id="content" class="hide-loader">
 
-        <!-- Header: Page Logo & Search Bar -->
+        <!-- Header -->
         <div id="header">
             <div id="logo-container">
                 <img src="https://tvtelugu.github.io/images/tvtelugu.ico" alt="Logo" id="page-logo" />
@@ -313,9 +321,9 @@
         <div id="player-container">
 
             <!-- Album Poster -->
-            <div id="album-poster" style="background-image: url('');">
+            <div id="album-poster" onclick="toggleLyrics()">
                 <div id="lyrics-container">
-                    <p id="lyrics-text">Loading lyrics...</p>
+                    <div id="lyrics-text">Loading lyrics...</div>
                 </div>
             </div>
 
@@ -326,7 +334,7 @@
                 <span id="album-name">Album Name</span>
             </div>
 
-            <!-- Song List Dropdown -->
+            <!-- Song List -->
             <select id="song-list" onchange="playSong()">
                 <option value="">Select a song</option>
             </select>
@@ -342,11 +350,9 @@
                 <button id="next" onclick="nextSong()">
                     <i class="material-icons">skip_next</i>
                 </button>
-                <!-- Shuffle Button -->
                 <button id="shuffle-btn" onclick="shufflePlaylist()">
                     <i class="material-icons">shuffle</i>
                 </button>
-                <!-- Download Button -->
                 <button id="download-btn" onclick="downloadSong()">
                     <i class="material-icons">file_download</i>
                 </button>
@@ -369,11 +375,15 @@
 
     </div>
 
-    <!-- Audio Player (Hidden) -->
+    <!-- Audio Player -->
     <audio id="audio" controls></audio>
 
     <script>
-        const queries = [
+        function toggleLyrics() {
+            const lyricsContainer = document.getElementById("lyrics-container");
+            lyricsContainer.style.display = lyricsContainer.style.display === "flex" ? "none" : "flex";
+        }
+               const queries = [
             'Telugu', 'SBP', 'Devi Sri Prasad', 'Mani Sharma', 'love', 'Anoop Rubens',
             'S. P. Balasubrahmanyam', 'Ilaiyaraaja', 'K.J. Yesudas', 'M. M. Keeravani',
             'Annamayya Keerthana', 'G.V. Prakash Kumar', 'Anurag Kulkarni', 'Mahesh Babu',
