@@ -624,47 +624,38 @@
     }
 
     // Download song
-    function downloadSong() {
-        const song = songs[currentSongIndex];
-        const selectedQuality = qualitySelect.value;
-        const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
-        window.open(qualityUrl);
-    }
+   function downloadAudio(song) {
+  const audioUrl = song.downloadUrl[4].url; // Replace 4 with the appropriate index
 
-    // Download audio as .mp3
-    function downloadAudio(song) {
-        const audioUrl = song.downloadUrl[4].url; // Replace 4 with the appropriate index
+  fetch(audioUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const base64Data = reader.result.split(',')[1]; // Extract the Base64 data
 
-        fetch(audioUrl)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.blob();
-            })
-            .then((blob) => {
-                const reader = new FileReader();
-                reader.onload = function () {
-                    const base64Data = reader.result.split(',')[1]; // Extract the Base64 data
+        // Create an anchor element to trigger the download
+        const a = document.createElement('a');
+        a.href = `data:audio/mp3;base64,${base64Data}`;
+        a.download = `${song.name}.mp3`; // Set the desired filename
 
-                    // Create an anchor element to trigger the download
-                    const a = document.createElement('a');
-                    a.href = `data:audio/mp3;base64,${base64Data}`;
-                    a.download = `${song.name}.mp3`; // Set the desired filename
+        // Trigger a click event on the anchor to initiate the download
+        a.dispatchEvent(new MouseEvent('click'));
 
-                    // Trigger a click event on the anchor to initiate the download
-                    a.dispatchEvent(new MouseEvent('click'));
-
-                    // Cleanup
-                    URL.revokeObjectURL(a.href);
-                };
-                reader.readAsDataURL(blob);
-            })
-            .catch((error) => {
-                console.error('Error downloading audio:', error);
-            });
-    }
-
+        // Cleanup
+        URL.revokeObjectURL(a.href);
+      };
+      reader.readAsDataURL(blob);
+    })
+    .catch((error) => {
+      console.error('Error downloading audio:', error);
+    });
+}
     // Automatically play the next song when the current song ends
     audio.addEventListener('ended', function () {
         nextSong(); // Automatically play the next song when the current song ends
