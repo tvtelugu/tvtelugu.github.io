@@ -545,9 +545,10 @@
         const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
 
         audio.src = qualityUrl;
-        document.getElementById("song-name").innerText = song.name;
-        document.getElementById("song-artist").innerText = song.artists.primary[0].name;
-        document.getElementById("album-name").innerText = song.album.name;
+       // Remove quotes and HTML entities from song name, artist name, and album name
+        document.getElementById("song-name").innerText = removeQuotes(song.name);
+        document.getElementById("song-artist").innerText = removeQuotes(song.artists.primary[0].name);
+        document.getElementById("album-name").innerText = removeQuotes(song.album.name);
         document.getElementById("album-poster").style.backgroundImage = `url(${song.image[2].url})`;
         playIcon.innerText = "pause";
 
@@ -555,10 +556,19 @@
         fetchLyrics(song.id);
     }
        
-// Function to remove quotes and HTML entities
-function removeQuotes(str) {
-    return str.replace(/&quot;/g, '').replace(/"/g, ''); // Remove both &quot; and actual quotes
+// Function to decode HTML entities and remove quotes
+function decodeHtmlEntities(str) {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    return txt.value; // This decodes HTML entities
 }
+
+// Function to remove quotes after decoding HTML entities
+function removeQuotes(str) {
+    const decodedStr = decodeHtmlEntities(str); // Decode the HTML entities
+    return decodedStr.replace(/"/g, ''); // Remove the actual quotes
+}
+
 
     // Toggle play/pause
     function togglePlay() {
