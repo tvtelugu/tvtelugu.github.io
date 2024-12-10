@@ -378,11 +378,11 @@
 
             <!-- Quality Dropdown -->
             <select id="quality-select" onchange="changeQuality()">
-                <option value="12">Low Quality (12 kbps)</option>
-                <option value="48">Medium Quality (48 kbps)</option>
-                <option value="96" selected>High Quality (96 kbps)</option>
-                <option value="160">Very High Quality (160 kbps)</option>
-                <option value="320">Ultra High Quality (320 kbps)</option>
+                <option value="12">Low Quality</option>
+                <option value="48">Medium Quality</option>
+                <option value="96">High Quality</option>
+                <option value="160" selected>Very High Quality</option>
+                <option value="320">Ultra High Quality</option>
             </select>
 
         </div>
@@ -399,11 +399,11 @@
     }
 
     const queries = [
-        'Telugu', 'SBP', 'Devi Sri Prasad', 'Mani Sharma', 'love', 'Anoop Rubens',
+        'Telugu', 'SBP', 'Devi Sri Prasad', 'Mani Sharma','Anoop Rubens',
         'S. P. Balasubrahmanyam', 'Ilaiyaraaja', 'K.J. Yesudas', 'M. M. Keeravani',
         'Annamayya Keerthana', 'G.V. Prakash Kumar', 'Anurag Kulkarni', 'Mahesh Babu',
         'Thaman S', 'Ram Miriyala', 'Bheems Ceciroleo', 'Yuvan Shankar Raja',
-        'Ramajogayya Sastry', 'new remix'
+        'Ramajogayya Sastry','balagam', 'latest telugu', 'telugu folk', 'new telugu remix'
     ];
 
     let audio = document.getElementById("audio");
@@ -414,7 +414,7 @@
     let qualitySelect = document.getElementById("quality-select");
     let currentSongIndex = 0;
     let songs = []; // Store song data from API response
-    let currentQuality = "96"; // Default to 96 kbps
+    let currentQuality = "160"; // Default to 160 kbps
 
     // Auto-fetch random query and play the first song on page load
     window.onload = async function () {
