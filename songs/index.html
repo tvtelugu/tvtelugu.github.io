@@ -119,7 +119,7 @@
             overflow-y: auto;
         }
 
-        /* Album Image */
+/* Album Image */
 #album-poster {
     width: 250px;
     height: 250px;
@@ -145,9 +145,10 @@
     font-size: 14px;
     z-index: 10;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
     border-radius: 15px;
-    overflow-y: auto; /* Allow scrolling if lyrics are long */
+    backdrop-filter: blur(8px); /* Apply the blur effect to the background */
+    overflow-y: hidden; /* Hide the scroll bar */
     max-height: 80%; /* Prevent overflowing beyond album art */
 }
 
@@ -157,6 +158,11 @@
     font-size: 14px;
     color: white;
     line-height: 1.5; /* Adjust line height for better readability */
+}
+
+/* Hide the scroll bar */
+#lyrics-container::-webkit-scrollbar {
+    display: none;
 }
 
 /* Highlighted Lyrics */
