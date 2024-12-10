@@ -554,6 +554,11 @@
         // Fetch lyrics
         fetchLyrics(song.id);
     }
+       
+// Function to remove quotes and HTML entities
+function removeQuotes(str) {
+    return str.replace(/&quot;/g, '').replace(/"/g, ''); // Remove both &quot; and actual quotes
+}
 
     // Toggle play/pause
     function togglePlay() {
