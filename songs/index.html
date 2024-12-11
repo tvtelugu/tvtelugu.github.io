@@ -362,7 +362,7 @@
             </div>
 
 <!-- Controls -->
-        <div id="controls">
+                <div id="controls">
             <button id="shuffle-btn" onclick="shufflePlaylist()">
                 <i class="material-icons">shuffle</i>
             </button>
@@ -406,7 +406,7 @@
     <audio id="audio" controls></audio>
 
 
-       <script>
+     <script>
         function toggleLyrics() {
             const lyricsContainer = document.getElementById("lyrics-container");
             lyricsContainer.style.display = lyricsContainer.style.display === "flex" ? "none" : "flex";
@@ -458,7 +458,7 @@
             if (data.data) {
                 const lyrics = data.data.lyrics.split('\n');
                 let formattedLyrics = lyrics.map((line, index) => 
-                    `<p class="lyrics-line" id="line-${index}">${line}</p>`
+                    `<p class="lyrics-line" id="line-${index}" data-time="${data.data.times[index]}">${line}</p>`
                 ).join('');
                 lyricsText.innerHTML = formattedLyrics;
                 lyricsContainer.style.display = 'block';
@@ -484,7 +484,14 @@
             const lyricsContainer = document.getElementById("lyrics-container");
             const offsetTop = line.offsetTop;
             const lineHeight = line.offsetHeight;
-            lyricsContainer.scrollTop = offsetTop - (lyricsContainer.offsetHeight / 2) + (lineHeight / 2);
+            const containerHeight = lyricsContainer.offsetHeight;
+
+            // Smart scrolling logic
+            if (offsetTop < lyricsContainer.scrollTop) {
+                lyricsContainer.scrollTop = offsetTop;
+            } else if (offsetTop + lineHeight > lyricsContainer.scrollTop + containerHeight) {
+                lyricsContainer.scrollTop = offsetTop + lineHeight - containerHeight;
+            }
         }
 
         audio.ontimeupdate = function () {
