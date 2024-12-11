@@ -654,7 +654,7 @@ function downloadAudio() {
 
             const a = document.createElement('a');
             a.href = blobUrl;
-            a.download = fileName;
+           a.download = `${song.name}.mp3`;
 
             document.body.appendChild(a);
             a.click();
