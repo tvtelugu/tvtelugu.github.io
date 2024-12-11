@@ -269,7 +269,9 @@
             color: white;
             cursor: pointer;
         }
-
+               #quality-dropdown {
+            display: none;
+        }
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
             #search-container {
@@ -360,51 +362,52 @@
             </div>
 
 <!-- Controls -->
-  <!-- Controls -->
-<div id="controls">
-    <button id="shuffle-btn" onclick="shufflePlaylist()">
-        <i class="material-icons">shuffle</i>
-    </button>
-    <button id="prev" onclick="prevSong()">
-        <i class="material-icons">skip_previous</i>
-    </button>
-    <button id="play" onclick="togglePlay()">
-        <i class="material-icons" id="play-icon">play_arrow</i>
-    </button>
-    <button id="next" onclick="nextSong()">
-        <i class="material-icons">skip_next</i>
-    </button>
-    <button id="downloadButton" onclick="downloadAudio()">
-        <i class="material-icons">download</i>
-    </button>
-    
-    <!-- Settings (Quality Dropdown) -->
-    <button id="settings-btn">
-        <i class="material-icons">settings</i>
-    </button>
-</div>
+    <div id="content" class="hide-loader">
+        <div id="controls">
+            <button id="shuffle-btn" onclick="shufflePlaylist()">
+                <i class="material-icons">shuffle</i>
+            </button>
+            <button id="prev" onclick="prevSong()">
+                <i class="material-icons">skip_previous</i>
+            </button>
+            <button id="play" onclick="togglePlay()">
+                <i class="material-icons" id="play-icon">play_arrow</i>
+            </button>
+            <button id="next" onclick="nextSong()">
+                <i class="material-icons">skip_next</i>
+            </button>
+            <button id="downloadButton" onclick="downloadAudio()">
+                <i class="material-icons">download</i>
+            </button>
+            <!-- Settings Icon to toggle the quality dropdown -->
+            <button id="settings-btn" onclick="toggleQualityDropdown()">
+                <i class="material-icons">settings</i>
+            </button>
+        </div>
 
-<!-- Progress Bar -->
-<input type="range" id="progress-bar" value="0" max="100" onchange="seekSong()" />
-<span id="time-display">0:00</span>
+        <!-- Progress Bar -->
+        <input type="range" id="progress-bar" value="0" max="100" onchange="seekSong()" />
+        <span id="time-display">0:00</span>
 
-<!-- Quality Dropdown -->
-<div id="quality-dropdown" style="display: none;">
-    <select id="quality-select" onchange="changeQuality()">
-        <option value="12">Low Quality</option>
-        <option value="48">Medium Quality</option>
-        <option value="96">High Quality</option>
-        <option value="160" selected>Very High Quality</option>
-        <option value="320">Ultra High Quality</option>
-    </select>
-</div>
+        <!-- Quality Dropdown (Initially hidden) -->
+        <div id="quality-dropdown">
+            <select id="quality-select" onchange="changeQuality()">
+                <option value="12">Low Quality</option>
+                <option value="48">Medium Quality</option>
+                <option value="96">High Quality</option>
+                <option value="160" selected>Very High Quality</option>
+                <option value="320">Ultra High Quality</option>
+            </select>
+        </div>
             <!-- Song List -->
             <select id="song-list" onchange="playSong()">
                 <option value="">Select a song</option>
             </select>
     <!-- Audio Player -->
     <audio id="audio" controls></audio>
-    <script>
+
+
+       <script>
         function toggleLyrics() {
             const lyricsContainer = document.getElementById("lyrics-container");
             lyricsContainer.style.display = lyricsContainer.style.display === "flex" ? "none" : "flex";
@@ -596,6 +599,11 @@
             updateSongList();
         }
 
+        function toggleQualityDropdown() {
+            const qualityDropdown = document.getElementById("quality-dropdown");
+            qualityDropdown.style.display = qualityDropdown.style.display === "block" ? "none" : "block";
+        }
+
         function downloadAudio() {
             const song = songs[currentSongIndex];
             const audioUrl = song.downloadUrl.find(url => url.quality === `${currentQuality}kbps`).url;
@@ -609,7 +617,7 @@
                 })
                 .then(blob => {
                     const blobUrl = URL.createObjectURL(blob);
-                    const sanitizedSongName = song.name.replace(/[\\/:*?"<>|]/g, '');
+                    const sanitizedSongName = song.name.replace(/[\\/:*?"<>|]/g, '').replace(/\.mp3$/, '');
                     const a = document.createElement('a');
                     a.href = blobUrl;
                     a.download = `${sanitizedSongName}.mp3`;
