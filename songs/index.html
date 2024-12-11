@@ -633,35 +633,40 @@
         updateSongList();
     }
 
-    // Download song
-    function downloadAudio() {
-        const song = songs[currentSongIndex];
-        const audioUrl = song.downloadUrl[4].url; // Adjust index if needed
+// Download song
+function downloadAudio() {
+    const song = songs[currentSongIndex];
+    const audioUrl = song.downloadUrl[4].url; // Adjust index if needed
 
-        fetch(audioUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const blobUrl = URL.createObjectURL(blob);
+    fetch(audioUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const blobUrl = URL.createObjectURL(blob);
 
-                const a = document.createElement('a');
-                a.href = blobUrl;
-                a.download = `${song.name}.mp3`;
+            // Extract the file extension from the URL
+            const urlExtension = audioUrl.split('.').pop().split('?')[0]; // Extracts the extension before any query params
+            const fileName = `${song.name}.${urlExtension}`; // Use extracted extension
 
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = fileName;
 
-                URL.revokeObjectURL(blobUrl);
-            })
-            .catch(error => {
-                console.error('Error downloading audio:', error);
-            });
-    }
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(blobUrl);
+        })
+        .catch(error => {
+            console.error('Error downloading audio:', error);
+        });
+}
+
 
     // Automatically play the next song when the current song ends
     audio.addEventListener('ended', function () {
