@@ -648,11 +648,11 @@ function downloadAudio() {
         .then(blob => {
             const blobUrl = URL.createObjectURL(blob);
 
-            // Remove existing file extension from song name
-            const cleanName = song.name.replace(/\.[^/.]+$/, '');
+            // Sanitize the song name to remove existing extensions
+            const sanitizedSongName = song.name.replace(/\.[^/.]+$/, '');
             const a = document.createElement('a');
             a.href = blobUrl;
-            a.download = `${cleanName}.mp3`;
+            a.download = `${sanitizedSongName}.mp3`; // Always use .mp3 extension
 
             document.body.appendChild(a);
             a.click();
@@ -664,6 +664,7 @@ function downloadAudio() {
             console.error('Error downloading audio:', error);
         });
 }
+
 
     // Automatically play the next song when the current song ends
     audio.addEventListener('ended', function () {
