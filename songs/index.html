@@ -403,8 +403,7 @@
 
     <!-- Audio Player -->
     <audio id="audio" controls></audio>
-
-  <script>
+<script>
     function toggleLyrics() {
         const lyricsContainer = document.getElementById("lyrics-container");
         lyricsContainer.style.display = lyricsContainer.style.display === "flex" ? "none" : "flex";
@@ -428,7 +427,6 @@
     let songs = []; // Store song data from API response
     let currentQuality = "160"; // Default to 160 kbps
 
-    // Auto-fetch random query and play the first song on page load
     window.onload = async function () {
         const randomQuery = queries[Math.floor(Math.random() * queries.length)];
         await searchSongs(randomQuery);
@@ -436,7 +434,6 @@
         document.getElementById("content").classList.remove('hide-loader');
     };
 
-    // Fetch songs based on search query
     async function searchSongs(query) {
         if (!query) return;
 
@@ -447,7 +444,6 @@
         updateSongList();
     }
 
-    // Fetch lyrics for the song and handle smart scrolling
     async function fetchLyrics(songId) {
         const url = `https://saavn.dev/api/songs/${songId}/lyrics`;
         const response = await fetch(url);
@@ -463,8 +459,6 @@
             ).join('');
             lyricsText.innerHTML = formattedLyrics;
             lyricsContainer.style.display = 'block';
-
-            // Initialize the first line as highlighted
             highlightCurrentLine(0);
         } else {
             lyricsText.innerText = 'Lyrics not available.';
@@ -472,14 +466,10 @@
         }
     }
 
-    // Highlight the current line based on the song's current time
     function highlightCurrentLine(lineIndex) {
         const lines = document.querySelectorAll('.lyrics-line');
-
-        // Remove highlight from all lines
         lines.forEach(line => line.classList.remove('highlight'));
 
-        // Add highlight to the current line
         const currentLine = lines[lineIndex];
         if (currentLine) {
             currentLine.classList.add('highlight');
@@ -487,17 +477,13 @@
         }
     }
 
-    // Scroll to the current line
     function scrollToLine(line) {
         const lyricsContainer = document.getElementById("lyrics-container");
         const offsetTop = line.offsetTop;
         const lineHeight = line.offsetHeight;
-
-        // Adjust scroll position to center the current line in the container
         lyricsContainer.scrollTop = offsetTop - (lyricsContainer.offsetHeight / 2) + (lineHeight / 2);
     }
 
-    // Update the highlighted line and scroll as the song progresses
     audio.ontimeupdate = function () {
         let progress = (audio.currentTime / audio.duration) * 100;
         progressBar.value = progress;
@@ -505,15 +491,13 @@
         let seconds = Math.floor(audio.currentTime % 60);
         timeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-        // Determine which line to highlight based on the current time of the song
         const currentTimeInSeconds = Math.floor(audio.currentTime);
         const lyricsLines = document.querySelectorAll('.lyrics-line');
         let lineIndex = 0;
 
-        // Find the line corresponding to the current time
         for (let i = 0; i < lyricsLines.length; i++) {
             const line = lyricsLines[i];
-            const lineTime = parseInt(line.getAttribute('data-time'), 10); // Assuming each line has a data-time attribute
+            const lineTime = parseInt(line.getAttribute('data-time'), 10);
             if (lineTime <= currentTimeInSeconds) {
                 lineIndex = i;
             }
@@ -522,7 +506,6 @@
         highlightCurrentLine(lineIndex);
     };
 
-    // Update song list dropdown
     function updateSongList() {
         songList.innerHTML = "<option value=''>Select a song</option>";
         songs.forEach((song, index) => {
@@ -539,7 +522,6 @@
         }
     }
 
-    // Play selected song
     function playSong() {
         if (songList.value !== "") {
             currentSongIndex = songList.value;
@@ -548,38 +530,32 @@
         }
     }
 
-    // Load song info
     function loadSong() {
         const song = songs[currentSongIndex];
         const selectedQuality = qualitySelect.value;
         const qualityUrl = song.downloadUrl.find(url => url.quality === `${selectedQuality}kbps`).url;
 
         audio.src = qualityUrl;
-       // Remove quotes and HTML entities from song name, artist name, and album name
         document.getElementById("song-name").innerText = removeQuotes(song.name);
         document.getElementById("song-artist").innerText = removeQuotes(song.artists.primary[0].name);
         document.getElementById("album-name").innerText = removeQuotes(song.album.name);
         document.getElementById("album-poster").style.backgroundImage = `url(${song.image[2].url})`;
         playIcon.innerText = "pause";
 
-        // Fetch lyrics
         fetchLyrics(song.id);
     }
-       
-    // Function to decode HTML entities and remove quotes
+
     function decodeHtmlEntities(str) {
         const txt = document.createElement("textarea");
         txt.innerHTML = str;
-        return txt.value; // This decodes HTML entities
+        return txt.value;
     }
 
-    // Function to remove quotes after decoding HTML entities
     function removeQuotes(str) {
-        const decodedStr = decodeHtmlEntities(str); // Decode the HTML entities
-        return decodedStr.replace(/"/g, ''); // Remove the actual quotes
+        const decodedStr = decodeHtmlEntities(str);
+        return decodedStr.replace(/"/g, '');
     }
 
-    // Toggle play/pause
     function togglePlay() {
         if (audio.paused) {
             audio.play();
@@ -590,22 +566,11 @@
         }
     }
 
-    // Seek song based on progress bar
     function seekSong() {
         const seekTo = audio.duration * (progressBar.value / 100);
         audio.currentTime = seekTo;
     }
 
-    // Update progress bar as song plays
-    audio.ontimeupdate = function () {
-        let progress = (audio.currentTime / audio.duration) * 100;
-        progressBar.value = progress;
-        let minutes = Math.floor(audio.currentTime / 60);
-        let seconds = Math.floor(audio.currentTime % 60);
-        timeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
-
-    // Switch audio quality
     function changeQuality() {
         if (audio.src) {
             loadSong();
@@ -613,64 +578,53 @@
         }
     }
 
-    // Previous song
     function prevSong() {
         currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
         loadSong();
         audio.play();
     }
 
-    // Next song
     function nextSong() {
         currentSongIndex = (currentSongIndex + 1) % songs.length;
         loadSong();
         audio.play();
     }
 
-    // Shuffle playlist
     function shufflePlaylist() {
         songs.sort(() => Math.random() - 0.5);
         updateSongList();
     }
 
-// Download song
-function downloadAudio() {
-    const song = songs[currentSongIndex];
-    const audioUrl = song.downloadUrl[4].url; // Adjust index if needed
+    function downloadAudio() {
+        const song = songs[currentSongIndex];
+        const audioUrl = song.downloadUrl.find(url => url.quality === `${currentQuality}kbps`).url;
 
-    fetch(audioUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const blobUrl = URL.createObjectURL(blob);
+        fetch(audioUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                const sanitizedSongName = song.name.replace(/[\\/:*?"<>|]/g, '');
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = `${sanitizedSongName}.mp3`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            })
+            .catch(error => {
+                console.error('Error downloading audio:', error);
+            });
+    }
 
-            // Sanitize the song name to remove existing extensions
-            const sanitizedSongName = song.name.replace(/\.[^/.]+$/, '');
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = `${sanitizedSongName}.mp3`; // Always use .mp3 extension
-
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            URL.revokeObjectURL(blobUrl);
-        })
-        .catch(error => {
-            console.error('Error downloading audio:', error);
-        });
-}
-
-
-    // Automatically play the next song when the current song ends
     audio.addEventListener('ended', function () {
         nextSong();
     });
 </script>
-
 </body>
 </html>
