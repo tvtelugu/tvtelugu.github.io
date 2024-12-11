@@ -650,7 +650,7 @@ function downloadAudio() {
 
             // Extract the file extension from the URL
             const urlExtension = audioUrl.split('.').pop().split('?')[0]; // Extracts the extension before any query params
-            const fileName = `${song.name}.${urlExtension}`; // Use extracted extension
+            const fileName = `${song.name}`; // Use extracted extension
 
             const a = document.createElement('a');
             a.href = blobUrl;
