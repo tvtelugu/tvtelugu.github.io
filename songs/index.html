@@ -359,51 +359,48 @@
                   <span id="album-name">Album Name</span>
             </div>
 
+<!-- Controls -->
+    <div id="content" class="hide-loader">
+        <div id="controls">
+            <button id="shuffle-btn" onclick="shufflePlaylist()">
+                <i class="material-icons">shuffle</i>
+            </button>
+            <button id="prev" onclick="prevSong()">
+                <i class="material-icons">skip_previous</i>
+            </button>
+            <button id="play" onclick="togglePlay()">
+                <i class="material-icons" id="play-icon">play_arrow</i>
+            </button>
+            <button id="next" onclick="nextSong()">
+                <i class="material-icons">skip_next</i>
+            </button>
+            <button id="downloadButton" onclick="downloadAudio()">
+                <i class="material-icons">download</i>
+            </button>
+            <button id="settings-btn">
+                <i class="material-icons">settings</i>
+            </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <input type="range" id="progress-bar" value="0" max="100" onchange="seekSong()" />
+        <span id="time-display">0:00</span>
+
+        <!-- Quality Dropdown -->
+        <div id="quality-dropdown" style="display: none;">
+            <select id="quality-select" onchange="changeQuality()">
+                <option value="12">Low Quality</option>
+                <option value="48">Medium Quality</option>
+                <option value="96">High Quality</option>
+                <option value="160" selected>Very High Quality</option>
+                <option value="320">Ultra High Quality</option>
+            </select>
+        </div>
+
             <!-- Song List -->
             <select id="song-list" onchange="playSong()">
                 <option value="">Select a song</option>
             </select>
-
-<!-- Controls -->
-<div id="controls">
-    <button id="shuffle-btn" onclick="shufflePlaylist()">
-        <i class="material-icons">shuffle</i>
-    </button>
-    <button id="prev" onclick="prevSong()">
-        <i class="material-icons">skip_previous</i>
-    </button>
-    <button id="play" onclick="togglePlay()">
-        <i class="material-icons" id="play-icon">play_arrow</i>
-    </button>
-    <button id="next" onclick="nextSong()">
-        <i class="material-icons">skip_next</i>
-    </button>
-    <button id="downloadButton" onclick="downloadAudio()">
-        <i class="material-icons">download</i>
-    </button>
-    
-    <!-- Settings (Quality Dropdown) -->
-    <button id="settings-btn">
-        <i class="material-icons">settings</i>
-    </button>
-</div>
-
-<!-- Progress Bar -->
-<input type="range" id="progress-bar" value="0" max="100" onchange="seekSong()" />
-<span id="time-display">0:00</span>
-
-<!-- Quality Dropdown -->
-<div id="quality-dropdown" style="display: none;">
-    <select id="quality-select" onchange="changeQuality()">
-        <option value="12">Low Quality</option>
-        <option value="48">Medium Quality</option>
-        <option value="96">High Quality</option>
-        <option value="160" selected>Very High Quality</option>
-        <option value="320">Ultra High Quality</option>
-    </select>
-</div>
-
-
     <!-- Audio Player -->
     <audio id="audio" controls></audio>
     <script>
