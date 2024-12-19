@@ -41,7 +41,7 @@
       color: white;
       text-align: center;
       padding: 10px;
-      position: absolute;
+      position: relative;
       bottom: 0;
       width: 100%;
     }
@@ -49,10 +49,10 @@
 </head>
 <body>
   <header>
-    <h1>AynaOTT Playlist Generator</h1>
+    <h1>AynaOTT Dynamic Playlist</h1>
   </header>
   <div class="container">
-    <p>Click the button below to generate and download the latest playlist.</p>
+    <p>Click the button below to generate and download the latest .m3u playlist.</p>
     <a id="m3uDownload" class="btn-download" href="#" download="playlist.m3u">Download .m3u Playlist</a>
   </div>
   <footer>
@@ -65,25 +65,28 @@
     async function generatePlaylist() {
       try {
         const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data from API");
+        }
         const data = await response.json();
 
-        // Generate M3U content
+        // Generate the M3U content
         let m3uContent = "#EXTM3U\n";
         data.channels.forEach(channel => {
           m3uContent += `#EXTINF:-1 tvg-logo="${channel.logo}" group-title="${channel.categoryName}",${channel.name}\n${channel.link}\n`;
         });
 
-        // Create a downloadable .m3u file
+        // Create a Blob and provide a downloadable link
         const blob = new Blob([m3uContent], { type: "audio/x-mpegurl" });
         const url = URL.createObjectURL(blob);
         const downloadLink = document.getElementById("m3uDownload");
         downloadLink.href = url;
       } catch (error) {
-        console.error("Error fetching playlist data:", error);
+        console.error("Error generating playlist:", error);
       }
     }
 
-    // Generate playlist when the page loads
+    // Generate the playlist when the page loads
     generatePlaylist();
   </script>
 </body>
