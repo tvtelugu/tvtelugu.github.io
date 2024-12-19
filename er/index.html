@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AynaOTT Playlist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0;
+    }
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+    .btn-download {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .btn-download:hover {
+      background-color: #0056b3;
+    }
+    footer {
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AynaOTT Playlist Generator</h1>
+  </header>
+  <div class="container">
+    <p>Click the button below to generate and download the latest playlist.</p>
+    <a id="m3uDownload" class="btn-download" href="#" download="playlist.m3u">Download .m3u Playlist</a>
+  </div>
+  <footer>
+    <p>Powered by Buddy✘TV</p>
+  </footer>
+
+  <script>
+    const API_URL = "https://aynaotfetcher.buddyxiptv.com/api/aynaott.json";
+
+    async function generatePlaylist() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        // Generate M3U content
+        let m3uContent = "#EXTM3U\n";
+        data.channels.forEach(channel => {
+          m3uContent += `#EXTINF:-1 tvg-logo="${channel.logo}" group-title="${channel.categoryName}",${channel.name}\n${channel.link}\n`;
+        });
+
+        // Create a downloadable .m3u file
+        const blob = new Blob([m3uContent], { type: "audio/x-mpegurl" });
+        const url = URL.createObjectURL(blob);
+        const downloadLink = document.getElementById("m3uDownload");
+        downloadLink.href = url;
+      } catch (error) {
+        console.error("Error fetching playlist data:", error);
+      }
+    }
+
+    // Generate playlist when the page loads
+    generatePlaylist();
+  </script>
+</body>
+</html>
