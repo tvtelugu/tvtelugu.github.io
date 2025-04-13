@@ -34,7 +34,7 @@
 }
 .follow img {
     width: 130px;
-    height: 80px;
+    height: 130px;
 
 
 }
@@ -51,8 +51,8 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #4169e1;
-        color: #ffffff;
+        background-color: #000000;
+        color: #f0ac02;
       }
     
         .slider-container {
