@@ -1,0 +1,84 @@
+
+/* Followed */
+
+.follow1{
+  position:fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+.follow1 img {
+    width: 100%;
+    height: 80px;
+
+
+}
+
+.follow2{
+  position:fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.follow2 img {
+    width: 100%;
+    height: 80px;
+
+
+}
+
+.follow{
+  position:fixed;
+  right:80px;
+  top:40px;
+}
+.follow img {
+    width: 130px;
+    height: 80px;
+
+
+}
+        #marquee {
+            font-size: 25px;
+            font-weight: bold;
+            
+      
+        position: fixed;
+        overflow: hidden;
+        margin: 0;
+        
+        
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #4169e1;
+        color: #ffffff;
+      }
+    
+        .slider-container {
+            position: fixed;
+bottom :50px;
+        left: 0;
+        right: 0;
+
+            width: 100%;
+            height: 70px;
+            margin: 0px auto;
+        }
+        .slider-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        .slider-image.active {
+            display: block;
+        }
+        
+        
+    
+
+
+
