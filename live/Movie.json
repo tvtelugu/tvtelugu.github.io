@@ -1,0 +1,24 @@
+{
+  "info": {
+    "name": "songs1",
+    "shuffle": false,
+    "player": "youtube"
+  },
+  "playlist": [
+    {
+      "name": "Dulquer Salmaan & Diana Penty Telugu Super Hit Full Movie || Telugu Movies || Kotha Cinema",
+      "duration": 8100,
+      "src": "kH6hASpehQ0"
+    },
+    {
+      "name": "Arunachalam Telugu Full Length Movie || Rajinikanth, Soundarya || Shalimarcinema",
+      "duration": 9778,
+      "src": "PCkob0FCzW8"
+    },
+    {
+      "name": "Subramanyam For Sale | Telugu Full Movie 2015 | English Subtitles | Harish Shankar, Sai Dharam Tej",
+      "duration": 9107,
+      "src": "1p7NmlTW5qo"
+    }
+  ]
+}
