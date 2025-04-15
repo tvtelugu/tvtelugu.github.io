@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="te">
 <head>
     <meta charset="utf-8" />
     <title>TVTELUGU</title>
@@ -17,42 +18,81 @@
     <link rel="stylesheet" href="./style.css">
 
     <meta property="og:title" content="MY TV">
+
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 80px; /* To prevent overlap with bottom marquees */
+            font-family: 'Anek Telugu', sans-serif;
+        }
+
+        .bottom-marquee-container {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #000;
+            color: #fff;
+            z-index: 9999;
+            font-size: 14px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        }
+
+        .marquee-box {
+            padding: 5px 10px;
+            border-top: 1px solid #444;
+        }
+
+        .follow1, .follow2, .follow {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .slider-container {
+            max-width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-image {
+            width: 100%;
+            display: none;
+        }
+
+        .slider-image.active {
+            display: block;
+        }
+
+        .navigation-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: #717171;
+        }
+    </style>
 </head>
 <body>
 
 <div class="follow1">
-  <img src="mask.png" alt="MY TV"/>
+    <img src="mask.png" alt="MY TV"/>
 </div>
 <div class="follow2">
-  <img src="mask1.png" alt="MY TV"/>
+    <img src="mask1.png" alt="MY TV"/>
 </div>
 <div class="follow">
-  <img src="splash.png" alt="MY TV"/>
+    <img src="splash.png" alt="MY TV"/>
 </div>
-
-<!-- 🔴 Breaking News Section -->
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <strong>🔴 Breaking News:</strong>
-            <marquee scrollamount="7" id="news-marquee">
-                తాజా వార్తలు లోడ్ అవుతున్నాయి...
-            </marquee>
-        </div>
-    </div>
-</div>
-
-<!-- Existing marquee section -->
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <marquee scrollamount="10" id="marquee">
-            </marquee>
-        </div>
-    </div>
-</div>
-
-<script src="./script.js"></script>
 
 <div class="slider-container">
     <img class="slider-image active" src="1.jpg" alt="Image 1">
@@ -76,6 +116,20 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         </div>
+    </div>
+</div>
+
+<!-- 🔴 Fixed Bottom Marquee Section -->
+<div class="bottom-marquee-container">
+    <div class="marquee-box">
+        <strong>🔴 Breaking News:</strong>
+        <marquee scrollamount="7" id="news-marquee">
+            తాజా వార్తలు లోడ్ అవుతున్నాయి...
+        </marquee>
+    </div>
+    <div class="marquee-box">
+        <marquee scrollamount="10" id="marquee">
+        </marquee>
     </div>
 </div>
 
@@ -115,7 +169,10 @@
     let dots = document.querySelectorAll('.dot');
 
     let modal = document.getElementById('imageModal');
-    let modalImg = modal.querySelector('img');
+    let modalImg = document.createElement('img');
+    modalImg.style.width = "100%";
+    modal.querySelector('.modal-content').appendChild(modalImg);
+    
     let currentIndex = 0;
 
     images[currentIndex].classList.add('active');
@@ -142,7 +199,7 @@
     images.forEach((image) => {
         image.addEventListener('click', () => {
             modalImg.src = image.src;
-            modal.modal('show');
+            $(modal).modal('show');
         });
     });
 </script>
