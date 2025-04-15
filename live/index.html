@@ -42,9 +42,90 @@ scrollamount="10" id="marquee">
             </div>
         </div>
     </div>
-
+<div class="bottom-marquee-container">
+    <div class="marquee-box">
+        <strong>🔴 Breaking News:</strong>
+        <marquee scrollamount="7" id="news-marquee">
+            తాజా వార్తలు లోడ్ అవుతున్నాయి...
+        </marquee>
+    </div>
+    <div class="marquee-box">
+        <marquee scrollamount="10" id="marquee">
+        </marquee>
+    </div>
+</div>
   <script  src="./script.js"></script>
-  
+  <script>
+    // 🔽 Auto-fetch Telugu news
+    async function fetchTeluguNews() {
+        const proxy = "https://api.allorigins.win/get?url=";
+        const rssUrl = encodeURIComponent("https://news.google.com/rss?hl=te&gl=IN&ceid=IN:te");
+
+        try {
+            const response = await fetch(`${proxy}${rssUrl}`);
+            const data = await response.json();
+
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+            const items = xmlDoc.querySelectorAll("item");
+
+            let headlines = "";
+            items.forEach((item, index) => {
+                if (index < 10) {
+                    const title = item.querySelector("title").textContent;
+                    headlines += `📰 ${title} &nbsp;&nbsp;&nbsp;`;
+                }
+            });
+
+            document.getElementById("news-marquee").innerHTML = headlines;
+        } catch (error) {
+            console.error("Error fetching news:", error);
+            document.getElementById("news-marquee").textContent = "వార్తలను పొందడంలో లోపం జరిగింది.";
+        }
+    }
+
+    fetchTeluguNews();
+
+    // 🔽 Slider functionality
+    let images = document.querySelectorAll('.slider-image');
+    let dots = document.querySelectorAll('.dot');
+
+    let modal = document.getElementById('imageModal');
+    let modalImg = document.createElement('img');
+    modalImg.style.width = "100%";
+    modal.querySelector('.modal-content').appendChild(modalImg);
+    
+    let currentIndex = 0;
+
+    images[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+
+    setInterval(() => {
+        images[currentIndex].classList.remove('active');
+        dots[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.add('active');
+        dots[currentIndex].classList.add('active');
+    }, 20000);
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            images[currentIndex].classList.remove('active');
+            dots[currentIndex].classList.remove('active');
+            currentIndex = index;
+            images[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+        });
+    });
+
+    images.forEach((image) => {
+        image.addEventListener('click', () => {
+            modalImg.src = image.src;
+            $(modal).modal('show');
+        });
+    });
+</script>
+
     <div class="slider-container">
         <img class="slider-image active" src="1.jpg" alt="Image 1">
         <img class="slider-image" src="2.jpg" alt="Image 2">
