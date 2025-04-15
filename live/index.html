@@ -1,61 +1,118 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>TVTELUGU</title>
-        <link rel="SHORTCUT ICON" href="splash.png">
-       
-        <script src="jquery-1.11.2.min.js"></script>
-        <script src="jquery-ui.min.js"></script>
-        <script src="moment.min.js"></script>
-        <script src="site.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <title>TVTELUGU</title>
+    <link rel="SHORTCUT ICON" href="splash.png">
 
-        <link rel="stylesheet" href="base.css">
-        <link href="https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@100..800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="jquery-ui.min.css">
-        <link rel="stylesheet" href="jquery-ui.structure.min.css">
-        <link rel="stylesheet" href="jquery-ui.theme.min.css">
+    <script src="jquery-1.11.2.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script src="moment.min.js"></script>
+    <script src="site.js"></script>
 
-        <link rel="stylesheet" href="./style.css">
-        <meta property="og:title" content="MY TV">
-    </head>
-       <body>
-        
+    <link rel="stylesheet" href="base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@100..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="jquery-ui.min.css">
+    <link rel="stylesheet" href="jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <meta property="og:title" content="MY TV">
+
+    <style>
+        .marquee-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 25s linear infinite;
+        }
+
+        @keyframes marquee {
+            0%   { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .slider-image {
+            display: none;
+        }
+
+        .slider-image.active {
+            display: block;
+        }
+
+        .dot.active {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
 <div class="follow1">
-  <img src="mask.png" alt="MY TV"/>
+    <img src="mask.png" alt="MY TV"/>
 </div>
 <div class="follow2">
-  <img src="mask1.png" alt="MY TV"/>
+    <img src="mask1.png" alt="MY TV"/>
 </div>
-        
 <div class="follow">
-  <img src="splash.png" alt="MY TV"/>
+    <img src="splash.png" alt="MY TV"/>
 </div>
 
-
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <marquee
-scrollamount="10" id="marquee">
-
-                </marquee>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Optional top marquee (can use same method) -->
+            <div class="marquee-wrapper">
+                <div class="marquee-text" id="top-marquee">
+                    <!-- Custom text if needed -->
+                </div>
             </div>
         </div>
     </div>
+</div>
+
 <div class="bottom-marquee-container">
     <div class="marquee-box">
         <strong>🔴 Breaking News:</strong>
-        <marquee scrollamount="7" id="news-marquee">
-            తాజా వార్తలు లోడ్ అవుతున్నాయి...
-        </marquee>
-    </div>
-    <div class="marquee-box">
-        <marquee scrollamount="10" id="marquee">
-        </marquee>
+        <div class="marquee-wrapper">
+            <div class="marquee-text" id="news-marquee-text">
+                తాజా వార్తలు లోడ్ అవుతున్నాయి...
+            </div>
+        </div>
     </div>
 </div>
-  <script  src="./script.js"></script>
-  <script>
+
+<div class="slider-container">
+    <img class="slider-image active" src="1.jpg" alt="Image 1">
+    <img class="slider-image" src="2.jpg" alt="Image 2">
+    <img class="slider-image" src="3.jpg" alt="Image 3">
+    <img class="slider-image" src="4.jpg" alt="Image 4">
+    <img class="slider-image" src="5.jpg" alt="Image 5">
+    <img class="slider-image" src="6.jpg" alt="Image 6">
+
+    <div class="navigation-dots">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
+        <div class="dot" data-index="4"></div>
+        <div class="dot" data-index="5"></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<script src="./script.js"></script>
+<script>
     // 🔽 Auto-fetch Telugu news
     async function fetchTeluguNews() {
         const proxy = "https://api.allorigins.win/get?url=";
@@ -77,28 +134,24 @@ scrollamount="10" id="marquee">
                 }
             });
 
-            document.getElementById("news-marquee").innerHTML = headlines;
+            document.getElementById("news-marquee-text").innerHTML = headlines;
         } catch (error) {
             console.error("Error fetching news:", error);
-            document.getElementById("news-marquee").textContent = "వార్తలను పొందడంలో లోపం జరిగింది.";
+            document.getElementById("news-marquee-text").textContent = "వార్తలను పొందడంలో లోపం జరిగింది.";
         }
     }
 
     fetchTeluguNews();
 
-    // 🔽 Slider functionality
+    // 🔽 Slider Functionality
     let images = document.querySelectorAll('.slider-image');
     let dots = document.querySelectorAll('.dot');
-
     let modal = document.getElementById('imageModal');
     let modalImg = document.createElement('img');
     modalImg.style.width = "100%";
     modal.querySelector('.modal-content').appendChild(modalImg);
-    
-    let currentIndex = 0;
 
-    images[currentIndex].classList.add('active');
-    dots[currentIndex].classList.add('active');
+    let currentIndex = 0;
 
     setInterval(() => {
         images[currentIndex].classList.remove('active');
@@ -126,74 +179,5 @@ scrollamount="10" id="marquee">
     });
 </script>
 
-    <div class="slider-container">
-        <img class="slider-image active" src="1.jpg" alt="Image 1">
-        <img class="slider-image" src="2.jpg" alt="Image 2">
-        <img class="slider-image" src="3.jpg" alt="Image 3">
-        <img class="slider-image" src="4.jpg" alt="Image 4">
-        <img class="slider-image" src="5.jpg" alt="Image 5">
-        <img class="slider-image" src="6.jpg" alt="Image 6">
-        <div class="navigation-dots">
-            <div class="dot active" data-index="0"></div>
-            <div class="dot" data-index="1"></div>
-            <div class="dot" data-index="2"></div>
-            <div class="dot" data-index="3"></div>
-            <div class="dot" data-index="4"></div>
-            <div class="dot" data-index="5"></div>
-        </div>
-
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        let images = document.querySelectorAll('.slider-image');
-        let dots = document.querySelectorAll('.dot');
-
-        let modal = document.getElementById('imageModal');
-        let modalImg = modal.querySelector('img');
-        let currentIndex = 0;
-
-        images[currentIndex].classList.add('active');
-        dots[currentIndex].classList.add('active');
-
-        setInterval(() => {
-            images[currentIndex].classList.remove('active');
-            dots[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % images.length;
-            images[currentIndex].classList.add('active');
-            dots[currentIndex].classList.add('active');
-        }, 20000);
-
-
-
-
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                images[currentIndex].classList.remove('active');
-                dots[currentIndex].classList.remove('active');
-                currentIndex = index;
-                images[currentIndex].classList.add('active');
-                dots[currentIndex].classList.add('active');
-            });
-        });
-
-        images.forEach((image) => {
-            image.addEventListener('click', () => {
-                modalImg.src = image.src;
-                modal.modal('show');
-            });
-        });
-    </script>
-  
-    </body>
-</html>'));
-</script>
+</body>
+</html>
