@@ -1,5 +1,5 @@
     
-        fetch('https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/refs/heads/main/live/scroll1.json')
+        fetch('https://news.google.com/rss?hl=te&gl=IN&ceid=IN:te')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('marquee').innerHTML = data;
