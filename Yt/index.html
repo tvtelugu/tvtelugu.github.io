@@ -11,24 +11,51 @@
             padding: 0;
             background-color: #121212;
             color: #ffffff;
+            overflow: hidden;
         }
         
-        #player-container {
-            width: 100%;
+        #app-container {
+            display: flex;
+            flex-direction: column;
             height: 100vh;
         }
         
+        #header {
+            background-color: #202020;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        #player-container {
+            flex-grow: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        #player-placeholder {
+            width: 80%;
+            height: 60%;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        
         #controls {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
+            height: 100px;
             background-color: #212121;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            z-index: 1000;
+            padding: 0 20px;
         }
         
         .control-btn {
@@ -37,303 +64,251 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 14px;
             cursor: pointer;
-            width: 25%;
-            height: 100%;
+            width: 20%;
+            height: 80%;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .control-btn:hover {
+            background-color: #333;
         }
         
         .control-btn svg {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 5px;
+            width: 30px;
+            height: 30px;
+            margin-bottom: 8px;
         }
         
-        #settingsDialog, #updateDialog {
+        .dialog {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 70%;
+            max-width: 600px;
             background-color: #212121;
-            z-index: 10000;
+            z-index: 1000;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            display: none;
+        }
+        
+        .dialog h2 {
+            margin-top: 0;
+            color: #fff;
+        }
+        
+        .dialog p {
+            color: #ccc;
+        }
+        
+        .dialog-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
         }
         
         .dialog-btn {
             padding: 10px 20px;
-            background: #4285f4;
-            color: white;
             border: none;
             border-radius: 5px;
-            margin: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .dialog-btn.primary {
+            background-color: #4285f4;
+            color: white;
+        }
+        
+        .dialog-btn.secondary {
+            background-color: #555;
+            color: white;
+        }
+        
+        #toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="player-container">
-        <!-- YouTube player will be loaded here -->
+    <div id="app-container">
+        <div id="header">YouTube PRO</div>
+        
+        <div id="player-container">
+            <div id="player-placeholder">YouTube Player Will Appear Here</div>
+        </div>
+        
+        <div id="controls">
+            <div class="control-btn" id="btn-like">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                Like
+            </div>
+            
+            <div class="control-btn" id="btn-download">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                Download
+            </div>
+            
+            <div class="control-btn" id="btn-pip">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1.9-2 2-2zm0 16H3V5h18v14z"/>
+                </svg>
+                PIP
+            </div>
+            
+            <div class="control-btn" id="btn-audio">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+                Audio
+            </div>
+            
+            <div class="control-btn" id="btn-settings">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
+                </svg>
+                Settings
+            </div>
+        </div>
     </div>
-    
-    <div id="controls" style="display: none;">
-        <div class="control-btn" id="btn-like">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-            Like
+
+    <!-- Dialogs -->
+    <div id="settingsDialog" class="dialog">
+        <h2>YT PRO Settings</h2>
+        <p>Version 3.8</p>
+        
+        <div style="margin-top:20px">
+            <label style="display:block;color:#fff;margin-bottom:15px;">
+                <input type="checkbox" id="autoSkip" checked style="margin-right:10px;">
+                Auto-skip sponsors
+            </label>
+            
+            <label style="display:block;color:#fff;margin-bottom:15px;">
+                <input type="checkbox" id="fitScreen" checked style="margin-right:10px;">
+                Fit to screen
+            </label>
+            
+            <label style="display:block;color:#fff;margin-bottom:15px;">
+                <input type="checkbox" id="hideShorts" style="margin-right:10px;">
+                Hide Shorts
+            </label>
         </div>
         
-        <div class="control-btn" id="btn-download">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-            </svg>
-            Download
-        </div>
-        
-        <div class="control-btn" id="btn-pip">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                <path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1.9-2 2-2zm0 16H3V5h18v14z"/>
-            </svg>
-            PIP
-        </div>
-        
-        <div class="control-btn" id="btn-audio">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-            </svg>
-            Audio
+        <div class="dialog-buttons">
+            <button class="dialog-btn secondary" id="btn-cancel">Cancel</button>
+            <button class="dialog-btn primary" id="btn-save">Save</button>
         </div>
     </div>
+
+    <div id="updateDialog" class="dialog">
+        <h2>Update Available</h2>
+        <p>A new version of YT PRO (3.8) is available with new features and bug fixes.</p>
+        
+        <div class="dialog-buttons">
+            <button class="dialog-btn secondary" id="btn-later">Later</button>
+            <button class="dialog-btn primary" id="btn-download-update">Download</button>
+        </div>
+    </div>
+
+    <div id="toast">This is a toast message</div>
 
     <script>
-        // Android TV YT PRO
-        var YTProVer = "3.8";
-        var isD = true; // Dark mode by default for TV
-        var c = "#ffffff";
-        var dc = "#000000";
-        var d = "rgba(255,255,255,0.1)";
-        var ytoldV = "";
-        var dislikes = "...";
-        var sTime = [];
-        var isAP = false;
-        var isF = false;
-        var GeminiAT = "";
-
-        // Simplified Android TV interface
-        var Android = {
-            pipvid: function(mode) {
-                console.log("PIP mode: " + mode);
-                // In a real implementation, this would interface with Android's PIP API
-                if (mode === "pip") {
-                    document.getElementById("player-container").style.width = "30%";
-                    document.getElementById("player-container").style.position = "fixed";
-                    document.getElementById("player-container").style.bottom = "100px";
-                    document.getElementById("player-container").style.right = "20px";
-                    document.getElementById("player-container").style.zIndex = "1000";
-                }
-            },
-            gohome: function() {
-                window.location.href = "https://www.youtube.com/tv";
-            },
-            getInfo: function() { return "3.8"; },
-            oplink: function(url) { window.open(url, '_blank'); },
-            downvid: function(filename, url, mime) {
-                console.log("Downloading: " + filename + " from " + url);
-                // In a real implementation, this would trigger a download
-                alert("Download started: " + filename);
-            },
-            showToast: function(msg) {
-                console.log("Toast: " + msg);
-                // Create a simple toast notification
-                var toast = document.createElement("div");
-                toast.style.position = "fixed";
-                toast.style.bottom = "100px";
-                toast.style.left = "50%";
-                toast.style.transform = "translateX(-50%)";
-                toast.style.backgroundColor = "rgba(0,0,0,0.7)";
-                toast.style.color = "white";
-                toast.style.padding = "10px 20px";
-                toast.style.borderRadius = "5px";
-                toast.style.zIndex = "10000";
-                toast.textContent = msg;
-                document.body.appendChild(toast);
-                setTimeout(function() {
-                    document.body.removeChild(toast);
-                }, 3000);
-            },
-            getAllCookies: function(url) { return document.cookie; },
-            getSNlM0e: function(cookies) { console.log("Getting SNlM0e token"); },
-            GeminiClient: function(endpoint, headers, data) { console.log("Calling Gemini API"); },
-            fetchYouTubeData: function(id, bgplay) {
-                console.log("Fetching YouTube data for: " + id);
-                // In a real implementation, this would fetch video data
-                Android.showToast("Fetching video info...");
-            },
-            fullScreen: function(enable) {
-                console.log("Fullscreen: " + enable);
-                if (enable) {
-                    document.getElementById("player-container").style.width = "100%";
-                    document.getElementById("player-container").style.height = "100vh";
-                } else {
-                    document.getElementById("player-container").style.width = "80%";
-                    document.getElementById("player-container").style.height = "60vh";
-                }
-            }
-        };
-
-        // Initialize the app
-        function init() {
-            console.log("YT PRO for Android TV initializing...");
-            
-            // Show controls when on a video page
-            if (window.location.href.includes("watch") || window.location.href.includes("shorts")) {
-                document.getElementById("controls").style.display = "flex";
-            }
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show that the app is working
+            showToast('YT PRO for Android TV loaded');
             
             // Set up event listeners
             setupEventListeners();
             
-            // Check for updates
-            checkForUpdates();
-        }
+            // Show update dialog after a delay (for demo purposes)
+            setTimeout(showUpdateDialog, 1500);
+        });
 
-        // Set up event listeners
         function setupEventListeners() {
-            document.getElementById("btn-like").addEventListener("click", toggleLike);
-            document.getElementById("btn-download").addEventListener("click", showDownloadOptions);
-            document.getElementById("btn-pip").addEventListener("click", togglePIP);
-            document.getElementById("btn-audio").addEventListener("click", toggleBackgroundPlay);
+            // Control buttons
+            document.getElementById('btn-like').addEventListener('click', function() {
+                showToast('Like/Dislike toggled');
+            });
             
-            // For demo purposes, add a click handler to the player container to simulate video play
-            document.getElementById("player-container").addEventListener("click", function() {
-                Android.showToast("Video playback controls would appear here");
+            document.getElementById('btn-download').addEventListener('click', function() {
+                showToast('Download options will appear here');
+            });
+            
+            document.getElementById('btn-pip').addEventListener('click', function() {
+                showToast('Entering Picture-in-Picture mode');
+                // For demo, change the player size
+                document.getElementById('player-placeholder').style.width = '30%';
+                document.getElementById('player-placeholder').style.height = '30%';
+                document.getElementById('player-placeholder').style.position = 'fixed';
+                document.getElementById('player-placeholder').style.bottom = '120px';
+                document.getElementById('player-placeholder').style.right = '20px';
+            });
+            
+            document.getElementById('btn-audio').addEventListener('click', function() {
+                showToast('Background audio playback toggled');
+            });
+            
+            document.getElementById('btn-settings').addEventListener('click', showSettingsDialog);
+            
+            // Dialog buttons
+            document.getElementById('btn-cancel').addEventListener('click', hideSettingsDialog);
+            document.getElementById('btn-save').addEventListener('click', function() {
+                showToast('Settings saved');
+                hideSettingsDialog();
+            });
+            
+            document.getElementById('btn-later').addEventListener('click', hideUpdateDialog);
+            document.getElementById('btn-download-update').addEventListener('click', function() {
+                showToast('Redirecting to download page');
+                hideUpdateDialog();
             });
         }
 
-        // Toggle like status
-        function toggleLike() {
-            Android.showToast("Like toggled");
-            // In a real implementation, this would update the like status
+        function showSettingsDialog() {
+            document.getElementById('settingsDialog').style.display = 'block';
         }
 
-        // Show download options
-        function showDownloadOptions() {
-            var id = window.location.href.includes("shorts") ? 
-                window.location.pathname.substr(8) : 
-                new URLSearchParams(window.location.search).get("v");
-            
-            Android.fetchYouTubeData(id, false);
-            Android.showToast("Showing download options for video");
+        function hideSettingsDialog() {
+            document.getElementById('settingsDialog').style.display = 'none';
         }
 
-        // Toggle Picture-in-Picture
-        function togglePIP() {
-            if(isAP) {
-                stopBackgroundPlay();
-            } else {
-                Android.pipvid("pip");
-                Android.showToast("Entering Picture-in-Picture mode");
-            }
-        }
-
-        // Toggle background play
-        function toggleBackgroundPlay() {
-            if(isAP) {
-                stopBackgroundPlay();
-                Android.showToast("Background play stopped");
-            } else {
-                var id = window.location.href.includes("shorts") ? 
-                    window.location.pathname.substr(8) : 
-                    new URLSearchParams(window.location.search).get("v");
-                
-                Android.fetchYouTubeData(id, true);
-                Android.showToast("Background play started");
-                isAP = true;
-            }
-        }
-
-        // Stop background play
-        function stopBackgroundPlay() {
-            isAP = false;
-            Android.showToast("Background play stopped");
-        }
-
-        // Check for updates
-        function checkForUpdates() {
-            if(parseFloat(Android.getInfo()) < parseFloat(YTProVer)) {
-                showUpdateDialog();
-            }
-        }
-
-        // Show update dialog
         function showUpdateDialog() {
-            var updateDiv = document.createElement("div");
-            updateDiv.setAttribute("id", "updateDialog");
-            updateDiv.innerHTML = `
-                <h2 style="color:${c}">Update Available</h2>
-                <p style="color:${c}">A new version of YT PRO (${YTProVer}) is available</p>
-                
-                <div style="margin-top:30px;display:flex;justify-content:center;gap:20px">
-                    <button onclick="document.getElementById('updateDialog').remove()" class="dialog-btn" style="background:#555">
-                        Later
-                    </button>
-                    <button onclick="Android.oplink('https://github.com/prateek-chaubey/YTPRO/releases')" class="dialog-btn">
-                        Download
-                    </button>
-                </div>
-            `;
+            document.getElementById('updateDialog').style.display = 'block';
+        }
+
+        function hideUpdateDialog() {
+            document.getElementById('updateDialog').style.display = 'none';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
             
-            document.body.appendChild(updateDiv);
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 3000);
         }
-
-        // Show settings dialog
-        function showSettings() {
-            var settingsDiv = document.createElement("div");
-            settingsDiv.setAttribute("id", "settingsDialog");
-            settingsDiv.innerHTML = `
-                <h2 style="color:${c}">YT PRO Settings</h2>
-                <p style="color:${c}">Version ${YTProVer}</p>
-                
-                <div style="margin-top:20px">
-                    <label style="display:block;color:${c};margin-bottom:10px">
-                        <input type="checkbox" id="autoSkip" checked>
-                        Auto-skip sponsors
-                    </label>
-                    
-                    <label style="display:block;color:${c};margin-bottom:10px">
-                        <input type="checkbox" id="fitScreen" checked>
-                        Fit to screen
-                    </label>
-                    
-                    <label style="display:block;color:${c};margin-bottom:10px">
-                        <input type="checkbox" id="hideShorts">
-                        Hide Shorts
-                    </label>
-                </div>
-                
-                <div style="position:absolute;bottom:20px;width:calc(100% - 40px);display:flex;justify-content:space-between">
-                    <button onclick="document.getElementById('settingsDialog').remove()" class="dialog-btn" style="background:#555">
-                        Cancel
-                    </button>
-                    <button onclick="saveSettings()" class="dialog-btn">
-                        Save
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(settingsDiv);
-        }
-
-        // Save settings
-        function saveSettings() {
-            Android.showToast("Settings saved");
-            document.getElementById("settingsDialog").remove();
-        }
-
-        // Initialize when the page loads
-        window.onload = init;
     </script>
 </body>
-  </html>
+</html>
