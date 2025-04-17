@@ -7,9 +7,10 @@
     <style>
         :root {
             --primary-color: #ff0000;
-            --background-color: #121212;
+            --background-color: #181818;
             --card-color: #212121;
             --text-color: #ffffff;
+            --text-secondary: #aaaaaa;
         }
         
         body {
@@ -28,10 +29,13 @@
         }
         
         .header {
-            background-color: var(--card-color);
-            padding: 15px;
+            background-color: var(--background-color);
+            padding: 16px;
             display: flex;
             align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         
@@ -39,74 +43,100 @@
             font-size: 24px;
             font-weight: bold;
             color: var(--primary-color);
-            margin-right: 20px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
         }
         
         .search-container {
             flex-grow: 1;
             display: flex;
+            max-width: 600px;
         }
         
         .search-input {
             flex-grow: 1;
-            padding: 10px 15px;
-            border: none;
+            padding: 8px 16px;
+            border: 1px solid #333;
             border-radius: 20px 0 0 20px;
-            background-color: #333;
+            background-color: #121212;
             color: white;
             font-size: 16px;
+            height: 40px;
+            box-sizing: border-box;
         }
         
         .search-button {
-            padding: 10px 20px;
-            background-color: #333;
+            padding: 8px 16px;
+            background-color: #323232;
             color: white;
             border: none;
             border-radius: 0 20px 20px 0;
             cursor: pointer;
+            height: 40px;
+            box-sizing: border-box;
         }
         
         .main-content {
             display: flex;
             flex-grow: 1;
             overflow: hidden;
+            padding-top: 72px; /* Account for fixed header */
         }
         
         .sidebar {
-            width: 250px;
-            background-color: var(--card-color);
-            padding: 15px;
+            width: 240px;
+            background-color: var(--background-color);
+            padding: 16px 0;
             overflow-y: auto;
+            position: fixed;
+            height: calc(100vh - 72px);
         }
         
         .menu-item {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            margin-bottom: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
+            font-size: 14px;
         }
         
         .menu-item:hover, .menu-item:focus {
-            background-color: #333;
+            background-color: #383838;
+        }
+        
+        .menu-item.active {
+            background-color: #383838;
+            font-weight: 500;
         }
         
         .menu-item i {
-            margin-right: 15px;
+            margin-right: 24px;
             width: 24px;
             text-align: center;
+            font-size: 20px;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #383838;
+            margin: 12px 24px;
         }
         
         .content-area {
             flex-grow: 1;
-            padding: 20px;
+            padding: 16px 16px 16px 256px;
             overflow-y: auto;
         }
         
         .player-container {
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         #player {
@@ -116,54 +146,106 @@
         }
         
         .video-info {
-            background-color: var(--card-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .video-title {
             font-size: 20px;
-            margin-bottom: 10px;
+            font-weight: 400;
+            margin-bottom: 12px;
         }
         
         .video-meta {
             display: flex;
             justify-content: space-between;
-            color: #aaa;
-            margin-bottom: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 14px;
         }
         
         .video-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
         
         .action-button {
-            background-color: #333;
+            background-color: #272727;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
+            font-size: 14px;
+            height: 36px;
         }
         
         .action-button i {
-            margin-right: 5px;
+            margin-right: 8px;
         }
         
-        .recommended-videos {
+        .channel-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 16px 0;
+            border-top: 1px solid #383838;
+            border-bottom: 1px solid #383838;
+        }
+        
+        .channel-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #555;
+            margin-right: 16px;
+        }
+        
+        .channel-details {
+            flex-grow: 1;
+        }
+        
+        .channel-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .channel-subs {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        .subscribe-button {
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+            height: 36px;
+        }
+        
+        .recommended-section {
+            margin-top: 24px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
         }
         
         .video-card {
-            background-color: var(--card-color);
-            border-radius: 8px;
-            overflow: hidden;
             cursor: pointer;
         }
         
@@ -172,55 +254,91 @@
             aspect-ratio: 16/9;
             background-color: #333;
             position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .video-duration {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
+            bottom: 4px;
+            right: 4px;
             background-color: rgba(0,0,0,0.8);
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 3px 6px;
+            border-radius: 4px;
             font-size: 12px;
         }
         
         .video-details {
-            padding: 10px;
+            display: flex;
+        }
+        
+        .video-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #555;
+            margin-right: 12px;
+        }
+        
+        .video-info-text {
+            flex-grow: 1;
         }
         
         .video-card-title {
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-weight: 500;
         }
         
-        .video-card-channel {
-            font-size: 12px;
-            color: #aaa;
+        .video-card-channel, .video-card-stats {
+            font-size: 13px;
+            color: var(--text-secondary);
         }
         
         /* Focus styles for TV navigation */
         *:focus {
-            outline: 2px solid var(--primary-color);
-            outline-offset: 2px;
+            outline: 2px solid white;
+            outline-offset: -2px;
+            border-radius: 4px;
+        }
+        
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: rgba(0,0,0,0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .notification i {
+            margin-right: 12px;
+            color: var(--primary-color);
         }
         
         /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
+        @media (max-width: 1024px) {
             .sidebar {
-                width: 100%;
-                height: auto;
+                display: none;
             }
             
-            .recommended-videos {
-                grid-template-columns: 1fr;
+            .content-area {
+                padding-left: 16px;
             }
         }
     </style>
@@ -232,7 +350,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">YouTube Pro TV</div>
+            <div class="logo">
+                <i class="fab fa-youtube"></i> YouTube Pro
+            </div>
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="Search YouTube..." id="searchInput">
                 <button class="search-button" id="searchButton"><i class="fas fa-search"></i></button>
@@ -241,27 +361,37 @@
         
         <div class="main-content">
             <div class="sidebar">
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item active" tabindex="0">
                     <i class="fas fa-home"></i> Home
                 </div>
                 <div class="menu-item" tabindex="0">
-                    <i class="fas fa-fire"></i> Trending
+                    <i class="fas fa-compass"></i> Explore
                 </div>
                 <div class="menu-item" tabindex="0">
-                    <i class="fas fa-subscript"></i> Subscriptions
+                    <i class="fas fa-play-circle"></i> Subscriptions
                 </div>
+                <div class="divider"></div>
                 <div class="menu-item" tabindex="0">
-                    <i class="fas fa-folder"></i> Library
+                    <i class="fas fa-photo-video"></i> Library
                 </div>
                 <div class="menu-item" tabindex="0">
                     <i class="fas fa-history"></i> History
                 </div>
-                <hr>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-clock"></i> Watch Later
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-thumbs-up"></i> Liked Videos
+                </div>
+                <div class="divider"></div>
                 <div class="menu-item" tabindex="0">
                     <i class="fas fa-cog"></i> Settings
                 </div>
                 <div class="menu-item" tabindex="0">
-                    <i class="fas fa-shield-alt"></i> SponsorBlock
+                    <i class="fas fa-flag"></i> Report
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-question-circle"></i> Help
                 </div>
             </div>
             
@@ -278,23 +408,34 @@
                     </div>
                     <div class="video-actions">
                         <button class="action-button" tabindex="0">
-                            <i class="fas fa-thumbs-up"></i> Like
+                            <i class="fas fa-thumbs-up"></i> <span class="action-text">Like</span>
                         </button>
                         <button class="action-button" tabindex="0">
-                            <i class="fas fa-thumbs-down"></i> Dislike
+                            <i class="fas fa-thumbs-down"></i> <span class="action-text">Dislike</span>
                         </button>
                         <button class="action-button" tabindex="0">
-                            <i class="fas fa-share"></i> Share
+                            <i class="fas fa-share"></i> <span class="action-text">Share</span>
                         </button>
                         <button class="action-button" tabindex="0">
-                            <i class="fas fa-save"></i> Save
+                            <i class="fas fa-plus"></i> <span class="action-text">Save</span>
                         </button>
+                    </div>
+                    
+                    <div class="channel-info">
+                        <div class="channel-avatar"></div>
+                        <div class="channel-details">
+                            <div class="channel-name" id="channelName">Channel Name</div>
+                            <div class="channel-subs" id="channelSubs">1M subscribers</div>
+                        </div>
+                        <button class="subscribe-button" tabindex="0">Subscribe</button>
                     </div>
                 </div>
                 
-                <h2>Recommended Videos</h2>
-                <div class="recommended-videos" id="recommendedVideos">
-                    <!-- Video cards will be inserted here by JavaScript -->
+                <div class="recommended-section">
+                    <h2 class="section-title">Recommended</h2>
+                    <div class="video-grid" id="recommendedVideos">
+                        <!-- Video cards will be inserted here by JavaScript -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -305,6 +446,7 @@
         let player;
         let currentVideoId = '';
         let sponsorSegments = [];
+        let checkInterval;
         
         // Initialize the YouTube player
         function onYouTubeIframeAPIReady() {
@@ -318,7 +460,8 @@
                     'enablejsapi': 1,
                     'fs': 1,
                     'modestbranding': 1,
-                    'rel': 0
+                    'rel': 0,
+                    'origin': window.location.origin
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -326,48 +469,69 @@
                 }
             });
             
-            // Load a default video or from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('v');
-            
-            if (videoId) {
-                loadVideo(videoId);
-            } else {
-                // Load a default video (e.g., trending)
-                loadVideo('dQw4w9WgXcQ'); // Example: Rick Astley - Never Gonna Give You Up
-            }
+            // Load video from URL or default
+            loadInitialVideo();
         }
         
         function onPlayerReady(event) {
             console.log('Player is ready');
-            // Player is ready, can add event listeners or other setup here
+            // Set focus to player for keyboard navigation
+            event.target.focus();
         }
         
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
-                checkForSponsorSegments();
+                startSponsorSegmentCheck();
+            } else {
+                clearInterval(checkInterval);
+            }
+        }
+        
+        // Load initial video from URL or default
+        function loadInitialVideo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v') || 'dQw4w9WgXcQ'; // Default video
+            
+            if (videoId) {
+                loadVideo(videoId);
             }
         }
         
         // Load a video by ID
         function loadVideo(videoId) {
             currentVideoId = videoId;
-            player.loadVideoById(videoId);
-            updateVideoInfo(videoId);
-            fetchSponsorSegments(videoId);
-            fetchRecommendedVideos(videoId);
             
-            // Update URL without reloading
-            const newUrl = window.location.pathname + '?v=' + videoId;
-            window.history.pushState({ path: newUrl }, '', newUrl);
+            // First cue the video to prepare it
+            player.cueVideoById(videoId).then(() => {
+                // Then play it
+                player.playVideo();
+                
+                // Update UI and fetch data
+                updateVideoInfo(videoId);
+                fetchSponsorSegments(videoId);
+                fetchRecommendedVideos(videoId);
+                
+                // Update URL without reloading
+                const newUrl = window.location.pathname + '?v=' + videoId;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+            }).catch(error => {
+                console.error('Error loading video:', error);
+                showNotification('Error loading video. Trying another...');
+                
+                // Fallback to a known working video
+                loadVideo('dQw4w9WgXcQ');
+            });
         }
         
         // Fetch SponsorBlock segments
         function fetchSponsorSegments(videoId) {
             fetch(`https://sponsor.ajay.app/api/skipSegments?videoID=${videoId}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
                 .then(data => {
-                    sponsorSegments = data;
+                    sponsorSegments = Array.isArray(data) ? data : [];
                     console.log('Sponsor segments:', sponsorSegments);
                 })
                 .catch(error => {
@@ -376,28 +540,30 @@
                 });
         }
         
-        // Check for sponsor segments during playback
-        function checkForSponsorSegments() {
-            if (sponsorSegments.length === 0) return;
+        // Start checking for sponsor segments during playback
+        function startSponsorSegmentCheck() {
+            clearInterval(checkInterval); // Clear any existing interval
             
-            const checkInterval = setInterval(() => {
+            checkInterval = setInterval(() => {
+                if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    clearInterval(checkInterval);
+                    return;
+                }
+                
                 const currentTime = player.getCurrentTime();
                 
                 for (const segment of sponsorSegments) {
-                    const segmentStart = segment.segment[0];
-                    const segmentEnd = segment.segment[1];
-                    
-                    if (currentTime >= segmentStart && currentTime < segmentEnd) {
-                        // Skip the segment
-                        player.seekTo(segmentEnd);
-                        showSkipNotification(segment.category);
-                        break;
+                    if (segment.segment && segment.segment.length >= 2) {
+                        const segmentStart = segment.segment[0];
+                        const segmentEnd = segment.segment[1];
+                        
+                        if (currentTime >= segmentStart && currentTime < segmentEnd) {
+                            // Skip the segment
+                            player.seekTo(segmentEnd);
+                            showSkipNotification(segment.category);
+                            break;
+                        }
                     }
-                }
-                
-                // Clear interval if video is paused or ended
-                if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
-                    clearInterval(checkInterval);
                 }
             }, 1000); // Check every second
         }
@@ -405,15 +571,33 @@
         // Show notification when skipping a segment
         function showSkipNotification(category) {
             const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.right = '20px';
-            notification.style.backgroundColor = 'rgba(0,0,0,0.8)';
-            notification.style.color = 'white';
-            notification.style.padding = '10px 20px';
-            notification.style.borderRadius = '5px';
-            notification.style.zIndex = '1000';
-            notification.textContent = `Skipped ${category}`;
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-forward"></i>
+                <span>Skipped ${category} segment</span>
+            `;
+            
+            // Remove any existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        // Show general notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <span>${message}</span>
+            `;
             
             document.body.appendChild(notification);
             
@@ -427,11 +611,14 @@
         // Update video info (simplified - in a real app you'd use YouTube API)
         function updateVideoInfo(videoId) {
             // In a real implementation, you would fetch this from YouTube API
-            document.getElementById('videoTitle').textContent = `Video ID: ${videoId}`;
+            document.getElementById('videoTitle').textContent = `Video ${videoId}`;
             document.getElementById('viewCount').textContent = `${Math.floor(Math.random() * 1000000).toLocaleString()} views`;
             
             const daysAgo = Math.floor(Math.random() * 365);
             document.getElementById('uploadDate').textContent = `${daysAgo} days ago`;
+            
+            document.getElementById('channelName').textContent = `Channel for ${videoId}`;
+            document.getElementById('channelSubs').textContent = `${Math.floor(Math.random() * 10)}M subscribers`;
         }
         
         // Fetch recommended videos (simplified - in a real app you'd use YouTube API)
@@ -441,12 +628,12 @@
             
             // Mock data - in a real app you would fetch this from YouTube API
             const mockVideos = [
-                { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up', channel: 'Rick Astley', duration: '3:32' },
-                { id: '9bZkp7q19f0', title: 'Gangnam Style', channel: 'PSY', duration: '4:13' },
-                { id: 'kJQP7kiw5Fk', title: 'Despacito', channel: 'Luis Fonsi', duration: '4:42' },
-                { id: 'JGwWNGJdvx8', title: 'Shape of You', channel: 'Ed Sheeran', duration: '3:53' },
-                { id: 'RgKAFK5djSk', title: 'See You Again', channel: 'Wiz Khalifa', duration: '3:49' },
-                { id: 'OPf0YbXqDm0', title: 'Uptown Funk', channel: 'Mark Ronson', duration: '4:30' }
+                { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up - Rick Astley (Official Music Video)', channel: 'Rick Astley', duration: '3:32', views: '1.2B views' },
+                { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE(강남스타일) M/V', channel: 'officialpsy', duration: '4:13', views: '4.5B views' },
+                { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', channel: 'Luis Fonsi', duration: '4:42', views: '7.8B views' },
+                { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You [Official Video]', channel: 'Ed Sheeran', duration: '3:53', views: '5.9B views' },
+                { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again ft. Charlie Puth [Official Video]', channel: 'Wiz Khalifa', duration: '3:49', views: '6.1B views' },
+                { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', channel: 'Mark Ronson', duration: '4:30', views: '4.7B views' }
             ];
             
             mockVideos.forEach(video => {
@@ -457,12 +644,16 @@
                 videoCard.tabIndex = '0';
                 videoCard.innerHTML = `
                     <div class="video-thumbnail">
-                        <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}" style="width:100%">
+                        <img src="https://img.youtube.com/vi/${video.id}/mqdefault.jpg" alt="${video.title}">
                         <div class="video-duration">${video.duration}</div>
                     </div>
                     <div class="video-details">
-                        <div class="video-card-title">${video.title}</div>
-                        <div class="video-card-channel">${video.channel}</div>
+                        <div class="video-avatar"></div>
+                        <div class="video-info-text">
+                            <div class="video-card-title">${video.title}</div>
+                            <div class="video-card-channel">${video.channel}</div>
+                            <div class="video-card-stats">${video.views}</div>
+                        </div>
                     </div>
                 `;
                 
@@ -489,8 +680,7 @@
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
                 // In a real implementation, you would search YouTube API
-                // For this demo, we'll just show an alert
-                alert(`Would search for: ${query}`);
+                showNotification(`Searching for: ${query}`);
             }
         }
         
@@ -499,8 +689,16 @@
             if (e.key === 'Backspace' || e.key === 'Escape') {
                 // Handle back navigation
                 e.preventDefault();
-                // In a real app, you might have a navigation stack
-                console.log('Back button pressed');
+                showNotification('Back button pressed');
+            }
+        });
+        
+        // Handle popstate for back/forward navigation
+        window.addEventListener('popstate', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v');
+            if (videoId && videoId !== currentVideoId) {
+                loadVideo(videoId);
             }
         });
     </script>
