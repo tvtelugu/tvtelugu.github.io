@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT PRO for Android TV</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        #player-container {
+            width: 100%;
+            height: 100vh;
+        }
+        
+        #controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: #212121;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            width: 25%;
+            height: 100%;
+        }
+        
+        .control-btn svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+        
+        #settingsDialog, #updateDialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            background-color: #212121;
+            z-index: 10000;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .dialog-btn {
+            padding: 10px 20px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container">
+        <!-- YouTube player will be loaded here -->
+    </div>
+    
+    <div id="controls" style="display: none;">
+        <div class="control-btn" id="btn-like">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            Like
+        </div>
+        
+        <div class="control-btn" id="btn-download">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+            Download
+        </div>
+        
+        <div class="control-btn" id="btn-pip">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                <path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1.9-2 2-2zm0 16H3V5h18v14z"/>
+            </svg>
+            PIP
+        </div>
+        
+        <div class="control-btn" id="btn-audio">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+            Audio
+        </div>
+    </div>
+
+    <script>
+        // Android TV YT PRO
+        var YTProVer = "3.8";
+        var isD = true; // Dark mode by default for TV
+        var c = "#ffffff";
+        var dc = "#000000";
+        var d = "rgba(255,255,255,0.1)";
+        var ytoldV = "";
+        var dislikes = "...";
+        var sTime = [];
+        var isAP = false;
+        var isF = false;
+        var GeminiAT = "";
+
+        // Simplified Android TV interface
+        var Android = {
+            pipvid: function(mode) {
+                console.log("PIP mode: " + mode);
+                // In a real implementation, this would interface with Android's PIP API
+                if (mode === "pip") {
+                    document.getElementById("player-container").style.width = "30%";
+                    document.getElementById("player-container").style.position = "fixed";
+                    document.getElementById("player-container").style.bottom = "100px";
+                    document.getElementById("player-container").style.right = "20px";
+                    document.getElementById("player-container").style.zIndex = "1000";
+                }
+            },
+            gohome: function() {
+                window.location.href = "https://www.youtube.com/tv";
+            },
+            getInfo: function() { return "3.8"; },
+            oplink: function(url) { window.open(url, '_blank'); },
+            downvid: function(filename, url, mime) {
+                console.log("Downloading: " + filename + " from " + url);
+                // In a real implementation, this would trigger a download
+                alert("Download started: " + filename);
+            },
+            showToast: function(msg) {
+                console.log("Toast: " + msg);
+                // Create a simple toast notification
+                var toast = document.createElement("div");
+                toast.style.position = "fixed";
+                toast.style.bottom = "100px";
+                toast.style.left = "50%";
+                toast.style.transform = "translateX(-50%)";
+                toast.style.backgroundColor = "rgba(0,0,0,0.7)";
+                toast.style.color = "white";
+                toast.style.padding = "10px 20px";
+                toast.style.borderRadius = "5px";
+                toast.style.zIndex = "10000";
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                setTimeout(function() {
+                    document.body.removeChild(toast);
+                }, 3000);
+            },
+            getAllCookies: function(url) { return document.cookie; },
+            getSNlM0e: function(cookies) { console.log("Getting SNlM0e token"); },
+            GeminiClient: function(endpoint, headers, data) { console.log("Calling Gemini API"); },
+            fetchYouTubeData: function(id, bgplay) {
+                console.log("Fetching YouTube data for: " + id);
+                // In a real implementation, this would fetch video data
+                Android.showToast("Fetching video info...");
+            },
+            fullScreen: function(enable) {
+                console.log("Fullscreen: " + enable);
+                if (enable) {
+                    document.getElementById("player-container").style.width = "100%";
+                    document.getElementById("player-container").style.height = "100vh";
+                } else {
+                    document.getElementById("player-container").style.width = "80%";
+                    document.getElementById("player-container").style.height = "60vh";
+                }
+            }
+        };
+
+        // Initialize the app
+        function init() {
+            console.log("YT PRO for Android TV initializing...");
+            
+            // Show controls when on a video page
+            if (window.location.href.includes("watch") || window.location.href.includes("shorts")) {
+                document.getElementById("controls").style.display = "flex";
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Check for updates
+            checkForUpdates();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            document.getElementById("btn-like").addEventListener("click", toggleLike);
+            document.getElementById("btn-download").addEventListener("click", showDownloadOptions);
+            document.getElementById("btn-pip").addEventListener("click", togglePIP);
+            document.getElementById("btn-audio").addEventListener("click", toggleBackgroundPlay);
+            
+            // For demo purposes, add a click handler to the player container to simulate video play
+            document.getElementById("player-container").addEventListener("click", function() {
+                Android.showToast("Video playback controls would appear here");
+            });
+        }
+
+        // Toggle like status
+        function toggleLike() {
+            Android.showToast("Like toggled");
+            // In a real implementation, this would update the like status
+        }
+
+        // Show download options
+        function showDownloadOptions() {
+            var id = window.location.href.includes("shorts") ? 
+                window.location.pathname.substr(8) : 
+                new URLSearchParams(window.location.search).get("v");
+            
+            Android.fetchYouTubeData(id, false);
+            Android.showToast("Showing download options for video");
+        }
+
+        // Toggle Picture-in-Picture
+        function togglePIP() {
+            if(isAP) {
+                stopBackgroundPlay();
+            } else {
+                Android.pipvid("pip");
+                Android.showToast("Entering Picture-in-Picture mode");
+            }
+        }
+
+        // Toggle background play
+        function toggleBackgroundPlay() {
+            if(isAP) {
+                stopBackgroundPlay();
+                Android.showToast("Background play stopped");
+            } else {
+                var id = window.location.href.includes("shorts") ? 
+                    window.location.pathname.substr(8) : 
+                    new URLSearchParams(window.location.search).get("v");
+                
+                Android.fetchYouTubeData(id, true);
+                Android.showToast("Background play started");
+                isAP = true;
+            }
+        }
+
+        // Stop background play
+        function stopBackgroundPlay() {
+            isAP = false;
+            Android.showToast("Background play stopped");
+        }
+
+        // Check for updates
+        function checkForUpdates() {
+            if(parseFloat(Android.getInfo()) < parseFloat(YTProVer)) {
+                showUpdateDialog();
+            }
+        }
+
+        // Show update dialog
+        function showUpdateDialog() {
+            var updateDiv = document.createElement("div");
+            updateDiv.setAttribute("id", "updateDialog");
+            updateDiv.innerHTML = `
+                <h2 style="color:${c}">Update Available</h2>
+                <p style="color:${c}">A new version of YT PRO (${YTProVer}) is available</p>
+                
+                <div style="margin-top:30px;display:flex;justify-content:center;gap:20px">
+                    <button onclick="document.getElementById('updateDialog').remove()" class="dialog-btn" style="background:#555">
+                        Later
+                    </button>
+                    <button onclick="Android.oplink('https://github.com/prateek-chaubey/YTPRO/releases')" class="dialog-btn">
+                        Download
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(updateDiv);
+        }
+
+        // Show settings dialog
+        function showSettings() {
+            var settingsDiv = document.createElement("div");
+            settingsDiv.setAttribute("id", "settingsDialog");
+            settingsDiv.innerHTML = `
+                <h2 style="color:${c}">YT PRO Settings</h2>
+                <p style="color:${c}">Version ${YTProVer}</p>
+                
+                <div style="margin-top:20px">
+                    <label style="display:block;color:${c};margin-bottom:10px">
+                        <input type="checkbox" id="autoSkip" checked>
+                        Auto-skip sponsors
+                    </label>
+                    
+                    <label style="display:block;color:${c};margin-bottom:10px">
+                        <input type="checkbox" id="fitScreen" checked>
+                        Fit to screen
+                    </label>
+                    
+                    <label style="display:block;color:${c};margin-bottom:10px">
+                        <input type="checkbox" id="hideShorts">
+                        Hide Shorts
+                    </label>
+                </div>
+                
+                <div style="position:absolute;bottom:20px;width:calc(100% - 40px);display:flex;justify-content:space-between">
+                    <button onclick="document.getElementById('settingsDialog').remove()" class="dialog-btn" style="background:#555">
+                        Cancel
+                    </button>
+                    <button onclick="saveSettings()" class="dialog-btn">
+                        Save
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(settingsDiv);
+        }
+
+        // Save settings
+        function saveSettings() {
+            Android.showToast("Settings saved");
+            document.getElementById("settingsDialog").remove();
+        }
+
+        // Initialize when the page loads
+        window.onload = init;
+    </script>
+</body>
+  </html>
