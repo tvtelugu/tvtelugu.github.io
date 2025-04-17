@@ -3,312 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YT PRO for Android TV</title>
+    <title>YouTube Pro TV</title>
     <style>
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #ffffff;
-            overflow: hidden;
+        :root {
+            --primary-color: #ff0000;
+            --background-color: #121212;
+            --card-color: #212121;
+            --text-color: #ffffff;
         }
         
-        #app-container {
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .container {
             display: flex;
             flex-direction: column;
             height: 100vh;
         }
         
-        #header {
-            background-color: #202020;
+        .header {
+            background-color: var(--card-color);
             padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         
-        #player-container {
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: 20px;
+        }
+        
+        .search-container {
             flex-grow: 1;
-            background-color: #000;
             display: flex;
-            justify-content: center;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 20px 0 0 20px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .search-button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-color);
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
             align-items: center;
+        }
+        
+        .menu-item:hover, .menu-item:focus {
+            background-color: #333;
+        }
+        
+        .menu-item i {
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .content-area {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .player-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        #player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: black;
+        }
+        
+        .video-info {
+            background-color: var(--card-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .video-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-button i {
+            margin-right: 5px;
+        }
+        
+        .recommended-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .video-card {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #333;
             position: relative;
         }
         
-        #player-placeholder {
-            width: 80%;
-            height: 60%;
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #aaa;
-            font-size: 20px;
-            border-radius: 5px;
+        .video-duration {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: rgba(0,0,0,0.8);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
         }
         
-        #controls {
-            height: 100px;
-            background-color: #212121;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 20px;
+        .video-details {
+            padding: 10px;
         }
         
-        .control-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        .video-card-title {
             font-size: 14px;
-            cursor: pointer;
-            width: 20%;
-            height: 80%;
-            border-radius: 5px;
-            transition: background-color 0.2s;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
-        .control-btn:hover {
-            background-color: #333;
+        .video-card-channel {
+            font-size: 12px;
+            color: #aaa;
         }
         
-        .control-btn svg {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 8px;
+        /* Focus styles for TV navigation */
+        *:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
         }
         
-        .dialog {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            max-width: 600px;
-            background-color: #212121;
-            z-index: 1000;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            display: none;
-        }
-        
-        .dialog h2 {
-            margin-top: 0;
-            color: #fff;
-        }
-        
-        .dialog p {
-            color: #ccc;
-        }
-        
-        .dialog-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-        
-        .dialog-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            margin-left: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .dialog-btn.primary {
-            background-color: #4285f4;
-            color: white;
-        }
-        
-        .dialog-btn.secondary {
-            background-color: #555;
-            color: white;
-        }
-        
-        #toast {
-            position: fixed;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0,0,0,0.7);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            display: none;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .recommended-videos {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
-    <div id="app-container">
-        <div id="header">YouTube PRO</div>
-        
-        <div id="player-container">
-            <div id="player-placeholder">YouTube Player Will Appear Here</div>
-        </div>
-        
-        <div id="controls">
-            <div class="control-btn" id="btn-like">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                Like
-            </div>
-            
-            <div class="control-btn" id="btn-download">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                </svg>
-                Download
-            </div>
-            
-            <div class="control-btn" id="btn-pip">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1.9-2 2-2zm0 16H3V5h18v14z"/>
-                </svg>
-                PIP
-            </div>
-            
-            <div class="control-btn" id="btn-audio">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
-                Audio
-            </div>
-            
-            <div class="control-btn" id="btn-settings">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-                    <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
-                </svg>
-                Settings
+    <div class="container">
+        <div class="header">
+            <div class="logo">YouTube Pro TV</div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search YouTube..." id="searchInput">
+                <button class="search-button" id="searchButton"><i class="fas fa-search"></i></button>
             </div>
         </div>
-    </div>
-
-    <!-- Dialogs -->
-    <div id="settingsDialog" class="dialog">
-        <h2>YT PRO Settings</h2>
-        <p>Version 3.8</p>
         
-        <div style="margin-top:20px">
-            <label style="display:block;color:#fff;margin-bottom:15px;">
-                <input type="checkbox" id="autoSkip" checked style="margin-right:10px;">
-                Auto-skip sponsors
-            </label>
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-home"></i> Home
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-fire"></i> Trending
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-subscript"></i> Subscriptions
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-folder"></i> Library
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-history"></i> History
+                </div>
+                <hr>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-cog"></i> Settings
+                </div>
+                <div class="menu-item" tabindex="0">
+                    <i class="fas fa-shield-alt"></i> SponsorBlock
+                </div>
+            </div>
             
-            <label style="display:block;color:#fff;margin-bottom:15px;">
-                <input type="checkbox" id="fitScreen" checked style="margin-right:10px;">
-                Fit to screen
-            </label>
-            
-            <label style="display:block;color:#fff;margin-bottom:15px;">
-                <input type="checkbox" id="hideShorts" style="margin-right:10px;">
-                Hide Shorts
-            </label>
-        </div>
-        
-        <div class="dialog-buttons">
-            <button class="dialog-btn secondary" id="btn-cancel">Cancel</button>
-            <button class="dialog-btn primary" id="btn-save">Save</button>
+            <div class="content-area">
+                <div class="player-container">
+                    <div id="player"></div>
+                </div>
+                
+                <div class="video-info">
+                    <h1 class="video-title" id="videoTitle">Loading video...</h1>
+                    <div class="video-meta">
+                        <span id="viewCount">0 views</span>
+                        <span id="uploadDate">Just now</span>
+                    </div>
+                    <div class="video-actions">
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-thumbs-down"></i> Dislike
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-share"></i> Share
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                </div>
+                
+                <h2>Recommended Videos</h2>
+                <div class="recommended-videos" id="recommendedVideos">
+                    <!-- Video cards will be inserted here by JavaScript -->
+                </div>
+            </div>
         </div>
     </div>
-
-    <div id="updateDialog" class="dialog">
-        <h2>Update Available</h2>
-        <p>A new version of YT PRO (3.8) is available with new features and bug fixes.</p>
-        
-        <div class="dialog-buttons">
-            <button class="dialog-btn secondary" id="btn-later">Later</button>
-            <button class="dialog-btn primary" id="btn-download-update">Download</button>
-        </div>
-    </div>
-
-    <div id="toast">This is a toast message</div>
 
     <script>
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show that the app is working
-            showToast('YT PRO for Android TV loaded');
-            
-            // Set up event listeners
-            setupEventListeners();
-            
-            // Show update dialog after a delay (for demo purposes)
-            setTimeout(showUpdateDialog, 1500);
-        });
-
-        function setupEventListeners() {
-            // Control buttons
-            document.getElementById('btn-like').addEventListener('click', function() {
-                showToast('Like/Dislike toggled');
+        // Global variables
+        let player;
+        let currentVideoId = '';
+        let sponsorSegments = [];
+        
+        // Initialize the YouTube player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 1,
+                    'disablekb': 0,
+                    'enablejsapi': 1,
+                    'fs': 1,
+                    'modestbranding': 1,
+                    'rel': 0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
             });
             
-            document.getElementById('btn-download').addEventListener('click', function() {
-                showToast('Download options will appear here');
-            });
+            // Load a default video or from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v');
             
-            document.getElementById('btn-pip').addEventListener('click', function() {
-                showToast('Entering Picture-in-Picture mode');
-                // For demo, change the player size
-                document.getElementById('player-placeholder').style.width = '30%';
-                document.getElementById('player-placeholder').style.height = '30%';
-                document.getElementById('player-placeholder').style.position = 'fixed';
-                document.getElementById('player-placeholder').style.bottom = '120px';
-                document.getElementById('player-placeholder').style.right = '20px';
-            });
-            
-            document.getElementById('btn-audio').addEventListener('click', function() {
-                showToast('Background audio playback toggled');
-            });
-            
-            document.getElementById('btn-settings').addEventListener('click', showSettingsDialog);
-            
-            // Dialog buttons
-            document.getElementById('btn-cancel').addEventListener('click', hideSettingsDialog);
-            document.getElementById('btn-save').addEventListener('click', function() {
-                showToast('Settings saved');
-                hideSettingsDialog();
-            });
-            
-            document.getElementById('btn-later').addEventListener('click', hideUpdateDialog);
-            document.getElementById('btn-download-update').addEventListener('click', function() {
-                showToast('Redirecting to download page');
-                hideUpdateDialog();
-            });
+            if (videoId) {
+                loadVideo(videoId);
+            } else {
+                // Load a default video (e.g., trending)
+                loadVideo('dQw4w9WgXcQ'); // Example: Rick Astley - Never Gonna Give You Up
+            }
         }
-
-        function showSettingsDialog() {
-            document.getElementById('settingsDialog').style.display = 'block';
+        
+        function onPlayerReady(event) {
+            console.log('Player is ready');
+            // Player is ready, can add event listeners or other setup here
         }
-
-        function hideSettingsDialog() {
-            document.getElementById('settingsDialog').style.display = 'none';
+        
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                checkForSponsorSegments();
+            }
         }
-
-        function showUpdateDialog() {
-            document.getElementById('updateDialog').style.display = 'block';
-        }
-
-        function hideUpdateDialog() {
-            document.getElementById('updateDialog').style.display = 'none';
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
+        
+        // Load a video by ID
+        function loadVideo(videoId) {
+            currentVideoId = videoId;
+            player.loadVideoById(videoId);
+            updateVideoInfo(videoId);
+            fetchSponsorSegments(videoId);
+            fetchRecommendedVideos(videoId);
             
-            setTimeout(function() {
-                toast.style.display = 'none';
+            // Update URL without reloading
+            const newUrl = window.location.pathname + '?v=' + videoId;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        
+        // Fetch SponsorBlock segments
+        function fetchSponsorSegments(videoId) {
+            fetch(`https://sponsor.ajay.app/api/skipSegments?videoID=${videoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    sponsorSegments = data;
+                    console.log('Sponsor segments:', sponsorSegments);
+                })
+                .catch(error => {
+                    console.error('Error fetching SponsorBlock segments:', error);
+                    sponsorSegments = [];
+                });
+        }
+        
+        // Check for sponsor segments during playback
+        function checkForSponsorSegments() {
+            if (sponsorSegments.length === 0) return;
+            
+            const checkInterval = setInterval(() => {
+                const currentTime = player.getCurrentTime();
+                
+                for (const segment of sponsorSegments) {
+                    const segmentStart = segment.segment[0];
+                    const segmentEnd = segment.segment[1];
+                    
+                    if (currentTime >= segmentStart && currentTime < segmentEnd) {
+                        // Skip the segment
+                        player.seekTo(segmentEnd);
+                        showSkipNotification(segment.category);
+                        break;
+                    }
+                }
+                
+                // Clear interval if video is paused or ended
+                if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    clearInterval(checkInterval);
+                }
+            }, 1000); // Check every second
+        }
+        
+        // Show notification when skipping a segment
+        function showSkipNotification(category) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '1000';
+            notification.textContent = `Skipped ${category}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
             }, 3000);
         }
+        
+        // Update video info (simplified - in a real app you'd use YouTube API)
+        function updateVideoInfo(videoId) {
+            // In a real implementation, you would fetch this from YouTube API
+            document.getElementById('videoTitle').textContent = `Video ID: ${videoId}`;
+            document.getElementById('viewCount').textContent = `${Math.floor(Math.random() * 1000000).toLocaleString()} views`;
+            
+            const daysAgo = Math.floor(Math.random() * 365);
+            document.getElementById('uploadDate').textContent = `${daysAgo} days ago`;
+        }
+        
+        // Fetch recommended videos (simplified - in a real app you'd use YouTube API)
+        function fetchRecommendedVideos(videoId) {
+            const recommendedContainer = document.getElementById('recommendedVideos');
+            recommendedContainer.innerHTML = '';
+            
+            // Mock data - in a real app you would fetch this from YouTube API
+            const mockVideos = [
+                { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up', channel: 'Rick Astley', duration: '3:32' },
+                { id: '9bZkp7q19f0', title: 'Gangnam Style', channel: 'PSY', duration: '4:13' },
+                { id: 'kJQP7kiw5Fk', title: 'Despacito', channel: 'Luis Fonsi', duration: '4:42' },
+                { id: 'JGwWNGJdvx8', title: 'Shape of You', channel: 'Ed Sheeran', duration: '3:53' },
+                { id: 'RgKAFK5djSk', title: 'See You Again', channel: 'Wiz Khalifa', duration: '3:49' },
+                { id: 'OPf0YbXqDm0', title: 'Uptown Funk', channel: 'Mark Ronson', duration: '4:30' }
+            ];
+            
+            mockVideos.forEach(video => {
+                if (video.id === videoId) return; // Skip current video
+                
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.tabIndex = '0';
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}" style="width:100%">
+                        <div class="video-duration">${video.duration}</div>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-card-title">${video.title}</div>
+                        <div class="video-card-channel">${video.channel}</div>
+                    </div>
+                `;
+                
+                videoCard.addEventListener('click', () => loadVideo(video.id));
+                videoCard.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        loadVideo(video.id);
+                    }
+                });
+                
+                recommendedContainer.appendChild(videoCard);
+            });
+        }
+        
+        // Search functionality
+        document.getElementById('searchButton').addEventListener('click', performSearch);
+        document.getElementById('searchInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                // In a real implementation, you would search YouTube API
+                // For this demo, we'll just show an alert
+                alert(`Would search for: ${query}`);
+            }
+        }
+        
+        // Handle back button for TV
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' || e.key === 'Escape') {
+                // Handle back navigation
+                e.preventDefault();
+                // In a real app, you might have a navigation stack
+                console.log('Back button pressed');
+            }
+        });
     </script>
 </body>
 </html>
