@@ -11,6 +11,7 @@
             --card-color: #212121;
             --text-color: #ffffff;
             --text-secondary: #aaaaaa;
+            --hover-color: #383838;
         }
         
         body {
@@ -30,7 +31,7 @@
         
         .header {
             background-color: var(--background-color);
-            padding: 16px;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             position: fixed;
@@ -85,7 +86,7 @@
             display: flex;
             flex-grow: 1;
             overflow: hidden;
-            padding-top: 72px; /* Account for fixed header */
+            padding-top: 72px;
         }
         
         .sidebar {
@@ -107,11 +108,11 @@
         }
         
         .menu-item:hover, .menu-item:focus {
-            background-color: #383838;
+            background-color: var(--hover-color);
         }
         
         .menu-item.active {
-            background-color: #383838;
+            background-color: var(--hover-color);
             font-weight: 500;
         }
         
@@ -230,23 +231,35 @@
             height: 36px;
         }
         
-        .recommended-section {
+        .sections-container {
             margin-top: 24px;
+        }
+        
+        .section {
+            margin-bottom: 32px;
         }
         
         .section-title {
             font-size: 18px;
             margin-bottom: 16px;
+            padding-left: 8px;
         }
         
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        .video-row {
+            display: flex;
             gap: 16px;
+            overflow-x: auto;
+            padding: 8px;
+            scrollbar-width: none;
+        }
+        
+        .video-row::-webkit-scrollbar {
+            display: none;
         }
         
         .video-card {
             cursor: pointer;
+            min-width: 320px;
         }
         
         .video-thumbnail {
@@ -255,6 +268,8 @@
             background-color: #333;
             position: relative;
             margin-bottom: 12px;
+            border-radius: 8px;
+            overflow: hidden;
         }
         
         .video-thumbnail img {
@@ -283,6 +298,7 @@
             border-radius: 50%;
             background-color: #555;
             margin-right: 12px;
+            flex-shrink: 0;
         }
         
         .video-info-text {
@@ -331,6 +347,21 @@
             color: var(--primary-color);
         }
         
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 1024px) {
             .sidebar {
@@ -361,82 +392,39 @@
         
         <div class="main-content">
             <div class="sidebar">
-                <div class="menu-item active" tabindex="0">
+                <div class="menu-item active" tabindex="0" data-section="home">
                     <i class="fas fa-home"></i> Home
                 </div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="explore">
                     <i class="fas fa-compass"></i> Explore
                 </div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="subscriptions">
                     <i class="fas fa-play-circle"></i> Subscriptions
                 </div>
                 <div class="divider"></div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="library">
                     <i class="fas fa-photo-video"></i> Library
                 </div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="history">
                     <i class="fas fa-history"></i> History
                 </div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="watch-later">
                     <i class="fas fa-clock"></i> Watch Later
                 </div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="liked">
                     <i class="fas fa-thumbs-up"></i> Liked Videos
                 </div>
                 <div class="divider"></div>
-                <div class="menu-item" tabindex="0">
+                <div class="menu-item" tabindex="0" data-section="settings">
                     <i class="fas fa-cog"></i> Settings
                 </div>
-                <div class="menu-item" tabindex="0">
-                    <i class="fas fa-flag"></i> Report
-                </div>
-                <div class="menu-item" tabindex="0">
-                    <i class="fas fa-question-circle"></i> Help
+                <div class="menu-item" tabindex="0" data-section="sponsorblock">
+                    <i class="fas fa-shield-alt"></i> SponsorBlock
                 </div>
             </div>
             
-            <div class="content-area">
-                <div class="player-container">
-                    <div id="player"></div>
-                </div>
-                
-                <div class="video-info">
-                    <h1 class="video-title" id="videoTitle">Loading video...</h1>
-                    <div class="video-meta">
-                        <span id="viewCount">0 views</span>
-                        <span id="uploadDate">Just now</span>
-                    </div>
-                    <div class="video-actions">
-                        <button class="action-button" tabindex="0">
-                            <i class="fas fa-thumbs-up"></i> <span class="action-text">Like</span>
-                        </button>
-                        <button class="action-button" tabindex="0">
-                            <i class="fas fa-thumbs-down"></i> <span class="action-text">Dislike</span>
-                        </button>
-                        <button class="action-button" tabindex="0">
-                            <i class="fas fa-share"></i> <span class="action-text">Share</span>
-                        </button>
-                        <button class="action-button" tabindex="0">
-                            <i class="fas fa-plus"></i> <span class="action-text">Save</span>
-                        </button>
-                    </div>
-                    
-                    <div class="channel-info">
-                        <div class="channel-avatar"></div>
-                        <div class="channel-details">
-                            <div class="channel-name" id="channelName">Channel Name</div>
-                            <div class="channel-subs" id="channelSubs">1M subscribers</div>
-                        </div>
-                        <button class="subscribe-button" tabindex="0">Subscribe</button>
-                    </div>
-                </div>
-                
-                <div class="recommended-section">
-                    <h2 class="section-title">Recommended</h2>
-                    <div class="video-grid" id="recommendedVideos">
-                        <!-- Video cards will be inserted here by JavaScript -->
-                    </div>
-                </div>
+            <div class="content-area" id="contentArea">
+                <!-- Content will be dynamically loaded here -->
             </div>
         </div>
     </div>
@@ -447,6 +435,7 @@
         let currentVideoId = '';
         let sponsorSegments = [];
         let checkInterval;
+        let currentSection = 'home';
         
         // Initialize the YouTube player
         function onYouTubeIframeAPIReady() {
@@ -469,13 +458,15 @@
                 }
             });
             
-            // Load video from URL or default
-            loadInitialVideo();
+            // Load initial content
+            loadInitialContent();
+            
+            // Set up event listeners
+            setupEventListeners();
         }
         
         function onPlayerReady(event) {
             console.log('Player is ready');
-            // Set focus to player for keyboard navigation
             event.target.focus();
         }
         
@@ -487,39 +478,424 @@
             }
         }
         
-        // Load initial video from URL or default
-        function loadInitialVideo() {
+        // Set up event listeners
+        function setupEventListeners() {
+            // Menu navigation
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.getAttribute('data-section');
+                    navigateToSection(section);
+                });
+                
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const section = item.getAttribute('data-section');
+                        navigateToSection(section);
+                    }
+                });
+            });
+            
+            // Search functionality
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            document.getElementById('searchInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Handle back button for TV
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' || e.key === 'Escape') {
+                    e.preventDefault();
+                    if (currentSection !== 'home') {
+                        navigateToSection('home');
+                    }
+                }
+            });
+            
+            // Handle popstate for back/forward navigation
+            window.addEventListener('popstate', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const videoId = urlParams.get('v');
+                const section = urlParams.get('section') || 'home';
+                
+                if (videoId && videoId !== currentVideoId) {
+                    loadVideo(videoId);
+                } else if (section !== currentSection) {
+                    navigateToSection(section, false);
+                }
+            });
+        }
+        
+        // Load initial content
+        function loadInitialContent() {
             const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('v') || 'dQw4w9WgXcQ'; // Default video
+            const videoId = urlParams.get('v');
+            const section = urlParams.get('section') || 'home';
             
             if (videoId) {
-                loadVideo(videoId);
+                loadVideoPage(videoId);
+            } else {
+                navigateToSection(section, false);
             }
         }
         
-        // Load a video by ID
-        function loadVideo(videoId) {
+        // Navigate to different sections
+        function navigateToSection(section, updateHistory = true) {
+            currentSection = section;
+            
+            // Update active menu item
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === section) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Load section content
+            switch(section) {
+                case 'home':
+                    loadHomePage();
+                    break;
+                case 'explore':
+                    loadExplorePage();
+                    break;
+                case 'subscriptions':
+                    loadSubscriptionsPage();
+                    break;
+                case 'library':
+                    loadLibraryPage();
+                    break;
+                case 'history':
+                    loadHistoryPage();
+                    break;
+                case 'watch-later':
+                    loadWatchLaterPage();
+                    break;
+                case 'liked':
+                    loadLikedVideosPage();
+                    break;
+                case 'settings':
+                    loadSettingsPage();
+                    break;
+                case 'sponsorblock':
+                    loadSponsorBlockSettings();
+                    break;
+                default:
+                    loadHomePage();
+            }
+            
+            // Update URL
+            if (updateHistory) {
+                const newUrl = window.location.pathname + '?section=' + section;
+                window.history.pushState({ section }, '', newUrl);
+            }
+        }
+        
+        // Load home page with recommended videos
+        async function loadHomePage() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <div class="sections-container" id="sectionsContainer">
+                    <div class="spinner"></div>
+                    <p>Loading content...</p>
+                </div>
+            `;
+            
+            try {
+                // Fetch home page data using YouTube API
+                const data = await fetchYouTubeData('home');
+                
+                // Process the data and create sections
+                const sectionsContainer = document.getElementById('sectionsContainer');
+                sectionsContainer.innerHTML = '';
+                
+                // Create sections based on the data
+                data.sections.forEach(section => {
+                    const sectionElement = document.createElement('div');
+                    sectionElement.className = 'section';
+                    sectionElement.innerHTML = `
+                        <h2 class="section-title">${section.title}</h2>
+                        <div class="video-row" id="${section.id}"></div>
+                    `;
+                    sectionsContainer.appendChild(sectionElement);
+                    
+                    // Add videos to the section
+                    const videoRow = document.getElementById(section.id);
+                    section.videos.forEach(video => {
+                        const videoCard = createVideoCard(video);
+                        videoRow.appendChild(videoCard);
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading home page:', error);
+                showNotification('Error loading content. Please try again.');
+            }
+        }
+        
+        // Load video page
+        async function loadVideoPage(videoId) {
             currentVideoId = videoId;
             
-            // First cue the video to prepare it
-            player.cueVideoById(videoId).then(() => {
-                // Then play it
-                player.playVideo();
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <div class="player-container">
+                    <div id="player"></div>
+                </div>
+                <div class="video-info">
+                    <h1 class="video-title" id="videoTitle">Loading video...</h1>
+                    <div class="video-meta">
+                        <span id="viewCount">0 views</span>
+                        <span id="uploadDate">Just now</span>
+                    </div>
+                    <div class="video-actions">
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-thumbs-up"></i> <span class="action-text">Like</span>
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-thumbs-down"></i> <span class="action-text">Dislike</span>
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-share"></i> <span class="action-text">Share</span>
+                        </button>
+                        <button class="action-button" tabindex="0">
+                            <i class="fas fa-plus"></i> <span class="action-text">Save</span>
+                        </button>
+                    </div>
+                    
+                    <div class="channel-info">
+                        <div class="channel-avatar" id="channelAvatar"></div>
+                        <div class="channel-details">
+                            <div class="channel-name" id="channelName">Channel Name</div>
+                            <div class="channel-subs" id="channelSubs">1M subscribers</div>
+                        </div>
+                        <button class="subscribe-button" tabindex="0">Subscribe</button>
+                    </div>
+                </div>
                 
-                // Update UI and fetch data
-                updateVideoInfo(videoId);
+                <div class="sections-container">
+                    <h2 class="section-title">Recommended Videos</h2>
+                    <div class="video-row" id="recommendedVideos">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Load the video in the player
+            if (player) {
+                player.cueVideoById(videoId).then(() => {
+                    player.playVideo();
+                }).catch(error => {
+                    console.error('Error loading video:', error);
+                    showNotification('Error loading video. Trying another...');
+                    loadVideo('dQw4w9WgXcQ'); // Fallback video
+                });
+            }
+            
+            // Fetch video info and recommended videos
+            try {
+                const videoData = await fetchYouTubeData('video', videoId);
+                updateVideoInfo(videoData);
+                
+                const recommendedData = await fetchYouTubeData('recommended', videoId);
+                updateRecommendedVideos(recommendedData);
+                
+                // Fetch SponsorBlock segments
                 fetchSponsorSegments(videoId);
-                fetchRecommendedVideos(videoId);
+            } catch (error) {
+                console.error('Error fetching video data:', error);
+                showNotification('Error loading video information');
+            }
+            
+            // Update URL
+            const newUrl = window.location.pathname + '?v=' + videoId;
+            window.history.pushState({ videoId }, '', newUrl);
+        }
+        
+        // Create a video card element
+        function createVideoCard(video) {
+            const videoCard = document.createElement('div');
+            videoCard.className = 'video-card';
+            videoCard.tabIndex = '0';
+            videoCard.innerHTML = `
+                <div class="video-thumbnail">
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div class="video-duration">${video.duration}</div>
+                </div>
+                <div class="video-details">
+                    <div class="video-avatar"></div>
+                    <div class="video-info-text">
+                        <div class="video-card-title">${video.title}</div>
+                        <div class="video-card-channel">${video.channel}</div>
+                        <div class="video-card-stats">${video.views}</div>
+                    </div>
+                </div>
+            `;
+            
+            videoCard.addEventListener('click', () => loadVideoPage(video.id));
+            videoCard.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    loadVideoPage(video.id);
+                }
+            });
+            
+            return videoCard;
+        }
+        
+        // Fetch data from YouTube API
+        async function fetchYouTubeData(type, id = '') {
+            // In a real implementation, this would call your backend service
+            // that uses the Java YouTubeRequest class
+            
+            // Mock data for demonstration
+            if (type === 'home') {
+                return {
+                    sections: [
+                        {
+                            id: 'trending',
+                            title: 'Trending Now',
+                            videos: [
+                                {
+                                    id: 'dQw4w9WgXcQ',
+                                    title: 'Never Gonna Give You Up - Rick Astley (Official Music Video)',
+                                    channel: 'Rick Astley',
+                                    duration: '3:32',
+                                    views: '1.2B views',
+                                    thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg'
+                                },
+                                {
+                                    id: '9bZkp7q19f0',
+                                    title: 'PSY - GANGNAM STYLE(강남스타일) M/V',
+                                    channel: 'officialpsy',
+                                    duration: '4:13',
+                                    views: '4.5B views',
+                                    thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg'
+                                },
+                                {
+                                    id: 'kJQP7kiw5Fk',
+                                    title: 'Luis Fonsi - Despacito ft. Daddy Yankee',
+                                    channel: 'Luis Fonsi',
+                                    duration: '4:42',
+                                    views: '7.8B views',
+                                    thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg'
+                                },
+                                {
+                                    id: 'JGwWNGJdvx8',
+                                    title: 'Ed Sheeran - Shape of You [Official Video]',
+                                    channel: 'Ed Sheeran',
+                                    duration: '3:53',
+                                    views: '5.9B views',
+                                    thumbnail: 'https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg'
+                                }
+                            ]
+                        },
+                        {
+                            id: 'recommended',
+                            title: 'Recommended For You',
+                            videos: [
+                                {
+                                    id: 'RgKAFK5djSk',
+                                    title: 'Wiz Khalifa - See You Again ft. Charlie Puth [Official Video]',
+                                    channel: 'Wiz Khalifa',
+                                    duration: '3:49',
+                                    views: '6.1B views',
+                                    thumbnail: 'https://img.youtube.com/vi/RgKAFK5djSk/mqdefault.jpg'
+                                },
+                                {
+                                    id: 'OPf0YbXqDm0',
+                                    title: 'Mark Ronson - Uptown Funk ft. Bruno Mars',
+                                    channel: 'Mark Ronson',
+                                    duration: '4:30',
+                                    views: '4.7B views',
+                                    thumbnail: 'https://img.youtube.com/vi/OPf0YbXqDm0/mqdefault.jpg'
+                                },
+                                {
+                                    id: 'JGwWNGJdvx8',
+                                    title: 'Ed Sheeran - Shape of You [Official Video]',
+                                    channel: 'Ed Sheeran',
+                                    duration: '3:53',
+                                    views: '5.9B views',
+                                    thumbnail: 'https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg'
+                                },
+                                {
+                                    id: 'kJQP7kiw5Fk',
+                                    title: 'Luis Fonsi - Despacito ft. Daddy Yankee',
+                                    channel: 'Luis Fonsi',
+                                    duration: '4:42',
+                                    views: '7.8B views',
+                                    thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg'
+                                }
+                            ]
+                        }
+                    ]
+                };
+            } else if (type === 'video') {
+                return {
+                    title: `Video ${id}`,
+                    views: `${Math.floor(Math.random() * 10000000).toLocaleString()} views`,
+                    uploadDate: `${Math.floor(Math.random() * 365)} days ago`,
+                    channel: `Channel for ${id}`,
+                    subscribers: `${Math.floor(Math.random() * 10)}M subscribers`
+                };
+            } else if (type === 'recommended') {
+                return {
+                    videos: [
+                        {
+                            id: 'dQw4w9WgXcQ',
+                            title: 'Never Gonna Give You Up - Rick Astley (Official Music Video)',
+                            channel: 'Rick Astley',
+                            duration: '3:32',
+                            views: '1.2B views',
+                            thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg'
+                        },
+                        {
+                            id: '9bZkp7q19f0',
+                            title: 'PSY - GANGNAM STYLE(강남스타일) M/V',
+                            channel: 'officialpsy',
+                            duration: '4:13',
+                            views: '4.5B views',
+                            thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg'
+                        },
+                        {
+                            id: 'kJQP7kiw5Fk',
+                            title: 'Luis Fonsi - Despacito ft. Daddy Yankee',
+                            channel: 'Luis Fonsi',
+                            duration: '4:42',
+                            views: '7.8B views',
+                            thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg'
+                        },
+                        {
+                            id: 'JGwWNGJdvx8',
+                            title: 'Ed Sheeran - Shape of You [Official Video]',
+                            channel: 'Ed Sheeran',
+                            duration: '3:53',
+                            views: '5.9B views',
+                            thumbnail: 'https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg'
+                        }
+                    ]
+                };
+            }
+        }
+        
+        // Update video info
+        function updateVideoInfo(data) {
+            document.getElementById('videoTitle').textContent = data.title;
+            document.getElementById('viewCount').textContent = data.views;
+            document.getElementById('uploadDate').textContent = data.uploadDate;
+            document.getElementById('channelName').textContent = data.channel;
+            document.getElementById('channelSubs').textContent = data.subscribers;
+        }
+        
+        // Update recommended videos
+        function updateRecommendedVideos(data) {
+            const recommendedContainer = document.getElementById('recommendedVideos');
+            recommendedContainer.innerHTML = '';
+            
+            data.videos.forEach(video => {
+                if (video.id === currentVideoId) return;
                 
-                // Update URL without reloading
-                const newUrl = window.location.pathname + '?v=' + videoId;
-                window.history.pushState({ path: newUrl }, '', newUrl);
-            }).catch(error => {
-                console.error('Error loading video:', error);
-                showNotification('Error loading video. Trying another...');
-                
-                // Fallback to a known working video
-                loadVideo('dQw4w9WgXcQ');
+                const videoCard = createVideoCard(video);
+                recommendedContainer.appendChild(videoCard);
             });
         }
         
@@ -542,7 +918,7 @@
         
         // Start checking for sponsor segments during playback
         function startSponsorSegmentCheck() {
-            clearInterval(checkInterval); // Clear any existing interval
+            clearInterval(checkInterval);
             
             checkInterval = setInterval(() => {
                 if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
@@ -558,39 +934,16 @@
                         const segmentEnd = segment.segment[1];
                         
                         if (currentTime >= segmentStart && currentTime < segmentEnd) {
-                            // Skip the segment
                             player.seekTo(segmentEnd);
                             showSkipNotification(segment.category);
                             break;
                         }
                     }
                 }
-            }, 1000); // Check every second
+            }, 1000);
         }
         
-        // Show notification when skipping a segment
-        function showSkipNotification(category) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <i class="fas fa-forward"></i>
-                <span>Skipped ${category} segment</span>
-            `;
-            
-            // Remove any existing notification
-            const existing = document.querySelector('.notification');
-            if (existing) existing.remove();
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transition = 'opacity 0.5s';
-                setTimeout(() => notification.remove(), 500);
-            }, 3000);
-        }
-        
-        // Show general notification
+        // Show notification
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'notification';
@@ -608,99 +961,105 @@
             }, 3000);
         }
         
-        // Update video info (simplified - in a real app you'd use YouTube API)
-        function updateVideoInfo(videoId) {
-            // In a real implementation, you would fetch this from YouTube API
-            document.getElementById('videoTitle').textContent = `Video ${videoId}`;
-            document.getElementById('viewCount').textContent = `${Math.floor(Math.random() * 1000000).toLocaleString()} views`;
+        // Show skip notification
+        function showSkipNotification(category) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-forward"></i>
+                <span>Skipped ${category} segment</span>
+            `;
             
-            const daysAgo = Math.floor(Math.random() * 365);
-            document.getElementById('uploadDate').textContent = `${daysAgo} days ago`;
+            document.body.appendChild(notification);
             
-            document.getElementById('channelName').textContent = `Channel for ${videoId}`;
-            document.getElementById('channelSubs').textContent = `${Math.floor(Math.random() * 10)}M subscribers`;
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
         }
         
-        // Fetch recommended videos (simplified - in a real app you'd use YouTube API)
-        function fetchRecommendedVideos(videoId) {
-            const recommendedContainer = document.getElementById('recommendedVideos');
-            recommendedContainer.innerHTML = '';
-            
-            // Mock data - in a real app you would fetch this from YouTube API
-            const mockVideos = [
-                { id: 'dQw4w9WgXcQ', title: 'Never Gonna Give You Up - Rick Astley (Official Music Video)', channel: 'Rick Astley', duration: '3:32', views: '1.2B views' },
-                { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE(강남스타일) M/V', channel: 'officialpsy', duration: '4:13', views: '4.5B views' },
-                { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', channel: 'Luis Fonsi', duration: '4:42', views: '7.8B views' },
-                { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You [Official Video]', channel: 'Ed Sheeran', duration: '3:53', views: '5.9B views' },
-                { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again ft. Charlie Puth [Official Video]', channel: 'Wiz Khalifa', duration: '3:49', views: '6.1B views' },
-                { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', channel: 'Mark Ronson', duration: '4:30', views: '4.7B views' }
-            ];
-            
-            mockVideos.forEach(video => {
-                if (video.id === videoId) return; // Skip current video
-                
-                const videoCard = document.createElement('div');
-                videoCard.className = 'video-card';
-                videoCard.tabIndex = '0';
-                videoCard.innerHTML = `
-                    <div class="video-thumbnail">
-                        <img src="https://img.youtube.com/vi/${video.id}/mqdefault.jpg" alt="${video.title}">
-                        <div class="video-duration">${video.duration}</div>
-                    </div>
-                    <div class="video-details">
-                        <div class="video-avatar"></div>
-                        <div class="video-info-text">
-                            <div class="video-card-title">${video.title}</div>
-                            <div class="video-card-channel">${video.channel}</div>
-                            <div class="video-card-stats">${video.views}</div>
-                        </div>
-                    </div>
-                `;
-                
-                videoCard.addEventListener('click', () => loadVideo(video.id));
-                videoCard.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        loadVideo(video.id);
-                    }
-                });
-                
-                recommendedContainer.appendChild(videoCard);
-            });
-        }
-        
-        // Search functionality
-        document.getElementById('searchButton').addEventListener('click', performSearch);
-        document.getElementById('searchInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-        
+        // Perform search
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
-                // In a real implementation, you would search YouTube API
                 showNotification(`Searching for: ${query}`);
+                // In a real implementation, you would call the YouTube search API
             }
         }
         
-        // Handle back button for TV
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' || e.key === 'Escape') {
-                // Handle back navigation
-                e.preventDefault();
-                showNotification('Back button pressed');
-            }
-        });
+        // Other section loading functions (simplified)
+        function loadExplorePage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Explore</h1>
+                    <p>This would show trending videos, categories, etc.</p>
+                </div>
+            `;
+        }
         
-        // Handle popstate for back/forward navigation
-        window.addEventListener('popstate', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoId = urlParams.get('v');
-            if (videoId && videoId !== currentVideoId) {
-                loadVideo(videoId);
-            }
-        });
+        function loadSubscriptionsPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Subscriptions</h1>
+                    <p>This would show videos from subscribed channels.</p>
+                </div>
+            `;
+        }
+        
+        function loadLibraryPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Library</h1>
+                    <p>This would show your playlists, liked videos, etc.</p>
+                </div>
+            `;
+        }
+        
+        function loadHistoryPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>History</h1>
+                    <p>This would show your watch history.</p>
+                </div>
+            `;
+        }
+        
+        function loadWatchLaterPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Watch Later</h1>
+                    <p>This would show videos you've saved to watch later.</p>
+                </div>
+            `;
+        }
+        
+        function loadLikedVideosPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Liked Videos</h1>
+                    <p>This would show videos you've liked.</p>
+                </div>
+            `;
+        }
+        
+        function loadSettingsPage() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>Settings</h1>
+                    <p>This would show app settings.</p>
+                </div>
+            `;
+        }
+        
+        function loadSponsorBlockSettings() {
+            document.getElementById('contentArea').innerHTML = `
+                <div class="sections-container">
+                    <h1>SponsorBlock Settings</h1>
+                    <p>This would show SponsorBlock configuration options.</p>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
