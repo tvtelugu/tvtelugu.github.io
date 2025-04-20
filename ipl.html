@@ -1,284 +1,94 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PS PLAY - IPL LANGUAGES</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPL Live Channels</title>
   <style>
     body {
-      background-color: #121212;
-      color: #ffffff;
+      font-family: Arial, sans-serif;
       margin: 0;
-      font-family: 'Roboto', Arial, sans-serif;
+      padding: 10px;
+      background-color: #000;
+      color: white;
+      box-sizing: border-box;
     }
 
-    #video-container {
-      text-align: center;
-      padding: 20px;
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+      justify-content: center;
     }
 
-    #video-title {
-      font-size: 20px;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-      color: #1e90ff;
+    button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0d6efd;
     }
 
     iframe {
       width: 100%;
-      height: 250px;
-      max-width: 900px;
+      height: 70vh;
       border: none;
       border-radius: 10px;
     }
 
-    #title-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .title-item {
-      background-color: #1e1e1e;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid #333;
-    }
-
-    .title-item:hover {
-      background-color: #1e90ff;
-      color: #fff;
-      transform: translateY(-3px);
-    }
-
-    .telegram-button {
-      background-color: #1e90ff;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      padding: 12px 25px;
-      text-decoration: none;
-      border-radius: 8px;
-      margin: 30px auto;
-      display: block;
-      max-width: 250px;
-      text-align: center;
-    }
-
-    .telegram-button:hover {
-      background-color: #0073e6;
-    }
-
-    footer {
-      text-align: center;
-      color: #666;
-      font-size: 14px;
-      margin: 20px 0;
-    }
-
-    footer a {
-      color: #1e90ff;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+    @media (max-width: 600px) {
+      button {
+        font-size: 12px;
+        padding: 5px 10px;
+      }
     }
   </style>
 </head>
 <body>
 
-<div id="video-container">
-  <div id="video-title">PS PLAY IPL ALL LANGUAGES</div>
-  <iframe id="playerFrame" src="" allowfullscreen></iframe>
-</div>
+  <div class="buttons" id="channelButtons"></div>
 
-<div id="title-list"></div>
+  <iframe id="player" src="https://psplay.site/ipl_all/play.php?url=https://psplayflix.site/2025/ps_ipl-liv.m3u8" allowfullscreen></iframe>
 
-<a href="https://telegram.me/psplaylink" class="telegram-button" target="_blank">Join Telegram</a>
+  <script>
+    const data = [
+      { id: 'eng', name: 'English', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'hin', name: 'Hindi', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'ben', name: 'Bengali', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'tel', name: 'Telugu', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'tam', name: 'Tamil', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'kan', name: 'Kannada', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'mar', name: 'Marathi', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'har', name: 'Haryanvi', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'pun', name: 'Punjabi', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'mal', name: 'Malayalam', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=mal' },
+      { id: 'ban', name: 'Bangla', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=ban' },
+      { id: 'cam', name: 'Camera', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=hero_cam' },
+      { id: 'fie', name: 'Field', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
+      { id: 'field_cam', name: 'Field View', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=field_view_cam' }
+    ];
 
-<footer>
-  Made by <a href="https://telegram.me/psplaylink" target="_blank">PS PLAY</a>
-</footer>
+    const baseUrl = 'https://psplay.site/ipl_all/play.php?url=';
+    const buttonsContainer = document.getElementById('channelButtons');
+    const player = document.getElementById('player');
 
-<script>
-const data = [
-  {
-    id: 'eng',
-    name: 'English',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'hin',
-    name: 'Hindi',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'ben',
-    name: 'Bengali',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'tel',
-    name: 'Telugu',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'tam',
-    name: 'Tamil',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'kan',
-    name: 'Kannada',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'mar',
-    name: 'Marathi',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'har',
-    name: 'Haryanvi',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'pun',
-    name: 'Punjabi',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'mal',
-    name: 'Malayalam',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=mal'
-  },
-  {
-    id: 'ban',
-    name: 'Bangla',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=ban'
-  },
-  {
-    id: 'cam',
-    name: 'Camera',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=hero_cam'
-  },
-  {
-    id: 'fie',
-    name: 'Field',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8'
-  },
-  {
-    id: 'field_cam',
-    name: 'Field View',
-    url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=field_view_cam'
-  }
-];
-
-// Create container for buttons
-const container = document.createElement('div');
-container.className = 'channel-container';
-document.body.appendChild(container);
-
-// Create player frame
-const playerFrame = document.createElement('iframe');
-playerFrame.className = 'player-frame';
-playerFrame.allowFullscreen = true;
-document.body.appendChild(playerFrame);
-
-// Create style element
-const style = document.createElement('style');
-style.textContent = `
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  .channel-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .channel-btn {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .channel-btn:hover {
-    background-color: #45a049;
-  }
-  .player-frame {
-    width: 100%;
-    height: 500px;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
-`;
-document.head.appendChild(style);
-
-// Display channel buttons
-function displayChannels() {
-  container.innerHTML = '';
-  
-  data.forEach((channel, index) => {
-    const button = document.createElement('button');
-    button.className = 'channel-btn';
-    button.textContent = channel.name;
-    button.onclick = () => playChannel(channel.url);
-    container.appendChild(button);
-    
-    // Auto-play first channel
-    if (index === 0) {
-      playChannel(channel.url);
-    }
-  });
-}
-
-// Play selected channel
-function playChannel(url) {
-  playerFrame.src = `https://psplay.site/ipl_all/play.php?url=${encodeURIComponent(url)}`;
-}
-
-// Initialize
-displayChannels();
-
-// Anti-debugging protection (original had this)
-const debugProtection = () => {
-  const debuggerCheck = () => {
-    try {
-      return Function('return (function() {}.constructor("return this")())')();
-    } catch (e) {
-      return window;
-    }
-  };
-  
-  const check = debuggerCheck();
-  if (check.console) {
-    check.console.log = () => {};
-    check.console.warn = () => {};
-    check.console.error = () => {};
-  }
-};
-
-debugProtection();
-</script>
+    data.forEach(channel => {
+      const btn = document.createElement('button');
+      btn.textContent = channel.name;
+      btn.onclick = () => {
+        player.src = baseUrl + encodeURIComponent(channel.url);
+      };
+      buttonsContainer.appendChild(btn);
+    });
+  </script>
 
 </body>
 </html>
