@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IPL Live Channels</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 10px;
       background-color: #000;
       color: white;
+      padding: 10px;
+      margin: 0;
       box-sizing: border-box;
     }
 
@@ -18,7 +18,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       justify-content: center;
     }
 
@@ -37,11 +37,11 @@
       background-color: #0d6efd;
     }
 
-    iframe {
+    video {
       width: 100%;
-      height: 70vh;
-      border: none;
+      max-height: 70vh;
       border-radius: 10px;
+      background-color: black;
     }
 
     @media (max-width: 600px) {
@@ -56,8 +56,9 @@
 
   <div class="buttons" id="channelButtons"></div>
 
-  <iframe id="player" src="https://psplay.site/ipl_all/play.php?url=https://psplayflix.site/2025/ps_ipl-liv.m3u8" allowfullscreen></iframe>
+  <video id="video" controls autoplay></video>
 
+  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
   <script>
     const data = [
       { id: 'eng', name: 'English', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8' },
@@ -76,18 +77,35 @@
       { id: 'field_cam', name: 'Field View', url: 'https://psplayflix.site/2025/ps_ipl-liv.m3u8?ps=field_view_cam' }
     ];
 
-    const baseUrl = 'https://psplay.site/ipl_all/play.php?url=';
     const buttonsContainer = document.getElementById('channelButtons');
-    const player = document.getElementById('player');
+    const video = document.getElementById('video');
+    let hls;
+
+    function loadStream(url) {
+      if (hls) {
+        hls.destroy();
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+      } else {
+        alert('HLS not supported in this browser.');
+      }
+    }
 
     data.forEach(channel => {
       const btn = document.createElement('button');
       btn.textContent = channel.name;
-      btn.onclick = () => {
-        player.src = baseUrl + encodeURIComponent(channel.url);
-      };
+      btn.onclick = () => loadStream(channel.url);
       buttonsContainer.appendChild(btn);
     });
+
+    // Load default stream
+    loadStream(data[0].url);
   </script>
 
 </body>
