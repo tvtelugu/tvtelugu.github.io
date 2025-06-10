@@ -455,15 +455,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
-        // API endpoints
-        const HOME_API = "https://mov.mafiatv.live/apis/v1/?action=get_home_screen";
-        const USER_SESSION_API = "https://mov.mafiatv.live/apis/v1/?action=start_session";
-        const MOVIE_LIST_API = "https://mov.mafiatv.live/apis/v1/?action=get_movies_screen";
-        const SERIES_LIST_API = "https://mov.mafiatv.live/apis/v1/?action=get_series_screen";
-        const SEARCH_API = "https://mov.mafiatv.live/apis/v1/?action=search&query=";
-        const DETAILS_API = "https://mov.mafiatv.live/apis/v1/?action=get_content_detail&query=";
-        const SEASON_API = "https://mov.mafiatv.live/apis/v1/?action=get_season_detail&query=";
-        const PLAYBACK_API = "https://mov.mafiatv.live/apis/v1/?action=get_playback&query=";
+ // API endpoints
+        const API_BASE = "https://mov.mafiatv.live/apis/v1/";
+        const HOME_API = `${API_BASE}?action=get_home_screen`;
+        const USER_SESSION_API = `${API_BASE}?action=start_session`;
+        const MOVIE_LIST_API = `${API_BASE}?action=get_movies_screen`;
+        const SERIES_LIST_API = `${API_BASE}?action=get_series_screen`;
+        const SEARCH_API = `${API_BASE}?action=search&query=`;
+        const DETAILS_API = `${API_BASE}?action=get_content_detail&query=`;
+        const SEASON_API = `${API_BASE}?action=get_season_detail&query=`;
+        const PLAYBACK_API = `${API_BASE}?action=get_playback&query=`;
 
         // DOM elements
         const header = document.getElementById('main-header');
@@ -495,64 +496,135 @@
         const closePlayer = document.getElementById('close-player');
         const player = document.getElementById('player');
 
-        // Global variables
+         // Global variables
         let currentHeroContent = null;
         let currentContentId = null;
         let currentContentType = null;
         let playerInstance = null;
+        let isLoading = false;
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
             initSession();
-            loadHomeContent();
             setupEventListeners();
+            
+            // Show loading state
+            showLoading();
+            
+            // Load home content after a brief delay to ensure session is initialized
+            setTimeout(loadHomeContent, 500);
         });
+
+        // Show loading state
+        function showLoading() {
+            contentSections.innerHTML = `
+                <div class="content-section" style="text-align: center; padding: 50px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading content...</p>
+                </div>
+            `;
+        }
+
+        // Show error state
+        function showError(message) {
+            contentSections.innerHTML = `
+                <div class="content-section" style="text-align: center; padding: 50px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h3>Error Loading Content</h3>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" id="retry-btn">Try Again</button>
+                </div>
+            `;
+            
+            document.getElementById('retry-btn').addEventListener('click', () => {
+                showLoading();
+                loadHomeContent();
+            });
+        }
+
+        // Fetch with error handling
+        async function fetchData(url) {
+            if (isLoading) return;
+            isLoading = true;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === 'error') {
+                    throw new Error(data.message || 'API returned an error');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showError(error.message);
+                return null;
+            } finally {
+                isLoading = false;
+            }
+        }
 
         // Initialize user session
         async function initSession() {
             try {
-                const response = await fetch(USER_SESSION_API);
-                const data = await response.json();
-                console.log('Session initialized:', data);
+                const data = await fetchData(USER_SESSION_API);
+                if (data) {
+                    console.log('Session initialized:', data);
+                }
             } catch (error) {
-                console.error('Error initializing session:', error);
+                console.error('Session init error:', error);
             }
         }
 
         // Load home content
         async function loadHomeContent() {
-            try {
-                const response = await fetch(HOME_API);
-                const data = await response.json();
+            const data = await fetchData(HOME_API);
+            
+            if (data) {
+                contentSections.innerHTML = '';
                 
-                if (data.status === 'success') {
-                    // Set hero section with first item from first category
-                    if (data.data.length > 0 && data.data[0].list.length > 0) {
-                        const heroItem = data.data[0].list[0];
-                        currentHeroContent = heroItem;
-                        
-                        // Get details for hero item
-                        const details = await getContentDetails(heroItem.id);
-                        if (details) {
-                            heroTitle.textContent = details.title;
-                            heroDescription.textContent = details.desc;
-                            
-                            // Set hero background
-                            heroSection.style.backgroundImage = `url(${details.poster})`;
-                            
-                            // Store content type for playback
-                            currentContentType = details.type;
-                        }
-                    }
+                // Set hero section with first item from first category
+                if (data.data.length > 0 && data.data[0].list.length > 0) {
+                    const heroItem = data.data[0].list[0];
+                    currentHeroContent = heroItem;
                     
-                    // Create content sections
-                    data.data.forEach(section => {
-                        createContentSection(section.title, section.list);
-                    });
+                    // Get details for hero item
+                    const details = await getContentDetails(heroItem.id);
+                    if (details) {
+                        updateHeroSection(details);
+                    }
                 }
-            } catch (error) {
-                console.error('Error loading home content:', error);
+                
+                // Create content sections
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
             }
+        }
+
+        // Update hero section
+        function updateHeroSection(details) {
+            heroTitle.textContent = details.title;
+            heroDescription.textContent = details.desc;
+            heroSection.style.backgroundImage = `url(${details.poster})`;
+            currentContentType = details.type;
+            
+            // Update hero buttons
+            playHeroBtn.onclick = () => playContent(currentHeroContent.id, details.type === 't');
+            infoHeroBtn.onclick = () => showContentDetails(currentHeroContent.id);
         }
 
         // Load movies content
@@ -793,7 +865,7 @@
             }
         }
 
-        // Setup event listeners
+       // Setup event listeners
         function setupEventListeners() {
             // Header scroll effect
             window.addEventListener('scroll', () => {
@@ -880,6 +952,24 @@
                     player.pause();
                 }
             });
+        }
+		// Add retry button for hero section if it fails to load
+            heroSection.addEventListener('error', () => {
+                heroSection.style.backgroundImage = 'linear-gradient(to right, #141414, #333)';
+            }, true);
+        }
+
+        // Initialize Plyr player
+        function initPlayer() {
+            if (!playerInstance) {
+                playerInstance = new Plyr(player, {
+                    captions: { active: true, update: true },
+                    settings: ['captions', 'quality', 'speed'],
+                    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'fullscreen'],
+                    ratio: '16:9'
+                });
+            }
+            return playerInstance;
         }
     </script>
 </body>
