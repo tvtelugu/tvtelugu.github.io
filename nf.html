@@ -6,8 +6,6 @@
     <title>MafiaTV - Netflix Clone</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         :root {
             --primary-color: #e50914;
@@ -37,16 +35,13 @@
             width: 100%;
             z-index: 100;
             transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         header.scrolled {
             background-color: var(--dark-color);
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         
         .logo {
@@ -305,9 +300,10 @@
             align-items: center;
         }
         
-        .video-player {
+        #player {
             width: 80%;
             max-width: 1200px;
+            height: 80vh;
         }
         
         .close-player {
@@ -318,6 +314,22 @@
             color: white;
             cursor: pointer;
             z-index: 2;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Responsive */
@@ -364,8 +376,9 @@
                 height: 250px;
             }
             
-            .video-player {
+            #player {
                 width: 95%;
+                height: 50vh;
             }
         }
     </style>
@@ -373,17 +386,15 @@
 <body>
     <!-- Header -->
     <header id="main-header">
-        <div class="header-container">
-            <a href="#" class="logo">MAFIATV</a>
-            <div class="nav-links">
-                <a href="#" class="active">Home</a>
-                <a href="#" id="movies-link">Movies</a>
-                <a href="#" id="series-link">TV Shows</a>
-            </div>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search...">
-                <button id="search-btn"><i class="fas fa-search"></i></button>
-            </div>
+        <a href="#" class="logo">MAFIATV</a>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#" id="movies-link">Movies</a>
+            <a href="#" id="series-link">TV Shows</a>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
         </div>
     </header>
 
@@ -405,7 +416,10 @@
 
     <!-- Content Sections -->
     <div id="content-sections">
-        <!-- Sections will be loaded dynamically -->
+        <div class="content-section" style="text-align: center; padding: 50px;">
+            <div class="spinner"></div>
+            <p>Loading content...</p>
+        </div>
     </div>
 
     <!-- Detail Modal -->
@@ -448,14 +462,15 @@
     <div class="player-modal" id="player-modal">
         <span class="close-player" id="close-player">&times;</span>
         <div class="player-container">
-            <video id="player" class="video-player" controls></video>
+            <div id="player"></div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <!-- JW Player Library -->
+    <script src="https://cdn.jwplayer.com/libraries/8x38y0bV.js"></script>
+    
     <script>
- // API endpoints
+        // API endpoints
         const API_BASE = "https://mov.mafiatv.live/apis/v1/";
         const HOME_API = `${API_BASE}?action=get_home_screen`;
         const USER_SESSION_API = `${API_BASE}?action=start_session`;
@@ -494,34 +509,27 @@
         const similarContent = document.getElementById('similar-content');
         const playerModal = document.getElementById('player-modal');
         const closePlayer = document.getElementById('close-player');
-        const player = document.getElementById('player');
+        const playerContainer = document.getElementById('player');
 
-         // Global variables
+        // Global variables
         let currentHeroContent = null;
         let currentContentId = null;
         let currentContentType = null;
-        let playerInstance = null;
+        let jwPlayerInstance = null;
         let isLoading = false;
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
             initSession();
             setupEventListeners();
-            
-            // Show loading state
-            showLoading();
-            
-            // Load home content after a brief delay to ensure session is initialized
-            setTimeout(loadHomeContent, 500);
+            loadHomeContent();
         });
 
         // Show loading state
         function showLoading() {
             contentSections.innerHTML = `
                 <div class="content-section" style="text-align: center; padding: 50px;">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+                    <div class="spinner"></div>
                     <p>Loading content...</p>
                 </div>
             `;
@@ -544,13 +552,17 @@
             });
         }
 
-        // Fetch with error handling
+        // Fetch with error handling and CORS proxy
         async function fetchData(url) {
             if (isLoading) return;
             isLoading = true;
             
             try {
-                const response = await fetch(url, {
+                // Use CORS proxy for development (remove in production)
+                const proxyUrl = '';
+                const fullUrl = proxyUrl ? `${proxyUrl}${url}` : url;
+                
+                const response = await fetch(fullUrl, {
                     headers: {
                         'Accept': 'application/json',
                     },
@@ -591,6 +603,7 @@
 
         // Load home content
         async function loadHomeContent() {
+            showLoading();
             const data = await fetchData(HOME_API);
             
             if (data) {
@@ -629,107 +642,85 @@
 
         // Load movies content
         async function loadMoviesContent() {
-            try {
+            showLoading();
+            const data = await fetchData(MOVIE_LIST_API);
+            
+            if (data) {
                 contentSections.innerHTML = '';
-                const response = await fetch(MOVIE_LIST_API);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    data.data.forEach(section => {
-                        createContentSection(section.title, section.list);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading movies:', error);
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
             }
         }
 
         // Load series content
         async function loadSeriesContent() {
-            try {
+            showLoading();
+            const data = await fetchData(SERIES_LIST_API);
+            
+            if (data) {
                 contentSections.innerHTML = '';
-                const response = await fetch(SERIES_LIST_API);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    data.data.forEach(section => {
-                        createContentSection(section.title, section.list);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading series:', error);
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
             }
         }
 
         // Search content
         async function searchContent(query) {
-            try {
-                contentSections.innerHTML = '';
-                const response = await fetch(`${SEARCH_API}${encodeURIComponent(query)}`);
-                const data = await response.json();
-                
+            showLoading();
+            const data = await fetchData(`${SEARCH_API}${encodeURIComponent(query)}`);
+            
+            if (data) {
                 if (data.status === 'success') {
+                    contentSections.innerHTML = '';
                     createContentSection(`Search Results for "${query}" (${data.data.count})`, data.data.list);
                 } else {
-                    contentSections.innerHTML = `<div class="content-section"><h2 class="section-title">No results found for "${query}"</h2></div>`;
+                    contentSections.innerHTML = `
+                        <div class="content-section">
+                            <h2 class="section-title">No results found for "${query}"</h2>
+                        </div>
+                    `;
                 }
-            } catch (error) {
-                console.error('Error searching:', error);
             }
         }
 
         // Get content details
         async function getContentDetails(contentId) {
-            try {
-                const response = await fetch(`${DETAILS_API}${contentId}`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    return data.data;
-                }
-                return null;
-            } catch (error) {
-                console.error('Error getting content details:', error);
-                return null;
-            }
+            const data = await fetchData(`${DETAILS_API}${contentId}`);
+            return data?.data || null;
         }
 
         // Get season details
         async function getSeasonDetails(seasonId) {
-            try {
-                const response = await fetch(`${SEASON_API}${seasonId}`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    return data.data;
-                }
-                return null;
-            } catch (error) {
-                console.error('Error getting season details:', error);
-                return null;
-            }
+            const data = await fetchData(`${SEASON_API}${seasonId}`);
+            return data?.data || null;
         }
 
         // Get playback URL
         async function getPlaybackUrl(contentId) {
-            try {
-                const response = await fetch(`${PLAYBACK_API}${contentId}`);
-                const data = await response.json();
+            const data = await fetchData(`${PLAYBACK_API}${contentId}`);
+            
+            if (data?.status === 'success') {
+                // Construct full URL
+                const streamPath = data.data.playback.stream;
+                const fullUrl = `https://mov.mafiatv.live/${streamPath}`;
                 
-                if (data.status === 'success') {
-                    // Construct full URL
-                    const streamPath = data.data.playback.stream;
-                    const fullUrl = `https://mov.mafiatv.live/${streamPath}`;
-                    return {
-                        url: fullUrl,
-                        tracks: data.data.playback.tracks
-                    };
-                }
-                return null;
-            } catch (error) {
-                console.error('Error getting playback URL:', error);
-                return null;
+                // Format tracks for JW Player
+                const tracks = data.data.playback.tracks
+                    .filter(track => track.kind === 'captions')
+                    .map(track => ({
+                        file: track.file.startsWith('//') ? `https:${track.file}` : track.file,
+                        label: track.label,
+                        kind: 'captions'
+                    }));
+                
+                return {
+                    url: fullUrl,
+                    tracks: tracks
+                };
             }
+            return null;
         }
 
         // Create content section
@@ -752,6 +743,9 @@
                 const img = document.createElement('img');
                 img.src = item.poster;
                 img.alt = item.title || 'Content';
+                img.onerror = () => {
+                    img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
+                };
                 
                 contentItem.appendChild(img);
                 row.appendChild(contentItem);
@@ -790,7 +784,7 @@
                 
                 // Clear and load similar content
                 similarContent.innerHTML = '';
-                if (details.more_like_this && details.more_like_this.length > 0) {
+                if (details.more_like_this?.length > 0) {
                     details.more_like_this.forEach(item => {
                         const contentItem = document.createElement('div');
                         contentItem.className = 'content-item';
@@ -799,6 +793,9 @@
                         const img = document.createElement('img');
                         img.src = item.poster;
                         img.alt = 'Similar content';
+                        img.onerror = () => {
+                            img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
+                        };
                         
                         contentItem.appendChild(img);
                         similarContent.appendChild(contentItem);
@@ -814,14 +811,14 @@
             }
         }
 
-        // Play content
+        // Play content with JW Player
         async function playContent(contentId, isSeries = false) {
             if (isSeries) {
-                // For series, we need to get the first episode of the first season
+                // For series, get the first episode of the first season
                 const details = await getContentDetails(contentId);
-                if (details && details.season && details.season.length > 0) {
+                if (details?.season?.length > 0) {
                     const seasonDetails = await getSeasonDetails(details.season[0].id);
-                    if (seasonDetails && seasonDetails.episodes.length > 0) {
+                    if (seasonDetails?.episodes?.length > 0) {
                         contentId = seasonDetails.episodes[0].id;
                     }
                 }
@@ -829,57 +826,48 @@
             
             const playbackData = await getPlaybackUrl(contentId);
             if (playbackData) {
-                // Initialize player
-                player.src = playbackData.url;
-                
-                // Add captions if available
-                if (playbackData.tracks && playbackData.tracks.length > 0) {
-                    playbackData.tracks.forEach(track => {
-                        if (track.kind === 'captions') {
-                            const trackElement = document.createElement('track');
-                            trackElement.kind = track.kind;
-                            trackElement.label = track.label;
-                            trackElement.srclang = track.label.toLowerCase().split(' ')[0];
-                            trackElement.src = track.file.startsWith('//') ? `https:${track.file}` : track.file;
-                            player.appendChild(trackElement);
-                        }
-                    });
+                // Destroy existing player instance if it exists
+                if (jwPlayerInstance) {
+                    jwPlayerInstance.remove();
                 }
                 
-                // Initialize Plyr if not already done
-                if (!playerInstance) {
-                    playerInstance = new Plyr(player, {
-                        captions: { active: true, update: true },
-                        settings: ['captions', 'quality', 'speed'],
-                        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'fullscreen'],
-                        ratio: '16:9'
-                    });
-                }
+                // Setup JW Player
+                jwPlayerInstance = jwplayer('player').setup({
+                    file: playbackData.url,
+                    image: playbackData.poster || '',
+                    tracks: playbackData.tracks,
+                    width: '100%',
+                    height: '100%',
+                    autostart: true,
+                    captions: {
+                        color: '#FFF',
+                        fontSize: 14,
+                        backgroundOpacity: 0
+                    }
+                });
                 
                 // Show player modal
                 playerModal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                
-                // Play the video
-                player.play().catch(e => console.error('Auto-play failed:', e));
             }
         }
 
-       // Setup event listeners
+        // Setup event listeners
         function setupEventListeners() {
             // Header scroll effect
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                header.classList.toggle('scrolled', window.scrollY > 100);
             });
+            
+            // Hero section image fallback
+            heroSection.addEventListener('error', () => {
+                heroSection.style.backgroundImage = 'linear-gradient(to right, #141414, #333)';
+            }, true);
             
             // Play hero content
             playHeroBtn.addEventListener('click', () => {
                 if (currentHeroContent) {
-                    playContent(currentHeroContent.id, false);
+                    playContent(currentHeroContent.id, currentContentType === 't');
                 }
             });
             
@@ -893,17 +881,13 @@
             // Search functionality
             searchBtn.addEventListener('click', () => {
                 const query = searchInput.value.trim();
-                if (query) {
-                    searchContent(query);
-                }
+                if (query) searchContent(query);
             });
             
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     const query = searchInput.value.trim();
-                    if (query) {
-                        searchContent(query);
-                    }
+                    if (query) searchContent(query);
                 }
             });
             
@@ -936,7 +920,9 @@
             closePlayer.addEventListener('click', () => {
                 playerModal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-                player.pause();
+                if (jwPlayerInstance) {
+                    jwPlayerInstance.pause();
+                }
             });
             
             // Close modals when clicking outside
@@ -949,27 +935,11 @@
                 if (e.target === playerModal) {
                     playerModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
-                    player.pause();
+                    if (jwPlayerInstance) {
+                        jwPlayerInstance.pause();
+                    }
                 }
             });
-        }
-		// Add retry button for hero section if it fails to load
-            heroSection.addEventListener('error', () => {
-                heroSection.style.backgroundImage = 'linear-gradient(to right, #141414, #333)';
-            }, true);
-        }
-
-        // Initialize Plyr player
-        function initPlayer() {
-            if (!playerInstance) {
-                playerInstance = new Plyr(player, {
-                    captions: { active: true, update: true },
-                    settings: ['captions', 'quality', 'speed'],
-                    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'fullscreen'],
-                    ratio: '16:9'
-                });
-            }
-            return playerInstance;
         }
     </script>
 </body>
