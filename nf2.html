@@ -3,197 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MafiaTV - Netflix Clone</title>
+    <title>StreamFlix - Premium Streaming</title>
+    <script src="https://cdn.jwplayer.com/libraries/abc123.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #e50914;
-            --primary-dark: #b20710;
-            --dark-color: #141414;
-            --light-color: #f4f4f4;
-            --gray-color: #999;
-            --dark-gray: #222;
-            --content-bg: #181818;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
-        
+
+        :root {
+            --red: #e50914;
+            --dark: #141414;
+            --dark-gray: #2d2d2d;
+            --gray: #808080;
+            --light-gray: #e5e5e5;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
         body {
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            line-height: 1.6;
+            background-color: var(--dark);
+            color: var(--white);
+            overflow-x: hidden;
         }
-        
-        /* Header */
+
+        /* Header styles */
         header {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-            padding: 20px 50px;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            transition: background-color 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            transition: var(--transition);
         }
-        
+
         header.scrolled {
-            background-color: var(--dark-color);
+            background-color: var(--dark);
         }
-        
+
         .logo {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: bold;
-            text-decoration: none;
+            color: var(--red);
+            font-size: 2.5rem;
+            font-weight: 700;
             letter-spacing: -1px;
+            text-decoration: none;
         }
-        
+
         .nav-links {
             display: flex;
+            list-style: none;
             gap: 20px;
         }
-        
+
         .nav-links a {
-            color: var(--light-color);
+            color: var(--light-gray);
             text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            transition: var(--transition);
         }
-        
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--primary-color);
+
+        .nav-links a:hover {
+            color: var(--white);
         }
-        
-        .search-box {
+
+        .nav-icons {
             display: flex;
+            gap: 20px;
             align-items: center;
-            background-color: rgba(0,0,0,0.7);
-            border: 1px solid var(--gray-color);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container input {
+            background-color: rgba(0,0,0,0.5);
+            border: 1px solid var(--gray);
+            padding: 7px 15px 7px 35px;
             border-radius: 4px;
-            padding: 5px 10px;
-            transition: all 0.3s;
-        }
-        
-        .search-box:focus-within {
-            border-color: var(--light-color);
-            background-color: rgba(0,0,0,0.9);
-        }
-        
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: white;
-            outline: none;
+            color: var(--white);
             width: 200px;
-            padding: 5px;
+            transition: var(--transition);
         }
-        
-        .search-box button {
-            background: transparent;
-            border: none;
-            color: var(--light-color);
-            cursor: pointer;
-            padding: 5px;
+
+        .search-container input:focus {
+            background-color: rgba(0,0,0,0.8);
+            width: 250px;
+            outline: none;
         }
-        
-        /* Hero Section */
-        .hero {
-            height: 70vh;
-            background-size: cover;
-            background-position: center;
-            position: relative;
+
+        .search-container i {
+            position: absolute;
+            left: 10px;
+            top: 8px;
+            color: var(--gray);
+        }
+
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            background: linear-gradient(45deg, #e50914, #b1060f);
             display: flex;
             align-items: center;
-            padding: 0 50px;
+            justify-content: center;
+            cursor: pointer;
         }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-        }
-        
-        .hero-content {
+
+        /* Hero section */
+        .hero {
+            height: 80vh;
             position: relative;
-            z-index: 1;
-            max-width: 600px;
-            padding-top: 80px;
+            background: linear-gradient(to top, var(--dark) 0%, transparent 50%), 
+                        url('https://source.unsplash.com/random/1920x1080/?movie') no-repeat center center/cover;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 50px 100px;
         }
-        
+
+        .hero-content {
+            max-width: 40%;
+            z-index: 2;
+        }
+
         .hero-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         }
-        
-        .hero-description {
-            font-size: 1.2rem;
+
+        .hero-info {
+            display: flex;
+            gap: 15px;
             margin-bottom: 20px;
-            color: #e0e0e0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-size: 1.1rem;
+            color: var(--light-gray);
         }
-        
+
+        .hero-rating {
+            color: #46d369;
+        }
+
+        .hero-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
         .hero-buttons {
             display: flex;
             gap: 15px;
         }
-        
+
         .btn {
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 4px;
+            font-weight: 600;
             font-size: 1.1rem;
-            font-weight: bold;
             cursor: pointer;
-            border: none;
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.2s;
+            transition: var(--transition);
         }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+
+        .btn-play {
+            background-color: var(--white);
+            color: var(--dark);
         }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
+
+        .btn-play:hover {
+            background-color: rgba(255,255,255,0.8);
         }
-        
-        .btn-secondary {
+
+        .btn-info {
             background-color: rgba(109, 109, 110, 0.7);
-            color: white;
+            color: var(--white);
         }
-        
-        .btn-secondary:hover {
-            background-color: rgba(109, 109, 110, 0.9);
+
+        .btn-info:hover {
+            background-color: rgba(109, 109, 110, 0.5);
         }
-        
-        /* Content Rows */
+
+        /* Content rows */
         .content-section {
-            padding: 20px 50px;
-            margin-top: -100px;
+            padding: 30px 50px;
             position: relative;
-            z-index: 2;
         }
-        
+
         .section-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            font-weight: 500;
         }
-        
+
         .content-row {
             display: flex;
             overflow-x: auto;
@@ -201,263 +210,199 @@
             padding: 10px 0;
             scrollbar-width: none;
         }
-        
+
         .content-row::-webkit-scrollbar {
             display: none;
         }
-        
+
         .content-item {
-            min-width: 200px;
-            transition: transform 0.3s;
-            position: relative;
-            cursor: pointer;
+            min-width: 220px;
             border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
         }
-        
+
         .content-item:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             z-index: 10;
         }
-        
+
         .content-item img {
             width: 100%;
             display: block;
+            aspect-ratio: 16/9;
         }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            z-index: 1000;
-            overflow: auto;
-        }
-        
-        .modal-content {
-            background-color: var(--content-bg);
-            margin: 50px auto;
-            max-width: 900px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .modal-header {
-            position: relative;
-            height: 400px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .modal-header::before {
-            content: '';
+
+        .content-info {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, var(--content-bg) 0%, rgba(0,0,0,0) 100%);
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 20px 10px 10px;
+            opacity: 0;
+            transition: var(--transition);
         }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-            z-index: 2;
-            background: rgba(0,0,0,0.5);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+
+        .content-item:hover .content-info {
+            opacity: 1;
+        }
+
+        .content-title {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .content-meta {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--light-gray);
         }
-        
-        .close-modal:hover {
-            background: rgba(0,0,0,0.8);
-            transform: scale(1.1);
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .modal-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .meta-info {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            color: var(--gray-color);
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-        }
-        
-        .match {
-            color: #46d369;
-            font-weight: bold;
-        }
-        
-        .modal-description {
-            margin-bottom: 20px;
-            line-height: 1.5;
-            color: #e0e0e0;
-        }
-        
-        .cast-crew {
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        
-        .cast-crew strong {
-            color: var(--gray-color);
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        /* Player Modal */
+
+        /* Player modal */
         .player-modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.9);
-            z-index: 1001;
-        }
-        
-        .player-container {
-            width: 100%;
-            height: 100%;
+            z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
         }
-        
-        #player {
+
+        .player-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .player-container {
             width: 80%;
-            max-width: 1200px;
-            height: 80vh;
-            background: #000;
+            max-width: 1000px;
+            position: relative;
         }
-        
+
+        #player {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+
         .close-player {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--white);
             font-size: 2rem;
-            color: white;
             cursor: pointer;
-            z-index: 2;
-            background: rgba(0,0,0,0.5);
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 5px solid var(--dark-gray);
+            border-top: 5px solid var(--red);
+            border-radius: 50%;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .close-player:hover {
-            background: rgba(0,0,0,0.8);
-            transform: scale(1.1);
-        }
-        
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: var(--primary-color);
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 50px auto;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* Error State */
-        .error-state {
-            text-align: center;
-            padding: 50px 20px;
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            color: var(--gray);
+            font-size: 0.9rem;
         }
-        
-        .error-state i {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
         }
-        
-        .error-state h3 {
-            margin-bottom: 15px;
-            font-weight: 500;
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
         }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--gray-color);
+
+        .footer-links a:hover {
+            text-decoration: underline;
         }
-        
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 20px;
+
+        .copyright {
+            margin-top: 30px;
         }
-        
-        /* Responsive */
+
+        /* Responsive design */
         @media (max-width: 992px) {
-            header {
-                padding: 15px 30px;
+            .hero-content {
+                max-width: 60%;
             }
             
-            .hero {
-                padding: 0 30px;
-            }
-            
-            .content-section {
-                padding: 20px 30px;
+            .footer-links {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
-        
+
         @media (max-width: 768px) {
             header {
                 padding: 15px 20px;
             }
             
+            .hero {
+                padding: 0 20px 50px;
+                height: 70vh;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .content-item {
+                min-width: 180px;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
             .nav-links {
                 display: none;
             }
             
-            .search-box {
-                width: 150px;
-            }
-            
             .hero {
                 height: 60vh;
-                padding: 0 20px;
             }
             
             .hero-title {
@@ -468,650 +413,289 @@
                 font-size: 1rem;
             }
             
-            .content-section {
-                padding: 20px;
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
             
             .content-item {
                 min-width: 150px;
             }
-            
-            .modal-content {
-                margin: 20px auto;
-                width: 95%;
-            }
-            
-            .modal-header {
-                height: 250px;
-            }
-            
-            #player {
-                width: 95%;
-                height: 50vh;
-            }
-            
-            .btn {
-                padding: 10px 20px;
-                font-size: 1rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .search-box {
-                width: 120px;
-            }
-            
-            .search-box input {
-                width: 80px;
-            }
-            
-            .hero-content {
-                max-width: 100%;
-            }
-            
-            .hero-title {
-                font-size: 1.8rem;
-            }
-            
-            .modal-body {
-                padding: 20px;
-            }
-            
-            .modal-title {
-                font-size: 1.5rem;
-            }
-            
-            .modal-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header id="main-header">
-        <a href="#" class="logo">MAFIATV</a>
-        <div class="nav-links">
-            <a href="#" class="active">Home</a>
-            <a href="#" id="movies-link">Movies</a>
-            <a href="#" id="series-link">TV Shows</a>
-        </div>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search...">
-            <button id="search-btn"><i class="fas fa-search"></i></button>
+    <!-- Header with navigation -->
+    <header id="header">
+        <a href="#" class="logo">STREAMFLIX</a>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Series</a></li>
+            <li><a href="#">New & Popular</a></li>
+            <li><a href="#">My List</a></li>
+        </ul>
+        <div class="nav-icons">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search...">
+            </div>
+            <div class="profile-icon">
+                <i class="fas fa-user"></i>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero-section" style="background-image: linear-gradient(to right, #141414, #333);">
+    <!-- Hero section with featured content -->
+    <section class="hero" id="hero">
         <div class="hero-content">
-            <h1 class="hero-title" id="hero-title">The Godfather Trilogy</h1>
-            <p class="hero-description" id="hero-description">The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.</p>
+            <h1 class="hero-title">Stranger Worlds</h1>
+            <div class="hero-info">
+                <span class="hero-rating">98% Match</span>
+                <span>2023</span>
+                <span>16+</span>
+                <span>2 Seasons</span>
+            </div>
+            <p class="hero-description">
+                When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and a strange little girl.
+            </p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" id="play-hero-btn">
+                <button class="btn btn-play" onclick="playFeatured()">
                     <i class="fas fa-play"></i> Play
                 </button>
-                <button class="btn btn-secondary" id="info-hero-btn">
+                <button class="btn btn-info">
                     <i class="fas fa-info-circle"></i> More Info
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Content Sections -->
-    <div id="content-sections">
-        <div class="content-section">
-            <h2 class="section-title">Popular on MafiaTV</h2>
-            <div class="content-row">
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg" alt="The Godfather">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="The Godfather Part II">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/1hdm3Axw9LjITbApvAXBbqO58zE.jpg" alt="Goodfellas">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/6P3c80EOm7BodndGBUAJHHsHKrp.jpg" alt="Scarface">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" alt="Casino">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/sw7mordbZxgITU877yTpZCud90M.jpg" alt="Once Upon a Time in America">
-                </div>
-            </div>
+    <!-- Content sections -->
+    <section class="content-section">
+        <h2 class="section-title">Popular on StreamFlix</h2>
+        <div class="content-row" id="popular-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
         </div>
-        
-        <div class="content-section">
-            <h2 class="section-title">New Releases</h2>
-            <div class="content-row">
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" alt="The Irishman">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/6P3c80EOm7BodndGBUAJHHsHKrp.jpg" alt="Scarface">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg" alt="Reservoir Dogs">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/6QMSLvU5ziIL2T6VrkaKzN2YkxK.jpg" alt="The Departed">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/5K7cOHoay2mZusSLezBOY0Qxh8a.jpg" alt="American Gangster">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/4gZgXQTX0bM0VKNqtSf4q1yUYxW.jpg" alt="Gangs of New York">
-                </div>
-            </div>
-        </div>
-        
-        <div class="content-section">
-            <h2 class="section-title">Classic Mafia Films</h2>
-            <div class="content-row">
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/6QMSLvU5ziIL2T6VrkaKzN2YkxK.jpg" alt="The Departed">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/5K7cOHoay2mZusSLezBOY0Qxh8a.jpg" alt="American Gangster">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/4gZgXQTX0bM0VKNqtSf4q1yUYxW.jpg" alt="Gangs of New York">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" alt="The Irishman">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg" alt="Reservoir Dogs">
-                </div>
-                <div class="content-item">
-                    <img src="https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" alt="Casino">
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <!-- Detail Modal -->
-    <div class="modal" id="detail-modal">
-        <div class="modal-content">
-            <div class="modal-header" id="modal-header" style="background-image: url('https://image.tmdb.org/t/p/w1400_and_h450_face/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg');">
-                <span class="close-modal" id="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <h2 class="modal-title" id="modal-title">The Godfather</h2>
-                <div class="meta-info">
-                    <span class="match" id="modal-match">98% Match</span>
-                    <span id="modal-year">1972</span>
-                    <span id="modal-runtime">2h 55m</span>
-                    <span id="modal-ua">R</span>
-                    <span id="modal-hd">HD</span>
-                </div>
-                <div class="modal-buttons">
-                    <button class="btn btn-primary" id="modal-play-btn">
-                        <i class="fas fa-play"></i> Play
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-plus"></i> My List
-                    </button>
-                </div>
-                <p class="modal-description" id="modal-description">Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.</p>
-                <div class="cast-crew">
-                    <p><strong>Cast: </strong><span id="modal-cast">Marlon Brando, Al Pacino, James Caan, Robert Duvall</span></p>
-                    <p><strong>Genres: </strong><span id="modal-genres">Drama, Crime</span></p>
-                </div>
-                <h3>More Like This</h3>
-                <div class="content-row" id="similar-content">
-                    <div class="content-item">
-                        <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="The Godfather Part II">
-                    </div>
-                    <div class="content-item">
-                        <img src="https://image.tmdb.org/t/p/w500/1hdm3Axw9LjITbApvAXBbqO58zE.jpg" alt="Goodfellas">
-                    </div>
-                    <div class="content-item">
-                        <img src="https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" alt="The Irishman">
-                    </div>
-                    <div class="content-item">
-                        <img src="https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" alt="Casino">
-                    </div>
-                </div>
-            </div>
+    <section class="content-section">
+        <h2 class="section-title">Trending Now</h2>
+        <div class="content-row" id="trending-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- Player Modal -->
+    <section class="content-section">
+        <h2 class="section-title">Top Movies</h2>
+        <div class="content-row" id="movies-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">TV Shows</h2>
+        <div class="content-row" id="series-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <!-- Video player modal -->
     <div class="player-modal" id="player-modal">
-        <span class="close-player" id="close-player">&times;</span>
         <div class="player-container">
-            <div id="player" style="background: #000; display: flex; align-items: center; justify-content: center; color: white;">
-                <div style="text-align: center;">
-                    <div class="spinner"></div>
-                    <p>Loading player...</p>
-                </div>
-            </div>
+            <button class="close-player" onclick="closePlayer()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="player"></div>
         </div>
     </div>
-    
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">FAQ</a>
+            <a href="#">Help Center</a>
+            <a href="#">Account</a>
+            <a href="#">Media Center</a>
+            <a href="#">Investor Relations</a>
+            <a href="#">Jobs</a>
+            <a href="#">Ways to Watch</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy</a>
+            <a href="#">Cookie Preferences</a>
+            <a href="#">Corporate Information</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Speed Test</a>
+            <a href="#">Legal Notices</a>
+            <a href="#">Only on StreamFlix</a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 StreamFlix, Inc. All rights reserved.
+        </div>
+    </footer>
+
     <script>
-        // Mock API endpoints for demonstration
-        const MOCK_HOME_API = () => {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve({
-                        status: 'success',
-                        data: [
-                            {
-                                title: "Popular on MafiaTV",
-                                list: [
-                                    { id: 1, title: "The Godfather", poster: "https://image.tmdb.org/t/p/w500/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg" },
-                                    { id: 2, title: "The Godfather Part II", poster: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" },
-                                    { id: 3, title: "Goodfellas", poster: "https://image.tmdb.org/t/p/w500/1hdm3Axw9LjITbApvAXBbqO58zE.jpg" },
-                                    { id: 4, title: "Scarface", poster: "https://image.tmdb.org/t/p/w500/6P3c80EOm7BodndGBUAJHHsHKrp.jpg" },
-                                    { id: 5, title: "Casino", poster: "https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" },
-                                    { id: 6, title: "Once Upon a Time in America", poster: "https://image.tmdb.org/t/p/w500/sw7mordbZxgITU877yTpZCud90M.jpg" }
-                                ]
-                            },
-                            {
-                                title: "New Releases",
-                                list: [
-                                    { id: 7, title: "The Irishman", poster: "https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" },
-                                    { id: 8, title: "Scarface", poster: "https://image.tmdb.org/t/p/w500/6P3c80EOm7BodndGBUAJHHsHKrp.jpg" },
-                                    { id: 9, title: "Reservoir Dogs", poster: "https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg" },
-                                    { id: 10, title: "The Departed", poster: "https://image.tmdb.org/t/p/w500/6QMSLvU5ziIL2T6VrkaKzN2YkxK.jpg" },
-                                    { id: 11, title: "American Gangster", poster: "https://image.tmdb.org/t/p/w500/5K7cOHoay2mZusSLezBOY0Qxh8a.jpg" },
-                                    { id: 12, title: "Gangs of New York", poster: "https://image.tmdb.org/t/p/w500/4gZgXQTX0bM0VKNqtSf4q1yUYxW.jpg" }
-                                ]
-                            },
-                            {
-                                title: "Classic Mafia Films",
-                                list: [
-                                    { id: 13, title: "The Departed", poster: "https://image.tmdb.org/t/p/w500/6QMSLvU5ziIL2T6VrkaKzN2YkxK.jpg" },
-                                    { id: 14, title: "American Gangster", poster: "https://image.tmdb.org/t/p/w500/5K7cOHoay2mZusSLezBOY0Qxh8a.jpg" },
-                                    { id: 15, title: "Gangs of New York", poster: "https://image.tmdb.org/t/p/w500/4gZgXQTX0bM0VKNqtSf4q1yUYxW.jpg" },
-                                    { id: 16, title: "The Irishman", poster: "https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" },
-                                    { id: 17, title: "Reservoir Dogs", poster: "https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg" },
-                                    { id: 18, title: "Casino", poster: "https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" }
-                                ]
-                            }
-                        ]
-                    });
-                }, 1000);
-            });
+        // API endpoints
+        const API_BASE = "https://mov.mafiatv.live/apis/v1/";
+        const HOME_API = `${API_BASE}?action=get_home_screen`;
+        const USER_SESSION_API = `${API_BASE}?action=start_session`;
+        const MOVIE_LIST_API = `${API_BASE}?action=get_movies_screen`;
+        const SERIES_LIST_API = `${API_BASE}?action=get_series_screen`;
+        const SEARCH_API = `${API_BASE}?action=search&query=`;
+        const DETAILS_API = `${API_BASE}?action=get_content_detail&query=`;
+        const SEASON_API = `${API_BASE}?action=get_season_detail&query=`;
+        const PLAYBACK_API = `${API_BASE}?action=get_playback&query=`;
+
+        // Sample data for demonstration
+        // In a real app, you would fetch from the actual API endpoints
+        const sampleContent = {
+            popular: [
+                { id: 1, title: "The Dark Knight", year: 2008, rating: 94, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,action" },
+                { id: 2, title: "Inception", year: 2010, rating: 87, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,sci-fi" },
+                { id: 3, title: "Breaking Bad", year: 2008, rating: 96, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,crime" },
+                { id: 4, title: "Stranger Things", year: 2016, rating: 91, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" },
+                { id: 5, title: "The Matrix", year: 1999, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,sci-fi" },
+                { id: 6, title: "Game of Thrones", year: 2011, rating: 89, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,fantasy" },
+                { id: 7, title: "Interstellar", year: 2014, rating: 86, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,space" }
+            ],
+            trending: [
+                { id: 8, title: "Oppenheimer", year: 2023, rating: 93, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,history" },
+                { id: 9, title: "Barbie", year: 2023, rating: 83, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,comedy" },
+                { id: 10, title: "The Last of Us", year: 2023, rating: 96, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 11, title: "John Wick 4", year: 2023, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,action" },
+                { id: 12, title: "Succession", year: 2018, rating: 92, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 13, title: "The Mandalorian", year: 2019, rating: 88, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" }
+            ],
+            movies: [
+                { id: 14, title: "Pulp Fiction", year: 1994, rating: 94, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" },
+                { id: 15, title: "Fight Club", year: 1999, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 16, title: "Forrest Gump", year: 1994, rating: 85, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 17, title: "The Shawshank Redemption", year: 1994, rating: 93, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 18, title: "Goodfellas", year: 1990, rating: 96, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" },
+                { id: 19, title: "The Godfather", year: 1972, rating: 97, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" }
+            ],
+            series: [
+                { id: 20, title: "The Crown", year: 2016, rating: 91, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 21, title: "Black Mirror", year: 2011, rating: 89, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" },
+                { id: 22, title: "The Witcher", year: 2019, rating: 82, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,fantasy" },
+                { id: 23, title: "Wednesday", year: 2022, rating: 85, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,comedy" },
+                { id: 24, title: "Money Heist", year: 2017, rating: 84, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,crime" },
+                { id: 25, title: "Squid Game", year: 2021, rating: 95, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" }
+            ]
         };
 
-        const MOCK_DETAILS_API = (contentId) => {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve({
-                        status: 'success',
-                        data: {
-                            id: contentId,
-                            title: "The Godfather",
-                            desc: "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
-                            poster: "https://image.tmdb.org/t/p/w1400_and_h450_face/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg",
-                            year: "1972",
-                            runtime: "2h 55m",
-                            ua: "R",
-                            hdsd: "HD",
-                            cast: "Marlon Brando, Al Pacino, James Caan, Robert Duvall",
-                            genre: "Drama, Crime",
-                            match: "98% Match",
-                            more_like_this: [
-                                { id: 2, title: "The Godfather Part II", poster: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" },
-                                { id: 3, title: "Goodfellas", poster: "https://image.tmdb.org/t/p/w500/1hdm3Axw9LjITbApvAXBbqO58zE.jpg" },
-                                { id: 7, title: "The Irishman", poster: "https://image.tmdb.org/t/p/w500/kSf9svfL2WrKeuK8W08xeR5lTn8.jpg" },
-                                { id: 5, title: "Casino", poster: "https://image.tmdb.org/t/p/w500/8bpXGcIHqQeXUO7X9u0xQrFZbb6.jpg" }
-                            ]
-                        }
-                    });
-                }, 800);
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load content
+            renderContent('popular-content', sampleContent.popular);
+            renderContent('trending-content', sampleContent.trending);
+            renderContent('movies-content', sampleContent.movies);
+            renderContent('series-content', sampleContent.series);
+
+            // Setup header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             });
-        };
 
-        // DOM elements
-        const header = document.getElementById('main-header');
-        const heroSection = document.getElementById('hero-section');
-        const heroTitle = document.getElementById('hero-title');
-        const heroDescription = document.getElementById('hero-description');
-        const playHeroBtn = document.getElementById('play-hero-btn');
-        const infoHeroBtn = document.getElementById('info-hero-btn');
-        const contentSections = document.getElementById('content-sections');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const moviesLink = document.getElementById('movies-link');
-        const seriesLink = document.getElementById('series-link');
-        const detailModal = document.getElementById('detail-modal');
-        const closeModal = document.getElementById('close-modal');
-        const modalHeader = document.getElementById('modal-header');
-        const modalTitle = document.getElementById('modal-title');
-        const modalMatch = document.getElementById('modal-match');
-        const modalYear = document.getElementById('modal-year');
-        const modalRuntime = document.getElementById('modal-runtime');
-        const modalUa = document.getElementById('modal-ua');
-        const modalHd = document.getElementById('modal-hd');
-        const modalDescription = document.getElementById('modal-description');
-        const modalCast = document.getElementById('modal-cast');
-        const modalGenres = document.getElementById('modal-genres');
-        const modalPlayBtn = document.getElementById('modal-play-btn');
-        const similarContent = document.getElementById('similar-content');
-        const playerModal = document.getElementById('player-modal');
-        const closePlayer = document.getElementById('close-player');
-        const playerContainer = document.getElementById('player');
-
-        // Global variables
-        let currentHeroContent = null;
-        let currentContentId = null;
-        let currentContentType = null;
-        let isLoading = false;
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            setupEventListeners();
-            loadHomeContent();
+            // Setup search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch(searchInput.value);
+                }
+            });
         });
 
-        // Show loading state
-        function showLoading() {
-            contentSections.innerHTML = `
-                <div class="content-section" style="text-align: center; padding: 50px;">
-                    <div class="spinner"></div>
-                    <p>Loading content...</p>
-                </div>
-            `;
-        }
-
-        // Show error state
-        function showError(message) {
-            contentSections.innerHTML = `
-                <div class="error-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Error Loading Content</h3>
-                    <p>${message}</p>
-                    <button class="btn btn-primary" id="retry-btn">Try Again</button>
-                </div>
-            `;
+        // Render content to a section
+        function renderContent(sectionId, contentArray) {
+            const section = document.getElementById(sectionId);
+            section.innerHTML = '';
             
-            document.getElementById('retry-btn').addEventListener('click', () => {
-                showLoading();
-                loadHomeContent();
-            });
-        }
-
-        // Show empty state
-        function showEmptyState(message) {
-            contentSections.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-film"></i>
-                    <p>${message}</p>
-                </div>
-            `;
-        }
-
-        // Fetch with error handling
-        async function fetchData(apiCall) {
-            if (isLoading) return;
-            isLoading = true;
-            
-            try {
-                const data = await apiCall();
-                return data;
-            } catch (error) {
-                console.error('Fetch error:', error);
-                showError(error.message || 'Failed to load content');
-                return null;
-            } finally {
-                isLoading = false;
-            }
-        }
-
-        // Load home content
-        async function loadHomeContent() {
-            showLoading();
-            const data = await fetchData(MOCK_HOME_API);
-            
-            if (data) {
-                contentSections.innerHTML = '';
-                
-                // Set hero section with first item from first category
-                if (data.data.length > 0 && data.data[0].list.length > 0) {
-                    const heroItem = data.data[0].list[0];
-                    currentHeroContent = heroItem;
-                    
-                    // Get details for hero item
-                    const details = await getContentDetails(heroItem.id);
-                    if (details) {
-                        updateHeroSection(details);
-                    }
-                }
-                
-                // Create content sections
-                data.data.forEach(section => {
-                    createContentSection(section.title, section.list);
-                });
-            }
-        }
-
-        // Update hero section
-        function updateHeroSection(details) {
-            heroTitle.textContent = details.title;
-            heroDescription.textContent = details.desc;
-            heroSection.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${details.poster})`;
-            currentContentType = 'movie';
-        }
-
-        // Create content section
-        function createContentSection(title, items) {
-            const section = document.createElement('div');
-            section.className = 'content-section';
-            
-            const sectionTitle = document.createElement('h2');
-            sectionTitle.className = 'section-title';
-            sectionTitle.textContent = title;
-            
-            const row = document.createElement('div');
-            row.className = 'content-row';
-            
-            items.forEach(item => {
+            contentArray.forEach(item => {
                 const contentItem = document.createElement('div');
                 contentItem.className = 'content-item';
-                contentItem.dataset.id = item.id;
-                
-                const img = document.createElement('img');
-                img.src = item.poster;
-                img.alt = item.title || 'Content';
-                img.onerror = () => {
-                    img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
-                };
-                
-                contentItem.appendChild(img);
-                row.appendChild(contentItem);
-                
-                // Add click event to show details
-                contentItem.addEventListener('click', () => showContentDetails(item.id));
-            });
-            
-            section.appendChild(sectionTitle);
-            section.appendChild(row);
-            contentSections.appendChild(section);
-        }
-
-        // Get content details
-        async function getContentDetails(contentId) {
-            const data = await fetchData(() => MOCK_DETAILS_API(contentId));
-            return data?.data || null;
-        }
-
-        // Show content details
-        async function showContentDetails(contentId) {
-            currentContentId = contentId;
-            const details = await getContentDetails(contentId);
-            
-            if (details) {
-                // Set modal content
-                modalTitle.textContent = details.title;
-                modalMatch.textContent = details.match;
-                modalYear.textContent = details.year;
-                modalRuntime.textContent = details.runtime;
-                modalUa.textContent = details.ua;
-                modalHd.textContent = details.hdsd;
-                modalDescription.textContent = details.desc;
-                modalCast.textContent = details.cast;
-                modalGenres.textContent = details.genre;
-                
-                // Set background image
-                modalHeader.style.backgroundImage = `url(${details.poster})`;
-                
-                // Store content type for playback
-                currentContentType = 'movie';
-                
-                // Clear and load similar content
-                similarContent.innerHTML = '';
-                if (details.more_like_this?.length > 0) {
-                    details.more_like_this.forEach(item => {
-                        const contentItem = document.createElement('div');
-                        contentItem.className = 'content-item';
-                        contentItem.dataset.id = item.id;
-                        
-                        const img = document.createElement('img');
-                        img.src = item.poster;
-                        img.alt = 'Similar content';
-                        img.onerror = () => {
-                            img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
-                        };
-                        
-                        contentItem.appendChild(img);
-                        similarContent.appendChild(contentItem);
-                        
-                        // Add click event to show details
-                        contentItem.addEventListener('click', () => showContentDetails(item.id));
-                    });
-                }
-                
-                // Show modal
-                detailModal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        // Play content
-        function playContent() {
-            // Show loading state in player
-            playerContainer.innerHTML = `
-                <div style="text-align: center; padding: 50px;">
-                    <div class="spinner"></div>
-                    <p>Starting playback...</p>
-                </div>
-            `;
-            
-            // Simulate playback after delay
-            setTimeout(() => {
-                playerContainer.innerHTML = `
-                    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000;">
-                        <div style="max-width: 80%; text-align: center;">
-                            <i class="fas fa-play-circle" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 20px;"></i>
-                            <h2 style="margin-bottom: 10px;">Content Playing</h2>
-                            <p>This is a demo player. In a real implementation, the video would play here.</p>
-                            <button class="btn btn-primary" style="margin-top: 20px;" id="close-demo-player">Close Player</button>
+                contentItem.innerHTML = `
+                    <img src="${item.thumbnail}" alt="${item.title}">
+                    <div class="content-info">
+                        <h3 class="content-title">${item.title}</h3>
+                        <div class="content-meta">
+                            <span>${item.year}</span>
+                            <span>${item.type === 'movie' ? 'Movie' : 'TV Show'}</span>
+                            <span><i class="fas fa-star"></i> ${item.rating}%</span>
                         </div>
                     </div>
                 `;
-                
-                document.getElementById('close-demo-player').addEventListener('click', () => {
-                    playerModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+                contentItem.addEventListener('click', () => {
+                    if (item.type === 'movie') {
+                        playContent(item.id, item.title);
+                    } else {
+                        showSeriesDetails(item.id);
+                    }
                 });
-            }, 1500);
-            
-            // Show player modal
-            playerModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+                section.appendChild(contentItem);
+            });
         }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Header scroll effect
-            window.addEventListener('scroll', () => {
-                header.classList.toggle('scrolled', window.scrollY > 100);
-            });
+        // Play featured content
+        function playFeatured() {
+            playContent(1, "Stranger Worlds");
+        }
+
+        // Play content in the player
+        function playContent(contentId, title) {
+            // In a real app, you would fetch the playback URL from PLAYBACK_API
+            // For demo purposes, we'll use a sample video
+            const videoUrl = "https://cdn.jwplayer.com/manifests/pZxWPRg4.m3u8";
             
-            // Play hero content
-            playHeroBtn.addEventListener('click', () => {
-                playContent();
-            });
+            const playerModal = document.getElementById('player-modal');
+            playerModal.classList.add('active');
             
-            // Show hero content details
-            infoHeroBtn.addEventListener('click', () => {
-                if (currentHeroContent) {
-                    showContentDetails(currentHeroContent.id);
+            // Initialize JWPlayer
+            const player = jwplayer("player").setup({
+                file: videoUrl,
+                title: title,
+                width: "100%",
+                aspectratio: "16:9",
+                autostart: true,
+                controls: true,
+                repeat: false,
+                primary: "html5",
+                skin: {
+                    name: "netflix"
                 }
             });
             
-            // Search functionality
-            searchBtn.addEventListener('click', () => {
-                const query = searchInput.value.trim();
-                if (query) {
-                    showEmptyState(`No results found for "${query}". This is a demo.`);
-                    searchInput.value = '';
-                }
-            });
+            // Save player instance for later use
+            window.currentPlayer = player;
+        }
+
+        // Close the player
+        function closePlayer() {
+            const playerModal = document.getElementById('player-modal');
+            playerModal.classList.remove('active');
             
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const query = searchInput.value.trim();
-                    if (query) {
-                        showEmptyState(`No results found for "${query}". This is a demo.`);
-                        searchInput.value = '';
-                    }
-                }
-            });
-            
-            // Navigation links
-            moviesLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                showEmptyState('Movies section would load here in a full implementation.');
-            });
-            
-            seriesLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                showEmptyState('TV Shows section would load here in a full implementation.');
-            });
-            
-            // Modal close button
-            closeModal.addEventListener('click', () => {
-                detailModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-            
-            // Modal play button
-            modalPlayBtn.addEventListener('click', () => {
-                playContent();
-                detailModal.style.display = 'none';
-            });
-            
-            // Player close button
-            closePlayer.addEventListener('click', () => {
-                playerModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-            
-            // Close modals when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === detailModal) {
-                    detailModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-                
-                if (e.target === playerModal) {
-                    playerModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
+            if (window.currentPlayer) {
+                window.currentPlayer.remove();
+                window.currentPlayer = null;
+            }
+        }
+
+        // Show series details (would be implemented in a real app)
+        function showSeriesDetails(seriesId) {
+            alert(`Would show details for series ID: ${seriesId}\nIn a real app, this would display seasons and episodes.`);
+        }
+
+        // Perform search (would be implemented in a real app)
+        function performSearch(query) {
+            alert(`Would search for: "${query}"\nIn a real app, this would call the SEARCH_API.`);
         }
     </script>
 </body>
