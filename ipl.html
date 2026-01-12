@@ -3,125 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Stream Player</title>
+<title>Live Match</title>
 <style>
 :root {
   --bg: #0b0f1a;
-  --card: rgba(255, 255, 255, 0.07);
-  --accent: #00f2fe;
+  --card: rgba(255, 255, 255, 0.06);
+  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
 }
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  background: #0b0f1a;
+  background: var(--bg);
   color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-  padding: 15px;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  padding: 16px;
 }
-.header { text-align: center; margin-bottom: 20px; }
-.header h1 { font-size: 20px; margin: 0; color: #fff; }
-.header p { font-size: 12px; color: var(--accent); margin: 5px 0; }
 
-#list { display: flex; flex-direction: column; gap: 12px; }
+h1 { text-align: center; font-size: 20px; margin-bottom: 20px; }
 
-.card {
+/* Skeleton & Card Base */
+.card, .skeleton {
   background: var(--card);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px;
-  padding: 15px;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.ch-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.ch-meta { font-size: 11px; color: #bdc3c7; margin-bottom: 12px; text-transform: uppercase; }
 
-.btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+/* Skeleton Animation */
+.skeleton { position: relative; overflow: hidden; height: 120px; }
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--shimmer);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.sk-line { height: 12px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 10px; }
+.sk-title { width: 60%; height: 18px; }
+.sk-meta { width: 40%; }
+.sk-btns { display: flex; gap: 8px; margin-top: 15px; }
+.sk-btn { flex: 1; height: 35px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+
+/* Real Content */
+.channel { font-size: 17px; font-weight: 600; }
+.meta { font-size: 12px; color: #94a3b8; margin: 6px 0 12px; }
+.buttons { display: flex; gap: 8px; }
 button {
-  padding: 10px 2px; border: none; border-radius: 8px;
-  font-size: 12px; font-weight: bold; cursor: pointer; color: white;
+  flex: 1; padding: 10px; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 600; color: #fff; cursor: pointer;
 }
-.btn-ns { background: linear-gradient(to right, #ff512f, #dd2476); }
-.btn-pf { background: linear-gradient(to right, #2193b0, #6dd5ed); }
-.btn-cp { background: #2ecc71; color: #000; }
+.ns { background: linear-gradient(135deg, #ff512f, #dd2476); }
+.playify { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.copy { background: #e2e8f0; color: #0f172a; }
 
-.loading-box { text-align: center; padding: 40px; color: #7f8c8d; }
-.error-box { text-align: center; padding: 20px; color: #e74c3c; background: rgba(231, 76, 60, 0.1); border-radius: 10px; }
+.error-msg { text-align: center; color: #ff5f5f; padding: 20px; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1 id="eventTitle">Connecting...</h1>
-  <p id="eventMeta"></p>
-</div>
-
+<h1 id="eventTitle">Live Streams</h1>
 <div id="list">
-  <div class="loading-box">Fetching latest streams...</div>
+  <div class="skeleton">
+    <div class="sk-line sk-title"></div>
+    <div class="sk-line sk-meta"></div>
+    <div class="sk-btns">
+      <div class="sk-btn"></div><div class="sk-btn"></div><div class="sk-btn"></div>
+    </div>
+  </div>
+  <div class="skeleton">
+    <div class="sk-line sk-title"></div>
+    <div class="sk-line sk-meta"></div>
+    <div class="sk-btns">
+      <div class="sk-btn"></div><div class="sk-btn"></div><div class="sk-btn"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-async function forceFetch() {
-    const list = document.getElementById('list');
-    const title = document.getElementById('eventTitle');
-    const meta = document.getElementById('eventMeta');
+async function forceFetchStreams() {
+  const list = document.getElementById("list");
+  const title = document.getElementById("eventTitle");
+  
+  // Force Fetch Strategy: 
+  // 1. AllOrigins Proxy to bypass CORS.
+  // 2. Timestamp query to bypass CDN caching.
+  // 3. Cache: 'no-store' to bypass Browser caching.
+  const target = `https://pasteking.u0k.workers.dev/3qsxt.json?v=${Date.now()}`;
+  const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(target)}`;
 
-    // 1. Define URLs (Cache buster added to prevent old data)
-    const targetUrl = "https://pasteking.u0k.workers.dev/3qsxt.json?t=" + new Date().getTime();
-    // 2. Use a different proxy if the first one fails
-    const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl);
-
-    try {
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error("Proxy Error");
-        
-        const result = await response.json();
-        // allorigins wraps the JSON in a string under 'contents'
-        const data = JSON.parse(result.contents);
-
-        // Update Header
-        title.innerText = data.event.title;
-        meta.innerText = `${data.event.sport} | ${data.event.match_type}`;
-        
-        // Clear list
-        list.innerHTML = "";
-
-        data.streams.forEach(s => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="ch-title">${s.channel} (${s.language})</div>
-                <div class="ch-meta">${s.provider} • ${s.quality} • ${s.format}</div>
-                <div class="btns">
-                    <button class="btn-ns" onclick="play('ns', '${s.url}')">NS Player</button>
-                    <button class="btn-pf" onclick="play('playify', '${s.url}')">PlayiFy</button>
-                    <button class="btn-cp" onclick="copy('${s.url}')">Copy</button>
-                </div>
-            `;
-            list.appendChild(card);
-        });
-
-    } catch (err) {
-        console.error("Fetch Error:", err);
-        list.innerHTML = `
-            <div class="error-box">
-                <b>Failed to load streams</b><br>
-                <small>${err.message}</small><br><br>
-                <button onclick="location.reload()" style="background:#444; padding:5px 15px;">Retry</button>
-            </div>`;
-    }
-}
-
-function play(player, url) {
-    const pkg = player === 'ns' ? 'com.genuine.leone' : 'com.appnix.playify';
-    // Deep link intent syntax
-    window.location.href = `intent:${url}#Intent;package=${pkg};end`;
-}
-
-function copy(url) {
-    navigator.clipboard.writeText(url).then(() => {
-        alert("Link Copied!");
+  try {
+    const response = await fetch(proxy, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
     });
+
+    if (!response.ok) throw new Error("Network response failed");
+    
+    const wrapper = await response.json();
+    const data = JSON.parse(wrapper.contents); // AllOrigins returns data inside .contents
+
+    title.innerText = data.event.title;
+    list.innerHTML = ""; // Remove skeletons
+
+    data.streams.forEach((s) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="channel">${s.channel}</div>
+        <div class="meta">${s.language} • ${s.quality} • ${s.format}</div>
+        <div class="buttons">
+          <button class="ns" onclick="openInt('${s.url}', 'com.genuine.leone')">NS Player</button>
+          <button class="playify" onclick="openInt('${s.url}', 'com.appnix.playify')">PlayiFy</button>
+          <button class="copy" onclick="copyUrl('${s.url}')">Copy</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = `<div class="error-msg">Failed to load streams. <br>Please check your internet or the source URL.</div>`;
+  }
 }
 
-// Start
-forceFetch();
+function openInt(url, pkg) {
+  window.location.href = `intent:${url}#Intent;package=${pkg};end`;
+}
+
+function copyUrl(url) {
+  navigator.clipboard.writeText(url);
+  alert("URL Copied!");
+}
+
+// Initialize
+forceFetchStreams();
 </script>
 </body>
 </html>
