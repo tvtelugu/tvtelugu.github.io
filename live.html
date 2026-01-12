@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZTV Live - TV Telugu</title>
+<title>JStar Live - TV Telugu</title>
 <link rel="icon" type="image/x-icon" href="https://tvtelugu.github.io/images/tvtelugu.ico">
 <style>
 :root {
@@ -12,131 +12,123 @@
   --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
   --accent: #4facfe;
 }
-* { box-sizing: border-box; outline: none; }
+* { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: #fff;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', Roboto, sans-serif;
   padding: 15px; min-height: 100vh;
 }
 
-/* Header Branding */
-.header-container { text-align: center; margin-bottom: 25px; padding-top: 10px; }
-.main-logo { max-width: 180px; width: 55%; height: auto; filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.2)); }
-
-.status-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
-.pulse {
-  width: 10px; height: 10px; background: #ff0000; border-radius: 50%;
-  box-shadow: 0 0 0 rgba(255, 0, 0, 0.4); animation: pulse 1.5s infinite;
-}
+/* Header */
+.header-container { text-align: center; margin-bottom: 25px; }
+.main-logo { max-width: 180px; width: 55%; height: auto; }
+.status-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+.pulse { width: 10px; height: 10px; background: #ff0000; border-radius: 50%; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(255,0,0,0.7); } 70% { box-shadow: 0 0 0 10px rgba(255,0,0,0); } 100% { box-shadow: 0 0 0 0px rgba(255,0,0,0); } }
-.status-text { font-size: 11px; text-transform: uppercase; color: var(--accent); letter-spacing: 1.5px; font-weight: 700; }
+.status-text { font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; letter-spacing: 1px; }
 
-/* Skeleton Shimmer */
+/* Skeleton */
 .skeleton {
   background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
-  height: 140px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.03);
+  height: 140px; position: relative; overflow: hidden;
 }
-.skeleton::after {
-  content: ""; position: absolute; inset: 0;
-  background: var(--shimmer); animation: shimmer 1.2s infinite;
-}
+.skeleton::after { content: ""; position: absolute; inset: 0; background: var(--shimmer); animation: shimmer 1.2s infinite; }
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-/* Dynamic Card */
+/* Channel Card */
 .card {
   background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
-  border: 1px solid rgba(255,255,255,0.08); display: none;
-  transition: transform 0.2s; animation: slideUp 0.4s ease-out forwards;
+  border: 1px solid rgba(255,255,255,0.08); display: none; animation: slideUp 0.4s ease-out forwards;
 }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 .ch-info { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-.ch-logo { width: 55px; height: 55px; border-radius: 12px; background: #000; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
-.ch-name { font-size: 18px; font-weight: 700; color: #fff; }
+.ch-logo { width: 55px; height: 55px; border-radius: 12px; background: #fff; object-fit: contain; padding: 5px; }
+.ch-name { font-size: 18px; font-weight: 700; flex: 1; }
 
 .badges { display: flex; gap: 6px; margin-bottom: 18px; }
-.badge { background: rgba(79, 172, 254, 0.15); color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; }
+.badge { background: rgba(79, 172, 254, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; }
 
 .btns { display: flex; gap: 10px; }
-button { flex: 1; padding: 13px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.1s; }
-button:active { transform: scale(0.95); }
+button { flex: 1; padding: 13px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; }
 .btn-ns { background: linear-gradient(135deg, #ff3d71, #ff0055); color: #fff; }
 .btn-pf { background: linear-gradient(135deg, #00d1ff, #0077ff); color: #fff; }
 .btn-cp { background: #fff; color: #000; }
-
-#error-box { display: none; text-align: center; padding: 50px 20px; }
-.retry-btn { background: var(--accent); color: #000; padding: 12px 30px; border-radius: 10px; border: none; font-weight: 900; margin-top: 20px; }
 </style>
 </head>
 <body>
 
 <div class="header-container">
-  <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="Logo" class="main-logo">
+  <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="TV Telugu" class="main-logo">
   <div class="status-row">
     <div class="pulse"></div>
-    <span id="loader-text" class="status-text">Bypassing Cache...</span>
+    <span id="loader-text" class="status-text">Parsing Playlist...</span>
   </div>
 </div>
 
 <div id="list">
   <div class="skeleton"></div>
   <div class="skeleton"></div>
-  <div class="skeleton"></div>
-</div>
-
-<div id="error-box">
-  <div style="font-size: 50px;">📡</div>
-  <h3 style="margin: 15px 0 5px;">Link Handshake Failed</h3>
-  <p style="color: #94a3b8; font-size: 13px;">The Worker is not responding. Check your internet.</p>
-  <button class="retry-btn" onclick="location.reload()">FORCE REFRESH</button>
 </div>
 
 <script>
-const SOURCE_URL = "https://ztv.pfy.workers.dev/";
-let attempts = 0;
+const M3U_URL = "https://tvtjstar.vercel.app/jstar.m3u";
 
-async function forceFetch() {
-    const timestamp = Date.now();
-    const headers = { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' };
-    const bustUrl = `${SOURCE_URL}?nocache=${timestamp}`;
-
-    const fetchTask = async (url, isAllOrigins = false) => {
-        const res = await fetch(url, { headers });
+async function forceFetchM3U() {
+    const bustUrl = `${M3U_URL}?v=${Date.now()}`;
+    
+    // Triple-Race Fetch
+    const fetchTask = async (url, isProxy = false) => {
+        const res = await fetch(url);
         if (!res.ok) throw new Error();
-        const json = await res.json();
-        return isAllOrigins ? JSON.parse(json.contents) : json;
+        const text = isProxy ? (await res.json()).contents : await res.text();
+        return text;
     };
 
     try {
-        // Race condition: Fast direct fetch vs Fast proxy fetch
-        const data = await Promise.any([
+        const rawM3U = await Promise.any([
             fetchTask(bustUrl),
             fetchTask(`https://api.allorigins.win/get?url=${encodeURIComponent(bustUrl)}`, true),
             fetchTask(`https://corsproxy.io/?${encodeURIComponent(bustUrl)}`)
         ]);
-        render(data);
+        parseAndRender(rawM3U);
     } catch (e) {
-        attempts++;
-        if (attempts <= 2) {
-            document.getElementById('loader-text').innerText = `Retrying (${attempts}/2)...`;
-            setTimeout(forceFetch, 2500);
-        } else {
-            document.getElementById('list').style.display = 'none';
-            document.getElementById('error-box').style.display = 'block';
-            document.getElementById('loader-text').innerText = "Offline";
-        }
+        document.getElementById('loader-text').innerText = "Fetch Error. Retrying...";
+        setTimeout(forceFetchM3U, 3000);
     }
 }
 
-function render(channels) {
+function parseAndRender(data) {
     const list = document.getElementById("list");
-    document.getElementById("loader-text").innerText = `${channels.length} Channels Active`;
-    let html = "";
+    const lines = data.split('\n');
+    let channels = [];
+    let currentCh = {};
 
+    lines.forEach(line => {
+        line = line.trim();
+        if (line.startsWith('#EXTINF')) {
+            currentCh.name = line.split(',').pop();
+            currentCh.logo = line.match(/tvg-logo="([^"]+)"/)?.[1] || '';
+        } else if (line.startsWith('#KODIPROP:inputstream.adaptive.license_key')) {
+            currentCh.key = line.split('=')[1];
+        } else if (line.startsWith('#EXTHTTP')) {
+            try {
+                const httpData = JSON.parse(line.split(':')[1]);
+                currentCh.cookie = httpData.cookie || '';
+            } catch(e) { currentCh.cookie = ''; }
+        } else if (line.startsWith('http')) {
+            currentCh.link = line;
+            channels.push({...currentCh});
+            currentCh = {}; // Reset for next
+        }
+    });
+
+    document.getElementById('loader-text').innerText = `${channels.length} Channels Online`;
+    let html = "";
     channels.forEach(ch => {
-        // Constructing Intent with Cookie, License, and Proxy Headers
-        const fullUrl = `${ch.link}|Cookie=${encodeURIComponent(ch.cookie)}&drmScheme=${ch.drmScheme}&drmLicense=${ch.drmLicense}`;
-        
+        // Construct deep link for players
+        const intentUrl = `${ch.link}|Cookie=${encodeURIComponent(ch.cookie)}&drmScheme=clearkey&drmLicense=${ch.key}`;
+
         html += `
         <div class="card" style="display: block;">
             <div class="ch-info">
@@ -144,12 +136,12 @@ function render(channels) {
                 <div class="ch-name">${ch.name}</div>
             </div>
             <div class="badges">
-                <span class="badge">DRM: ${ch.drmScheme.toUpperCase()}</span>
-                <span class="badge">JIO NETWORK</span>
+                <span class="badge">CLEARKEY DRM</span>
+                <span class="badge">JIOSTAR</span>
             </div>
             <div class="btns">
-                <button class="btn-ns" onclick="launch('${fullUrl}', 'ns')">NS PLAYER</button>
-                <button class="btn-pf" onclick="launch('${fullUrl}', 'pf')">PLAYIFY</button>
+                <button class="btn-ns" onclick="launch('${intentUrl}', 'ns')">NS PLAYER</button>
+                <button class="btn-pf" onclick="launch('${intentUrl}', 'pf')">PLAYIFY</button>
                 <button class="btn-cp" onclick="copy('${ch.link}')">URL</button>
             </div>
         </div>`;
@@ -164,11 +156,10 @@ function launch(url, type) {
 
 function copy(text) {
     navigator.clipboard.writeText(text);
-    alert("Copied!");
+    alert("URL Copied!");
 }
 
-// Start Force-Fetch
-forceFetch();
+forceFetchM3U();
 </script>
 </body>
 </html>
