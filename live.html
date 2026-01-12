@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JStar Live - TV Telugu</title>
+<title>Live TV - TV Telugu</title>
 <link rel="icon" type="image/x-icon" href="https://tvtelugu.github.io/images/tvtelugu.ico">
 <style>
 :root {
@@ -23,58 +23,37 @@ body {
 .header-container { text-align: center; margin-bottom: 15px; }
 .main-logo { max-width: 160px; width: 50%; height: auto; }
 
-/* Sticky Search Bar */
-.search-wrapper {
-  position: sticky; top: 10px; z-index: 100;
-  margin-bottom: 20px;
-}
-#searchBar {
-  width: 100%; padding: 14px 20px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(10px); color: #fff;
-  font-size: 15px; outline: none; transition: 0.3s;
-}
-#searchBar:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(79, 172, 254, 0.3); }
+/* Control Panel */
+.controls { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 18px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.tab-row { display: flex; gap: 10px; margin-bottom: 15px; }
+.tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.05); transition: 0.3s; border: 1px solid transparent; }
+.tab.active { background: var(--accent); color: #000; }
 
-/* Status */
-.status-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; }
-.pulse { width: 8px; height: 8px; background: #ff0000; border-radius: 50%; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(255,0,0,0.7); } 70% { box-shadow: 0 0 0 10px rgba(255,0,0,0); } 100% { box-shadow: 0 0 0 0px rgba(255,0,0,0); } }
-.status-text { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 700; letter-spacing: 1px; }
+.input-group { display: flex; gap: 8px; }
+#urlInput { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #000; color: #fff; font-size: 13px; outline: none; }
+.load-btn { padding: 0 20px; border-radius: 10px; border: none; background: #fff; font-weight: 700; cursor: pointer; }
 
-/* Skeleton */
-.skeleton {
-  background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
-  height: 150px; position: relative; overflow: hidden;
-}
+/* Search Bar */
+.search-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 15px; }
+#searchBar { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); color: #fff; outline: none; display: none; }
+
+/* Skeleton & Cards */
+.skeleton { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; height: 150px; position: relative; overflow: hidden; display: none; }
 .skeleton::after { content: ""; position: absolute; inset: 0; background: var(--shimmer); animation: shimmer 1.2s infinite; }
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-/* Channel Card */
-.card {
-  background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
-  border: 1px solid rgba(255,255,255,0.08); animation: slideUp 0.3s ease-out forwards;
-}
+.card { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); animation: slideUp 0.3s ease-out forwards; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 .ch-info { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
 .ch-logo { width: 50px; height: 50px; border-radius: 10px; background: #fff; object-fit: contain; padding: 4px; }
-.ch-name { font-size: 17px; font-weight: 700; flex: 1; }
+.ch-name { font-size: 16px; font-weight: 700; flex: 1; }
 
-.badges { display: flex; gap: 6px; margin-bottom: 15px; }
-.badge { background: rgba(79, 172, 254, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; }
-
-/* Triple Buttons Layout */
 .btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-button { padding: 12px 2px; border: none; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.1s; }
-button:active { transform: scale(0.96); }
-
-.btn-ns { background: linear-gradient(135deg, #ff3d71, #ff0055); color: #fff; }
-.btn-pf { background: linear-gradient(135deg, #00d1ff, #0077ff); color: #fff; }
-.btn-exo { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #000; }
-
-#noResults { text-align: center; padding: 40px; color: #64748b; display: none; }
+button { padding: 12px 2px; border: none; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
+.btn-ns { background: #ff3d71; color: #fff; }
+.btn-pf { background: #00d1ff; color: #fff; }
+.btn-exo { background: #43e97b; color: #000; }
 </style>
 </head>
 <body>
@@ -83,50 +62,75 @@ button:active { transform: scale(0.96); }
   <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="TV Telugu" class="main-logo">
 </div>
 
+<div class="controls">
+  <div class="tab-row">
+    <div class="tab active" onclick="switchMode('preset')">Presets</div>
+    <div class="tab" onclick="switchMode('manual')">Manual URL</div>
+  </div>
+
+  <div id="presetMode">
+    <select id="urlInput" onchange="loadM3U(this.value)" style="width: 100%; display: block;">
+      <option value="">Select a Playlist...</option>
+      <option value="https://tvtjstar.vercel.app/jstar.m3u">JStar Playlist</option>
+      <option value="https://tvtelugu.vercel.app/api/m3u?token=SHIKHANDI-3188">Shikhandi Dynamic</option>
+    </select>
+  </div>
+
+  <div id="manualMode" style="display: none;">
+    <div class="input-group">
+      <input type="text" id="manualUrl" placeholder="Paste M3U URL here...">
+      <button class="load-btn" onclick="loadM3U(document.getElementById('manualUrl').value)">Load</button>
+    </div>
+  </div>
+</div>
+
 <div class="search-wrapper">
-  <input type="text" id="searchBar" placeholder="Search Channel Name..." onkeyup="filterChannels()">
+  <input type="text" id="searchBar" placeholder="Search Channel..." onkeyup="filterChannels()">
 </div>
 
-<div class="status-row">
-  <div class="pulse"></div>
-  <span id="loader-text" class="status-text">Fetching JStar Live...</span>
-</div>
-
-<div id="list">
-  <div class="skeleton"></div>
-  <div class="skeleton"></div>
-</div>
-
-<div id="noResults">No Channels Match Your Search</div>
+<div id="loader" class="skeleton"></div>
+<div id="list"></div>
 
 <script>
-const M3U_URL = "https://tvtjstar.vercel.app/jstar.m3u";
+let currentData = [];
 
-async function forceFetchM3U() {
-    const bustUrl = `${M3U_URL}?v=${Date.now()}`;
-    const fetchTask = async (url, isProxy = false) => {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error();
-        return isProxy ? (await res.json()).contents : await res.text();
-    };
+function switchMode(mode) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('presetMode').style.display = mode === 'preset' ? 'block' : 'none';
+    document.getElementById('manualMode').style.display = mode === 'manual' ? 'block' : 'none';
+}
 
+async function loadM3U(url) {
+    if (!url) return;
+    const list = document.getElementById('list');
+    const loader = document.getElementById('loader');
+    const search = document.getElementById('searchBar');
+
+    list.innerHTML = "";
+    loader.style.display = "block";
+    search.style.display = "none";
+
+    const bustUrl = `${url}${url.includes('?') ? '&' : '?'}v=${Date.now()}`;
+    
     try {
-        const rawM3U = await Promise.any([
-            fetchTask(bustUrl),
-            fetchTask(`https://api.allorigins.win/get?url=${encodeURIComponent(bustUrl)}`, true),
-            fetchTask(`https://corsproxy.io/?${encodeURIComponent(bustUrl)}`)
+        const res = await Promise.any([
+            fetch(bustUrl).then(r => r.text()),
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(bustUrl)}`).then(r => r.json()).then(j => j.contents)
         ]);
-        parseM3U(rawM3U);
+        parseM3U(res);
+        loader.style.display = "none";
+        search.style.display = "block";
     } catch (e) {
-        document.getElementById('loader-text').innerText = "Network Error. Retrying...";
-        setTimeout(forceFetchM3U, 3000);
+        alert("Failed to load playlist. Try another URL.");
+        loader.style.display = "none";
     }
 }
 
 function parseM3U(data) {
     const lines = data.split('\n');
     let currentCh = {};
-    const channels = [];
+    currentData = [];
 
     lines.forEach(line => {
         line = line.trim();
@@ -138,79 +142,49 @@ function parseM3U(data) {
         } else if (line.startsWith('#EXTHTTP')) {
             try {
                 const httpStr = line.substring(line.indexOf('{'));
-                const httpData = JSON.parse(httpStr);
-                currentCh.cookie = httpData.cookie || '';
+                currentCh.cookie = JSON.parse(httpStr).cookie || '';
             } catch(e) { currentCh.cookie = ''; }
         } else if (line.startsWith('http')) {
             currentCh.link = line;
-            channels.push({...currentCh});
+            currentData.push({...currentCh});
             currentCh = {};
         }
     });
-
-    render(channels);
+    render(currentData);
 }
 
 function render(channels) {
     const list = document.getElementById("list");
-    document.getElementById('loader-text').innerText = `${channels.length} Channels Loaded`;
-    list.innerHTML = "";
-
-    channels.forEach(ch => {
-        const userAgent = "plaYtv/7.1.3 (Linux;Android 13)";
-        // Combined Player Intent URL
-        const intentUrl = `${ch.link}|Cookie=${ch.cookie}&User-Agent=${userAgent}&drmScheme=clearkey&drmLicense=${ch.key}`;
-
-        const card = document.createElement('div');
-        card.className = "card channel-card";
-        card.innerHTML = `
+    list.innerHTML = channels.map(ch => {
+        const ua = "plaYtv/7.1.3 (Linux;Android 13)";
+        const intent = `${ch.link}|Cookie=${ch.cookie}&User-Agent=${ua}&drmScheme=clearkey&drmLicense=${ch.key}`;
+        return `
+        <div class="card channel-card">
             <div class="ch-info">
                 <img src="${ch.logo}" class="ch-logo" onerror="this.src='https://tvtelugu.github.io/images/tvtelugu.ico'">
                 <div class="ch-name">${ch.name}</div>
             </div>
-            <div class="badges">
-                <span class="badge">DASH / MPD</span>
-                <span class="badge">CLEARKEY</span>
-            </div>
             <div class="btns">
-                <button class="btn-ns" onclick="launch('${intentUrl}', 'ns')">NS PLAYER</button>
-                <button class="btn-pf" onclick="launch('${intentUrl}', 'pf')">PLAYIFY</button>
-                <button class="btn-exo" onclick="launch('${intentUrl}', 'exo')">EXO PLAYER</button>
+                <button class="btn-ns" onclick="launch('${intent}', 'ns')">NS</button>
+                <button class="btn-pf" onclick="launch('${intent}', 'pf')">PF</button>
+                <button class="btn-exo" onclick="launch('${intent}', 'exo')">EXO</button>
             </div>
-        `;
-        list.appendChild(card);
-    });
+        </div>`;
+    }).join('');
 }
 
 function filterChannels() {
     const query = document.getElementById('searchBar').value.toLowerCase();
-    const cards = document.getElementsByClassName('channel-card');
-    let found = 0;
-
-    Array.from(cards).forEach(card => {
+    document.querySelectorAll('.channel-card').forEach(card => {
         const name = card.querySelector('.ch-name').innerText.toLowerCase();
-        if (name.includes(query)) {
-            card.style.display = "block";
-            found++;
-        } else {
-            card.style.display = "none";
-        }
+        card.style.display = name.includes(query) ? "block" : "none";
     });
-
-    document.getElementById('noResults').style.display = found === 0 ? "block" : "none";
 }
 
 function launch(url, type) {
-    let pkg = '';
-    switch(type) {
-        case 'ns': pkg = 'com.genuine.leone'; break;
-        case 'pf': pkg = 'com.appnix.playify'; break;
-        case 'exo': pkg = 'com.google.android.exoplayer2.demo'; break;
-    }
-    window.location.href = `intent:${url}#Intent;package=${pkg};end`;
+    const pkgs = { ns: 'com.genuine.leone', pf: 'com.appnix.playify', exo: 'com.google.android.exoplayer2.demo' };
+    window.location.href = `intent:${url}#Intent;package=${pkgs[type]};end`;
 }
-
-forceFetchM3U();
 </script>
 </body>
 </html>
