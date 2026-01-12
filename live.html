@@ -3,175 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live TV - TV Telugu</title>
+<title>ZTV Live - TV Telugu</title>
 <link rel="icon" type="image/x-icon" href="https://tvtelugu.github.io/images/tvtelugu.ico">
 <style>
 :root {
   --bg: #0b0f1a;
-  --card: rgba(255, 255, 255, 0.06);
-  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
+  --card: rgba(255, 255, 255, 0.05);
+  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
   --accent: #4facfe;
-  --live: #ff0000;
 }
-* { box-sizing: border-box; }
+* { box-sizing: border-box; outline: none; }
 body {
   margin: 0; background: var(--bg); color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 16px; min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 15px; min-height: 100vh;
 }
 
-.header-container { text-align: center; margin-bottom: 20px; }
-.main-logo { max-width: 180px; width: 50%; height: auto; object-fit: contain; }
+/* Header Branding */
+.header-container { text-align: center; margin-bottom: 25px; padding-top: 10px; }
+.main-logo { max-width: 180px; width: 55%; height: auto; filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.2)); }
 
-.title-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 5px; }
-h1 { font-size: 18px; margin: 0; }
+.status-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
 .pulse {
-  width: 10px; height: 10px; background: var(--live); border-radius: 50%;
-  animation: pulse 1.5s infinite;
+  width: 10px; height: 10px; background: #ff0000; border-radius: 50%;
+  box-shadow: 0 0 0 rgba(255, 0, 0, 0.4); animation: pulse 1.5s infinite;
 }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0px rgba(255, 0, 0, 0); } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(255,0,0,0.7); } 70% { box-shadow: 0 0 0 10px rgba(255,0,0,0); } 100% { box-shadow: 0 0 0 0px rgba(255,0,0,0); } }
+.status-text { font-size: 11px; text-transform: uppercase; color: var(--accent); letter-spacing: 1.5px; font-weight: 700; }
 
-.sub-title { text-align: center; font-size: 11px; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
-
-/* Skeleton */
+/* Skeleton Shimmer */
 .skeleton {
-  background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 14px;
-  height: 130px; position: relative; overflow: hidden;
+  background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
+  height: 140px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.03);
 }
 .skeleton::after {
-  content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  content: ""; position: absolute; inset: 0;
   background: var(--shimmer); animation: shimmer 1.2s infinite;
 }
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-.sk-line { height: 12px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 10px; }
 
-/* Channel Card */
+/* Dynamic Card */
 .card {
-  background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 14px;
-  border: 1px solid rgba(255,255,255,0.1); animation: fadeIn 0.4s ease-out;
+  background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px;
+  border: 1px solid rgba(255,255,255,0.08); display: none;
+  transition: transform 0.2s; animation: slideUp 0.4s ease-out forwards;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-.ch-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.ch-logo { width: 50px; height: 50px; background: #1a1a1a; border-radius: 8px; object-fit: cover; }
-.channel-name { font-size: 16px; font-weight: 600; flex: 1; }
+.ch-info { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.ch-logo { width: 55px; height: 55px; border-radius: 12px; background: #000; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
+.ch-name { font-size: 18px; font-weight: 700; color: #fff; }
 
-.meta { font-size: 11px; color: #94a3b8; display: flex; gap: 5px; margin-bottom: 15px; }
-.badge { background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 50px; font-size: 10px; text-transform: uppercase; }
+.badges { display: flex; gap: 6px; margin-bottom: 18px; }
+.badge { background: rgba(79, 172, 254, 0.15); color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; }
 
-.buttons { display: flex; gap: 8px; }
-button { flex: 1; padding: 12px 5px; border: none; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
-.ns { background: #ff3d71; color: #fff; }
-.pf { background: #00d1ff; color: #fff; }
-.cp { background: #fff; color: #000; }
+.btns { display: flex; gap: 10px; }
+button { flex: 1; padding: 13px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.1s; }
+button:active { transform: scale(0.95); }
+.btn-ns { background: linear-gradient(135deg, #ff3d71, #ff0055); color: #fff; }
+.btn-pf { background: linear-gradient(135deg, #00d1ff, #0077ff); color: #fff; }
+.btn-cp { background: #fff; color: #000; }
 
-#error-container { display: none; text-align: center; padding: 40px 20px; }
-.retry-btn { background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; border: none; font-weight: bold; margin-top: 15px; cursor: pointer; }
+#error-box { display: none; text-align: center; padding: 50px 20px; }
+.retry-btn { background: var(--accent); color: #000; padding: 12px 30px; border-radius: 10px; border: none; font-weight: 900; margin-top: 20px; }
 </style>
 </head>
 <body>
 
 <div class="header-container">
-  <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="TV Telugu" class="main-logo">
+  <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="Logo" class="main-logo">
+  <div class="status-row">
+    <div class="pulse"></div>
+    <span id="loader-text" class="status-text">Bypassing Cache...</span>
+  </div>
 </div>
-
-<div class="title-row">
-  <div class="pulse"></div>
-  <h1 id="eventTitle">ZTV Live</h1>
-</div>
-<div id="eventMeta" class="sub-title">Bypassing Restrictions...</div>
 
 <div id="list">
-  <div class="skeleton"><div class="sk-line" style="width:70%"></div><div class="sk-line" style="width:40%"></div><div class="sk-line" style="margin-top:25px"></div></div>
-  <div class="skeleton"><div class="sk-line" style="width:70%"></div><div class="sk-line" style="width:40%"></div><div class="sk-line" style="margin-top:25px"></div></div>
+  <div class="skeleton"></div>
+  <div class="skeleton"></div>
+  <div class="skeleton"></div>
 </div>
 
-<div id="error-container">
-  <p id="error-text">Failed to sync with ZTV Workers.</p>
-  <button class="retry-btn" onclick="location.reload()">RETRY SYNC</button>
+<div id="error-box">
+  <div style="font-size: 50px;">📡</div>
+  <h3 style="margin: 15px 0 5px;">Link Handshake Failed</h3>
+  <p style="color: #94a3b8; font-size: 13px;">The Worker is not responding. Check your internet.</p>
+  <button class="retry-btn" onclick="location.reload()">FORCE REFRESH</button>
 </div>
 
 <script>
-const JSON_URL = "https://ztv.pfy.workers.dev/";
-let retryCount = 0;
-const MAX_RETRIES = 2;
+const SOURCE_URL = "https://ztv.pfy.workers.dev/";
+let attempts = 0;
 
-async function forceLoad() {
-    const target = `${JSON_URL}?t=${Date.now()}`;
-    const controllers = [];
+async function forceFetch() {
+    const timestamp = Date.now();
+    const headers = { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' };
+    const bustUrl = `${SOURCE_URL}?nocache=${timestamp}`;
 
-    const createFetch = (url, isProxy = false) => {
-        const controller = new AbortController();
-        controllers.push(controller);
-        return fetch(url, { signal: controller.signal, cache: "no-store" })
-            .then(r => r.json())
-            .then(d => {
-                controllers.forEach(c => c.abort());
-                return isProxy ? JSON.parse(d.contents) : d;
-            });
+    const fetchTask = async (url, isAllOrigins = false) => {
+        const res = await fetch(url, { headers });
+        if (!res.ok) throw new Error();
+        const json = await res.json();
+        return isAllOrigins ? JSON.parse(json.contents) : json;
     };
 
     try {
-        // Race between Direct and Proxies for absolute speed
+        // Race condition: Fast direct fetch vs Fast proxy fetch
         const data = await Promise.any([
-            createFetch(target),
-            createFetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`, true),
-            createFetch(`https://corsproxy.io/?${encodeURIComponent(target)}`)
+            fetchTask(bustUrl),
+            fetchTask(`https://api.allorigins.win/get?url=${encodeURIComponent(bustUrl)}`, true),
+            fetchTask(`https://corsproxy.io/?${encodeURIComponent(bustUrl)}`)
         ]);
         render(data);
-    } catch (err) {
-        if (retryCount < MAX_RETRIES) {
-            retryCount++;
-            setTimeout(forceLoad, 2000);
+    } catch (e) {
+        attempts++;
+        if (attempts <= 2) {
+            document.getElementById('loader-text').innerText = `Retrying (${attempts}/2)...`;
+            setTimeout(forceFetch, 2500);
         } else {
             document.getElementById('list').style.display = 'none';
-            document.getElementById('error-container').style.display = 'block';
+            document.getElementById('error-box').style.display = 'block';
+            document.getElementById('loader-text').innerText = "Offline";
         }
     }
 }
 
 function render(channels) {
     const list = document.getElementById("list");
-    document.getElementById("eventMeta").innerText = `${channels.length} Channels Online`;
-    
+    document.getElementById("loader-text").innerText = `${channels.length} Channels Active`;
     let html = "";
-    channels.forEach(ch => {
-        // Build the complex URL with DRM and Cookies for Android Intent
-        const intentUrl = `${ch.link}|Cookie=${encodeURIComponent(ch.cookie)}&drmScheme=${ch.drmScheme}&drmLicense=${ch.drmLicense}`;
 
+    channels.forEach(ch => {
+        // Constructing Intent with Cookie, License, and Proxy Headers
+        const fullUrl = `${ch.link}|Cookie=${encodeURIComponent(ch.cookie)}&drmScheme=${ch.drmScheme}&drmLicense=${ch.drmLicense}`;
+        
         html += `
-        <div class="card">
-            <div class="ch-header">
+        <div class="card" style="display: block;">
+            <div class="ch-info">
                 <img src="${ch.logo}" class="ch-logo" onerror="this.src='https://tvtelugu.github.io/images/tvtelugu.ico'">
-                <div class="channel-name">${ch.name}</div>
+                <div class="ch-name">${ch.name}</div>
             </div>
-            <div class="meta">
-                <span class="badge">${ch.drmScheme}</span>
-                <span class="badge">Auto Quality</span>
-                <span class="badge" style="color:#4facfe">JioTV+</span>
+            <div class="badges">
+                <span class="badge">DRM: ${ch.drmScheme.toUpperCase()}</span>
+                <span class="badge">JIO NETWORK</span>
             </div>
-            <div class="buttons">
-                <button class="ns" onclick="play('${intentUrl}', 'ns')">NS PLAYER</button>
-                <button class="pf" onclick="play('${intentUrl}', 'pf')">PLAYIFY</button>
-                <button class="cp" onclick="copy('${ch.link}')">URL</button>
+            <div class="btns">
+                <button class="btn-ns" onclick="launch('${fullUrl}', 'ns')">NS PLAYER</button>
+                <button class="btn-pf" onclick="launch('${fullUrl}', 'pf')">PLAYIFY</button>
+                <button class="btn-cp" onclick="copy('${ch.link}')">URL</button>
             </div>
         </div>`;
     });
     list.innerHTML = html;
 }
 
-function play(url, type) {
-    const pkg = (type === 'ns') ? 'com.genuine.leone' : 'com.appnix.playify';
-    // Deep Link with all headers preserved
+function launch(url, type) {
+    const pkg = type === 'ns' ? 'com.genuine.leone' : 'com.appnix.playify';
     window.location.href = `intent:${url}#Intent;package=${pkg};end`;
 }
 
-function copy(url) {
-    navigator.clipboard.writeText(url);
-    alert("Stream URL Copied!");
+function copy(text) {
+    navigator.clipboard.writeText(text);
+    alert("Copied!");
 }
 
-forceLoad();
+// Start Force-Fetch
+forceFetch();
 </script>
 </body>
 </html>
