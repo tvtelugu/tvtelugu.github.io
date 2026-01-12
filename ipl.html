@@ -3,119 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Match Streams</title>
+<title>Live Stream Player</title>
 <style>
 :root {
-  --bg: #0b101b;
-  --card: rgba(255, 255, 255, 0.05);
-  --accent: #4facfe;
+  --bg: #0b0f1a;
+  --card: rgba(255, 255, 255, 0.07);
+  --accent: #00f2fe;
 }
 body {
   margin: 0;
-  background-color: var(--bg);
-  background: radial-gradient(circle at top, #1a2236 0%, #0b101b 100%);
+  background: #0b0f1a;
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 15px;
 }
-.container { width: 100%; max-width: 500px; }
-h1 { font-size: 20px; margin-bottom: 5px; text-align: center; }
-.status-msg { color: #ff4d4d; text-align: center; margin-top: 20px; display: none; }
-.retry-btn { 
-    background: #444; color: white; border: none; padding: 8px 15px; 
-    border-radius: 5px; margin-top: 10px; cursor: pointer; display: none;
-}
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 20px; margin: 0; color: #fff; }
+.header p { font-size: 12px; color: var(--accent); margin: 5px 0; }
+
+#list { display: flex; flex-direction: column; gap: 12px; }
+
 .card {
   background: var(--card);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 15px;
-  margin-bottom: 12px;
-  backdrop-filter: blur(10px);
 }
-.ch-name { font-weight: bold; font-size: 16px; margin-bottom: 4px; }
-.ch-meta { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+.ch-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.ch-meta { font-size: 11px; color: #bdc3c7; margin-bottom: 12px; text-transform: uppercase; }
+
 .btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 button {
-  padding: 10px 5px; border-radius: 8px; border: none;
-  font-size: 12px; font-weight: 600; cursor: pointer; color: white;
+  padding: 10px 2px; border: none; border-radius: 8px;
+  font-size: 12px; font-weight: bold; cursor: pointer; color: white;
 }
-.btn-ns { background: #e91e63; }
-.btn-pf { background: #00bcd4; }
-.btn-cp { background: #4caf50; }
+.btn-ns { background: linear-gradient(to right, #ff512f, #dd2476); }
+.btn-pf { background: linear-gradient(to right, #2193b0, #6dd5ed); }
+.btn-cp { background: #2ecc71; color: #000; }
+
+.loading-box { text-align: center; padding: 40px; color: #7f8c8d; }
+.error-box { text-align: center; padding: 20px; color: #e74c3c; background: rgba(231, 76, 60, 0.1); border-radius: 10px; }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 id="title">Loading...</h1>
-    <div id="status" class="status-msg">Failed to load streams.</div>
-    <center><button id="retry" class="retry-btn" onclick="loadData()">Try Again</button></center>
-    <div id="list"></div>
+<div class="header">
+  <h1 id="eventTitle">Connecting...</h1>
+  <p id="eventMeta"></p>
+</div>
+
+<div id="list">
+  <div class="loading-box">Fetching latest streams...</div>
 </div>
 
 <script>
-async function loadData() {
-    const listDiv = document.getElementById('list');
-    const titleEl = document.getElementById('title');
-    const statusEl = document.getElementById('status');
-    const retryBtn = document.getElementById('retry');
+async function forceFetch() {
+    const list = document.getElementById('list');
+    const title = document.getElementById('eventTitle');
+    const meta = document.getElementById('eventMeta');
 
-    // Reset UI
-    listDiv.innerHTML = "";
-    statusEl.style.display = "none";
-    retryBtn.style.display = "none";
-    titleEl.innerText = "Loading...";
+    // 1. Define URLs (Cache buster added to prevent old data)
+    const targetUrl = "https://pasteking.u0k.workers.dev/3qsxt.json?t=" + new Date().getTime();
+    // 2. Use a different proxy if the first one fails
+    const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl);
 
     try {
-        // Using corsproxy.io to ensure the fetch works even from local files
-        const apiUrl = "https://pasteking.u0k.workers.dev/3qsxt.json";
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(apiUrl);
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Proxy Error");
         
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error("HTTP Error");
-        const data = await res.json();
+        const result = await response.json();
+        // allorigins wraps the JSON in a string under 'contents'
+        const data = JSON.parse(result.contents);
 
-        titleEl.innerText = data.event.title;
+        // Update Header
+        title.innerText = data.event.title;
+        meta.innerText = `${data.event.sport} | ${data.event.match_type}`;
+        
+        // Clear list
+        list.innerHTML = "";
 
         data.streams.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `
-                <div class="ch-name">${s.channel} [${s.language}]</div>
-                <div class="ch-meta">${s.quality} • ${s.format} • ${s.provider}</div>
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="ch-title">${s.channel} (${s.language})</div>
+                <div class="ch-meta">${s.provider} • ${s.quality} • ${s.format}</div>
                 <div class="btns">
-                    <button class="btn-ns" onclick="openPlayer('ns', '${s.url}')">NS Player</button>
-                    <button class="btn-pf" onclick="openPlayer('playify', '${s.url}')">Playify</button>
-                    <button class="btn-cp" onclick="copyUrl('${s.url}')">Copy</button>
+                    <button class="btn-ns" onclick="play('ns', '${s.url}')">NS Player</button>
+                    <button class="btn-pf" onclick="play('playify', '${s.url}')">PlayiFy</button>
+                    <button class="btn-cp" onclick="copy('${s.url}')">Copy</button>
                 </div>
             `;
-            listDiv.appendChild(div);
+            list.appendChild(card);
         });
 
     } catch (err) {
-        console.error(err);
-        titleEl.innerText = "Error";
-        statusEl.style.display = "block";
-        retryBtn.style.display = "inline-block";
+        console.error("Fetch Error:", err);
+        list.innerHTML = `
+            <div class="error-box">
+                <b>Failed to load streams</b><br>
+                <small>${err.message}</small><br><br>
+                <button onclick="location.reload()" style="background:#444; padding:5px 15px;">Retry</button>
+            </div>`;
     }
 }
 
-function openPlayer(type, url) {
-    let pkg = type === 'ns' ? 'com.genuine.leone' : 'com.appnix.playify';
-    // Use proper Intent URI construction
+function play(player, url) {
+    const pkg = player === 'ns' ? 'com.genuine.leone' : 'com.appnix.playify';
+    // Deep link intent syntax
     window.location.href = `intent:${url}#Intent;package=${pkg};end`;
 }
 
-function copyUrl(url) {
-    navigator.clipboard.writeText(url);
-    alert("URL Copied!");
+function copy(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        alert("Link Copied!");
+    });
 }
 
-loadData();
+// Start
+forceFetch();
 </script>
 </body>
 </html>
