@@ -3,147 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Match</title>
+<title>Live Match - Super Fast</title>
 <style>
 :root {
   --bg: #0b0f1a;
   --card: rgba(255, 255, 255, 0.06);
-  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
   background: var(--bg);
   color: #fff;
-  font-family: "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding: 16px;
 }
 
-h1 { text-align: center; font-size: 20px; margin-bottom: 20px; }
+h1 { text-align: center; font-size: 22px; margin: 10px 0 20px; font-weight: 700; letter-spacing: -0.5px; }
 
-/* Skeleton & Card Base */
-.card, .skeleton {
+/* Skeleton Loader Styling */
+.skeleton {
   background: var(--card);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
 }
-
-/* Skeleton Animation */
-.skeleton { position: relative; overflow: hidden; height: 120px; }
 .skeleton::after {
   content: "";
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: var(--shimmer);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.2s infinite;
 }
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
-
 .sk-line { height: 12px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 10px; }
-.sk-title { width: 60%; height: 18px; }
-.sk-meta { width: 40%; }
-.sk-btns { display: flex; gap: 8px; margin-top: 15px; }
-.sk-btn { flex: 1; height: 35px; background: rgba(255,255,255,0.1); border-radius: 8px; }
 
-/* Real Content */
-.channel { font-size: 17px; font-weight: 600; }
-.meta { font-size: 12px; color: #94a3b8; margin: 6px 0 12px; }
+/* Real Content Styling */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: none; /* Hidden until data arrives */
+  animation: fadeIn 0.3s ease-in;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.channel { font-size: 17px; font-weight: 600; color: #fff; }
+.meta { font-size: 12px; color: #94a3b8; margin: 6px 0 14px; display: flex; gap: 8px; }
+.badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 10px; text-transform: uppercase; }
+
 .buttons { display: flex; gap: 8px; }
 button {
-  flex: 1; padding: 10px; border: none; border-radius: 10px;
-  font-size: 13px; font-weight: 600; color: #fff; cursor: pointer;
+  flex: 1; padding: 12px 5px; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;
 }
-.ns { background: linear-gradient(135deg, #ff512f, #dd2476); }
-.playify { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.copy { background: #e2e8f0; color: #0f172a; }
-
-.error-msg { text-align: center; color: #ff5f5f; padding: 20px; }
+.ns { background: #ff3d71; color: #fff; }
+.pf { background: #00d1ff; color: #fff; }
+.cp { background: #ffffff; color: #000; }
+button:active { transform: scale(0.96); opacity: 0.8; }
 </style>
 </head>
 <body>
 
-<h1 id="eventTitle">Live Streams</h1>
+<h1 id="eventTitle">Live Match</h1>
 <div id="list">
-  <div class="skeleton">
-    <div class="sk-line sk-title"></div>
-    <div class="sk-line sk-meta"></div>
-    <div class="sk-btns">
-      <div class="sk-btn"></div><div class="sk-btn"></div><div class="sk-btn"></div>
-    </div>
-  </div>
-  <div class="skeleton">
-    <div class="sk-line sk-title"></div>
-    <div class="sk-line sk-meta"></div>
-    <div class="sk-btns">
-      <div class="sk-btn"></div><div class="sk-btn"></div><div class="sk-btn"></div>
-    </div>
-  </div>
+  <div class="skeleton"><div class="sk-line" style="width:60%"></div><div class="sk-line" style="width:40%"></div><div class="sk-line" style="margin-top:20px"></div></div>
+  <div class="skeleton"><div class="sk-line" style="width:60%"></div><div class="sk-line" style="width:40%"></div><div class="sk-line" style="margin-top:20px"></div></div>
+  <div class="skeleton"><div class="sk-line" style="width:60%"></div><div class="sk-line" style="width:40%"></div><div class="sk-line" style="margin-top:20px"></div></div>
 </div>
 
 <script>
-async function forceFetchStreams() {
-  const list = document.getElementById("list");
-  const title = document.getElementById("eventTitle");
-  
-  // Force Fetch Strategy: 
-  // 1. AllOrigins Proxy to bypass CORS.
-  // 2. Timestamp query to bypass CDN caching.
-  // 3. Cache: 'no-store' to bypass Browser caching.
-  const target = `https://pasteking.u0k.workers.dev/3qsxt.json?v=${Date.now()}`;
-  const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(target)}`;
-
-  try {
-    const response = await fetch(proxy, {
-      method: 'GET',
-      cache: 'no-store',
-      headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
-    });
-
-    if (!response.ok) throw new Error("Network response failed");
+/**
+ * Super Fast Force Fetch Logic
+ * Races multiple proxies to bypass CORS and caching instantly.
+ */
+async function fastForceLoad() {
+    const targetUrl = `https://pasteking.u0k.workers.dev/3qsxt.json?cachebust=${Date.now()}`;
     
-    const wrapper = await response.json();
-    const data = JSON.parse(wrapper.contents); // AllOrigins returns data inside .contents
+    // Multiple proxy sources to ensure high availability and speed
+    const proxies = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
+        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+    ];
 
-    title.innerText = data.event.title;
-    list.innerHTML = ""; // Remove skeletons
+    try {
+        // Race the proxies! First one to respond wins.
+        const response = await Promise.any(proxies.map(p => fetch(p)));
+        const rawData = await response.json();
+        
+        // Handle different proxy response structures
+        let data = rawData.contents ? JSON.parse(rawData.contents) : rawData;
 
-    data.streams.forEach((s) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <div class="channel">${s.channel}</div>
-        <div class="meta">${s.language} • ${s.quality} • ${s.format}</div>
-        <div class="buttons">
-          <button class="ns" onclick="openInt('${s.url}', 'com.genuine.leone')">NS Player</button>
-          <button class="playify" onclick="openInt('${s.url}', 'com.appnix.playify')">PlayiFy</button>
-          <button class="copy" onclick="copyUrl('${s.url}')">Copy</button>
-        </div>
-      `;
-      list.appendChild(card);
+        render(data);
+    } catch (err) {
+        console.error("Fetch failed", err);
+        document.getElementById("eventTitle").innerText = "Failed to load.";
+    }
+}
+
+function render(data) {
+    const list = document.getElementById("list");
+    document.getElementById("eventTitle").innerText = data.event.title;
+    
+    let html = "";
+    data.streams.forEach(s => {
+        html += `
+        <div class="card" style="display: block;">
+            <div class="channel">${s.channel}</div>
+            <div class="meta">
+                <span class="badge">${s.language}</span>
+                <span class="badge">${s.quality}</span>
+                <span class="badge">${s.format}</span>
+            </div>
+            <div class="buttons">
+                <button class="ns" onclick="play('${s.url}', 'ns')">NS Player</button>
+                <button class="pf" onclick="play('${s.url}', 'pf')">PlayiFy</button>
+                <button class="cp" onclick="copy('${s.url}')">Copy</button>
+            </div>
+        </div>`;
     });
-  } catch (err) {
-    console.error(err);
-    list.innerHTML = `<div class="error-msg">Failed to load streams. <br>Please check your internet or the source URL.</div>`;
-  }
+    
+    list.innerHTML = html;
 }
 
-function openInt(url, pkg) {
-  window.location.href = `intent:${url}#Intent;package=${pkg};end`;
+function play(url, type) {
+    const pkg = (type === 'ns') ? 'com.genuine.leone' : 'com.appnix.playify';
+    window.location.href = `intent:${url}#Intent;package=${pkg};end`;
 }
 
-function copyUrl(url) {
-  navigator.clipboard.writeText(url);
-  alert("URL Copied!");
+function copy(url) {
+    navigator.clipboard.writeText(url);
+    alert("Copied!");
 }
 
-// Initialize
-forceFetchStreams();
+// Execute immediately
+fastForceLoad();
 </script>
 </body>
 </html>
