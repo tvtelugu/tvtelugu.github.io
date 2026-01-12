@@ -17,6 +17,7 @@ body {
   color: #fff;
   font-family: "Segoe UI", Arial, sans-serif;
   padding: 16px;
+  min-height: 100vh;
 }
 h1 {
   text-align: center;
@@ -32,6 +33,7 @@ h1 {
   animation: fadeUp 0.5s ease forwards;
   transform: translateY(10px);
   opacity: 0;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 @keyframes fadeUp {
   to {
@@ -55,21 +57,18 @@ h1 {
 }
 button {
   flex: 1;
-  min-width: 120px;
+  min-width: 100px;
   padding: 10px;
   border: none;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   color: #fff;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 button:active { transform: scale(0.96); }
-.ns {
-  background: linear-gradient(135deg, #ff512f, #dd2476);
-}
-.playify {
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
-}
+.ns { background: linear-gradient(135deg, #ff512f, #dd2476); }
+.playify { background: linear-gradient(135deg, #4facfe, #00f2fe); }
 .copy {
   background: linear-gradient(135deg, #43e97b, #38f9d7);
   color: #000;
@@ -80,68 +79,93 @@ button:active { transform: scale(0.96); }
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
   color: #fff;
-  padding: 10px 16px;
-  border-radius: 20px;
+  padding: 10px 18px;
+  border-radius: 25px;
   font-size: 14px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  z-index: 1000;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
-<h1 id="eventTitle">Live Match</h1>
+
+<h1 id="eventTitle">Loading Streams...</h1>
 <div id="list"></div>
 <div class="toast" id="toast">Copied!</div>
+
 <script>
 const toast = document.getElementById("toast");
+
 function showToast(text) {
   toast.textContent = text;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 1500);
 }
-fetch("https://pasteking.u0k.workers.dev/3qsxt.json")
-  .then(res => res.json())
-  .then(data => {
+
+// Optimized fetching logic
+async function loadStreams() {
+  try {
+    const response = await fetch("https://pasteking.u0k.workers.dev/3qsxt.json");
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
     document.getElementById("eventTitle").innerText = data.event.title;
+    
     const list = document.getElementById("list");
+    list.innerHTML = ""; // Clear loader if any
+
     data.streams.forEach((s, i) => {
       const card = document.createElement("div");
       card.className = "card";
       card.style.animationDelay = (i * 0.05) + "s";
+      
+      // We encode the URL to ensure it doesn't break the Intent string
+      const encodedUrl = encodeURIComponent(s.url);
+
       card.innerHTML = `
         <div class="channel">${s.channel}</div>
         <div class="meta">${s.language} • ${s.quality} • ${s.format}</div>
         <div class="buttons">
-          <button class="ns">NS Player</button>
-          <button class="playify">PlayiFy</button>
-          <button class="copy">Copy URL</button>
+          <button class="ns" data-url="${s.url}">NS Player</button>
+          <button class="playify" data-url="${s.url}">PlayiFy</button>
+          <button class="copy" data-url="${s.url}">Copy URL</button>
         </div>
       `;
-      // ✅ NS Player (NO ENCODING)
+
+      // Click Handlers
       card.querySelector(".ns").onclick = () => {
-        window.location.href =
-          "intent:" + s.url +
-          "#Intent;package=com.genuine.leone;end";
+        window.location.href = `intent:${s.url}#Intent;package=com.genuine.leone;end`;
       };
-      // ✅ PlayiFy (NO ENCODING)
+
       card.querySelector(".playify").onclick = () => {
-        window.location.href =
-          "intent:" + s.url +
-          "#Intent;package=com.appnix.playify;end";
+        // Playify often prefers the URL to be properly parsed
+        window.location.href = `intent:${s.url}#Intent;package=com.appnix.playify;end`;
       };
-      // Copy URL
+
       card.querySelector(".copy").onclick = () => {
-        navigator.clipboard.writeText(s.url);
-        showToast("Stream URL Copied");
+        navigator.clipboard.writeText(s.url).then(() => {
+          showToast("Stream URL Copied");
+        }).catch(() => {
+          showToast("Failed to copy");
+        });
       };
+
       list.appendChild(card);
     });
-  })
-  .catch(err => console.error(err));
+  } catch (err) {
+    console.error(err);
+    document.getElementById("eventTitle").innerText = "Failed to load streams";
+  }
+}
+
+loadStreams();
 </script>
+
 </body>
 </html>
