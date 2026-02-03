@@ -1,4 +1,4 @@
-name: Deploy TV Telugu
+name: Deploy TV Telugu Cric
 
 on:
   push:
@@ -11,13 +11,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Inject JSON URL
         run: |
-          sed -i "s|__JSON_STREAM_URL__|${{ secrets.JSON_STREAM_URL }}|g" cric.html
+          sed -i "s|__JSON_STREAM_URL__|${{ secrets.JSON_STREAM_URL }}|g" cric/index.html
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
