@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>TVTELUGU</title>
+        <link rel="SHORTCUT ICON" href="splash.png">
+       
+        <script src="jquery-1.11.2.min.js"></script>
+        <script src="jquery-ui.min.js"></script>
+        <script src="moment.min.js"></script>
+        <script src="site.js"></script>
+
+        <link rel="stylesheet" href="base.css">
+        <link href="https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@100..800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="jquery-ui.min.css">
+        <link rel="stylesheet" href="jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="jquery-ui.theme.min.css">
+
+        <link rel="stylesheet" href="./style.css">
+        <meta property="og:title" content="MY TV">
+    </head>
+       <body>
+        
+<div class="follow1">
+  <img src="mask.png" alt="MY TV"/>
+</div>
+<div class="follow2">
+  <img src="mask1.png" alt="MY TV"/>
+</div>
+        
+<div class="follow">
+  <img src="splash.png" alt="MY TV"/>
+</div>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <marquee
+scrollamount="10" id="marquee">
+
+                </marquee>
+            </div>
+        </div>
+    </div>
+
+  <script  src="./script.js"></script>
+
+
+    <div class="slider-container">
+        <img class="slider-image active" src="1.jpg" alt="Image 1">
+        <img class="slider-image" src="2.jpg" alt="Image 2">
+        <img class="slider-image" src="3.jpg" alt="Image 3">
+        <img class="slider-image" src="4.jpg" alt="Image 4">
+        <img class="slider-image" src="5.jpg" alt="Image 5">
+        <img class="slider-image" src="6.jpg" alt="Image 6">
+        <div class="navigation-dots">
+            <div class="dot active" data-index="0"></div>
+            <div class="dot" data-index="1"></div>
+            <div class="dot" data-index="2"></div>
+            <div class="dot" data-index="3"></div>
+            <div class="dot" data-index="4"></div>
+            <div class="dot" data-index="5"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let images = document.querySelectorAll('.slider-image');
+        let dots = document.querySelectorAll('.dot');
+
+        let modal = document.getElementById('imageModal');
+        let modalImg = modal.querySelector('img');
+        let currentIndex = 0;
+
+        images[currentIndex].classList.add('active');
+        dots[currentIndex].classList.add('active');
+
+        setInterval(() => {
+            images[currentIndex].classList.remove('active');
+            dots[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+        }, 20000);
+
+
+
+
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                images[currentIndex].classList.remove('active');
+                dots[currentIndex].classList.remove('active');
+                currentIndex = index;
+                images[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('active');
+            });
+        });
+
+        images.forEach((image) => {
+            image.addEventListener('click', () => {
+                modalImg.src = image.src;
+                modal.modal('show');
+            });
+        });
+    </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </body>
+</html>'));
+</script>

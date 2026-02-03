@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live TV - TV Telugu</title>
+<link rel="icon" type="image/x-icon" href="https://tvtelugu.github.io/images/tvtelugu.ico">
+<style>
+:root {
+  --bg: #0b0f1a;
+  --card: rgba(255, 255, 255, 0.05);
+  --shimmer: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
+  --accent: #4facfe;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: #fff;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  padding: 15px; min-height: 100vh;
+}
+
+/* Header */
+.header-container { text-align: center; margin-bottom: 15px; }
+.main-logo { max-width: 160px; width: 50%; height: auto; }
+
+/* Control Panel */
+.controls { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 18px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.tab-row { display: flex; gap: 10px; margin-bottom: 15px; }
+.tab { flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.05); transition: 0.3s; border: 1px solid transparent; }
+.tab.active { background: var(--accent); color: #000; }
+
+.input-group { display: flex; gap: 8px; }
+#urlInput { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #000; color: #fff; font-size: 13px; outline: none; }
+.load-btn { padding: 0 20px; border-radius: 10px; border: none; background: #fff; font-weight: 700; cursor: pointer; }
+
+/* Search Bar */
+.search-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 15px; }
+#searchBar { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); color: #fff; outline: none; display: none; }
+
+/* Skeleton & Cards */
+.skeleton { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; height: 150px; position: relative; overflow: hidden; display: none; }
+.skeleton::after { content: ""; position: absolute; inset: 0; background: var(--shimmer); animation: shimmer 1.2s infinite; }
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+.card { background: var(--card); border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.08); animation: slideUp 0.3s ease-out forwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.ch-info { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+.ch-logo { width: 50px; height: 50px; border-radius: 10px; background: #fff; object-fit: contain; padding: 4px; }
+.ch-name { font-size: 16px; font-weight: 700; flex: 1; }
+
+.btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+button { padding: 12px 2px; border: none; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
+.btn-ns { background: #ff3d71; color: #fff; }
+.btn-pf { background: #00d1ff; color: #fff; }
+.btn-exo { background: #43e97b; color: #000; }
+</style>
+</head>
+<body>
+
+<div class="header-container">
+  <img src="https://tvtelugu.github.io/images/tvtelugu-B.png" alt="TV Telugu" class="main-logo">
+</div>
+
+<div class="controls">
+  <div class="tab-row">
+    <div class="tab active" onclick="switchMode('preset')">Presets</div>
+    <div class="tab" onclick="switchMode('manual')">Manual URL</div>
+  </div>
+
+  <div id="presetMode">
+    <select id="urlInput" onchange="loadM3U(this.value)" style="width: 100%; display: block;">
+      <option value="">Select a Playlist...</option>
+      <option value="https://tvtjstar.vercel.app/jstar.m3u">JStar Playlist</option>
+      <option value="https://tvtelugu.vercel.app/api/m3u?token=SHIKHANDI-3188">Shikhandi Dynamic</option>
+    </select>
+  </div>
+
+  <div id="manualMode" style="display: none;">
+    <div class="input-group">
+      <input type="text" id="manualUrl" placeholder="Paste M3U URL here...">
+      <button class="load-btn" onclick="loadM3U(document.getElementById('manualUrl').value)">Load</button>
+    </div>
+  </div>
+</div>
+
+<div class="search-wrapper">
+  <input type="text" id="searchBar" placeholder="Search Channel..." onkeyup="filterChannels()">
+</div>
+
+<div id="loader" class="skeleton"></div>
+<div id="list"></div>
+
+<script>
+let currentData = [];
+
+function switchMode(mode) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('presetMode').style.display = mode === 'preset' ? 'block' : 'none';
+    document.getElementById('manualMode').style.display = mode === 'manual' ? 'block' : 'none';
+}
+
+async function loadM3U(url) {
+    if (!url) return;
+    const list = document.getElementById('list');
+    const loader = document.getElementById('loader');
+    const search = document.getElementById('searchBar');
+
+    list.innerHTML = "";
+    loader.style.display = "block";
+    search.style.display = "none";
+
+    const bustUrl = `${url}${url.includes('?') ? '&' : '?'}v=${Date.now()}`;
+    
+    try {
+        const res = await Promise.any([
+            fetch(bustUrl).then(r => r.text()),
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(bustUrl)}`).then(r => r.json()).then(j => j.contents)
+        ]);
+        parseM3U(res);
+        loader.style.display = "none";
+        search.style.display = "block";
+    } catch (e) {
+        alert("Failed to load playlist. Try another URL.");
+        loader.style.display = "none";
+    }
+}
+
+function parseM3U(data) {
+    const lines = data.split('\n');
+    let currentCh = {};
+    currentData = [];
+
+    lines.forEach(line => {
+        line = line.trim();
+        if (line.startsWith('#EXTINF')) {
+            currentCh.name = line.split(',').pop();
+            currentCh.logo = line.match(/tvg-logo="([^"]+)"/)?.[1] || '';
+        } else if (line.startsWith('#KODIPROP:inputstream.adaptive.license_key')) {
+            currentCh.key = line.split('=')[1];
+        } else if (line.startsWith('#EXTHTTP')) {
+            try {
+                const httpStr = line.substring(line.indexOf('{'));
+                currentCh.cookie = JSON.parse(httpStr).cookie || '';
+            } catch(e) { currentCh.cookie = ''; }
+        } else if (line.startsWith('http')) {
+            currentCh.link = line;
+            currentData.push({...currentCh});
+            currentCh = {};
+        }
+    });
+    render(currentData);
+}
+
+function render(channels) {
+    const list = document.getElementById("list");
+    list.innerHTML = channels.map(ch => {
+        const ua = "plaYtv/7.1.3 (Linux;Android 13)";
+        const intent = `${ch.link}|Cookie=${ch.cookie}&User-Agent=${ua}&drmScheme=clearkey&drmLicense=${ch.key}`;
+        return `
+        <div class="card channel-card">
+            <div class="ch-info">
+                <img src="${ch.logo}" class="ch-logo" onerror="this.src='https://tvtelugu.github.io/images/tvtelugu.ico'">
+                <div class="ch-name">${ch.name}</div>
+            </div>
+            <div class="btns">
+                <button class="btn-ns" onclick="launch('${intent}', 'ns')">NS</button>
+                <button class="btn-pf" onclick="launch('${intent}', 'pf')">PF</button>
+                <button class="btn-exo" onclick="launch('${intent}', 'exo')">EXO</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterChannels() {
+    const query = document.getElementById('searchBar').value.toLowerCase();
+    document.querySelectorAll('.channel-card').forEach(card => {
+        const name = card.querySelector('.ch-name').innerText.toLowerCase();
+        card.style.display = name.includes(query) ? "block" : "none";
+    });
+}
+
+function launch(url, type) {
+    const pkgs = { ns: 'com.genuine.leone', pf: 'com.appnix.playify', exo: 'com.google.android.exoplayer2.demo' };
+    window.location.href = `intent:${url}#Intent;package=${pkgs[type]};end`;
+}
+</script>
+</body>
+</html>

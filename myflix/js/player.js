@@ -1,0 +1,1 @@
+export function initPlayer() { console.log('Player initialized'); }

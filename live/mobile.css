@@ -1,0 +1,2 @@
+
+@media screen and (orientation: portrait){#container{flex-direction:column;}#container{max-height:100%;}#container > #chat{flex:1 1 !important;}#container > #chat{height:0;}#container > *[id^=window-player]{flex:0 0 33% !important;}#container > *[id^=window-player]{height:33%;}}

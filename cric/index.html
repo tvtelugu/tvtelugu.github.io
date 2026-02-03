@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Match - TV Telugu</title>
+
+<link rel="icon" href="https://tvtelugu.github.io/images/tvtelugu.ico">
+
+<style>
+:root{
+  --bg:#0b0f1a;
+  --card:rgba(255,255,255,.06);
+  --shimmer:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.08) 50%,rgba(255,255,255,0) 100%);
+  --accent:#4facfe;
+  --live:#ff0000;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:16px;
+  min-height:100vh;
+}
+.header-container{text-align:center;margin-bottom:20px}
+.main-logo{max-width:180px;width:50%}
+.title-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0}
+h1{font-size:18px;margin:0}
+.pulse{
+  width:10px;height:10px;background:var(--live);border-radius:50%;
+  box-shadow:0 0 0 rgba(255,0,0,.4);animation:pulse 1.5s infinite
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
+  70%{box-shadow:0 0 0 10px rgba(255,0,0,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
+}
+.sub-title{text-align:center;font-size:11px;color:var(--accent);margin-bottom:20px;text-transform:uppercase}
+
+.skeleton{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+  height:130px;
+  position:relative;
+  overflow:hidden
+}
+.skeleton::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--shimmer);
+  animation:shimmer 1.2s infinite
+}
+@keyframes shimmer{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(100%)}
+}
+.sk-line{height:12px;background:rgba(255,255,255,.1);border-radius:4px;margin-bottom:10px}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+  border:1px solid rgba(255,255,255,.1);
+  animation:fadeIn .4s ease-out
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.ch-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ch-logo{width:42px;height:42px;background:#fff;border-radius:8px;object-fit:contain;padding:3px}
+.channel{font-size:16px;font-weight:600;flex:1}
+
+.meta{font-size:11px;color:#94a3b8;display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.1);padding:3px 8px;border-radius:50px;font-size:10px}
+
+.buttons{display:flex;gap:8px}
+button{
+  flex:1;
+  padding:12px 5px;
+  border:none;
+  border-radius:10px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer
+}
+.ns{background:#ff3d71;color:#fff}
+.pf{background:#00d1ff;color:#fff}
+.cp{background:#fff;color:#000}
+
+#error-container{display:none;text-align:center;padding:40px 20px}
+.retry-btn{
+  background:var(--accent);
+  color:#000;
+  padding:12px 24px;
+  border-radius:10px;
+  border:none;
+  font-weight:bold;
+  margin-top:15px;
+  cursor:pointer
+}
+</style>
+</head>
+
+<body>
+
+<div class="header-container">
+  <img src="https://tvtelugu.pages.dev/logo/TV%20Telugu%20Cricket.png" class="main-logo">
+</div>
+
+<div class="title-row">
+  <div class="pulse"></div>
+  <h1 id="eventTitle">Connecting...</h1>
+</div>
+<div id="eventMeta" class="sub-title">Establishing Secure Stream</div>
+
+<div id="list">
+  <div class="skeleton">
+    <div class="sk-line" style="width:70%"></div>
+    <div class="sk-line" style="width:40%"></div>
+    <div class="sk-line" style="margin-top:25px"></div>
+  </div>
+</div>
+
+<div id="error-container">
+  <div style="font-size:40px">⚠️</div>
+  <p>Unable to load streams.</p>
+  <button class="retry-btn" onclick="location.reload()">RETRY</button>
+</div>
+
+<script>
+/* injected by GitHub Actions */
+const JSON_URL="https://pasteking.u0k.workers.dev/3qsxt.json";
+
+let retry=0,MAX=3;
+
+function logo(p,c){
+  const n=(p||c).toLowerCase();
+  if(n.includes("hotstar"))return"https://logo.clearbit.com/hotstar.com";
+  if(n.includes("willow"))return"https://logo.clearbit.com/willow.tv";
+  if(n.includes("tnt"))return"https://logo.clearbit.com/tntsports.co.uk";
+  if(n.includes("star"))return"https://logo.clearbit.com/startv.com";
+  return`https://ui-avatars.com/api/?name=${encodeURIComponent(c)}&color=fff`;
+}
+
+async function load(){
+  const t=`${JSON_URL}?v=${Date.now()}`;
+  try{
+    const r=await Promise.any([
+      fetch(t,{cache:"no-store"}).then(x=>x.json()),
+      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(t)}`).then(x=>x.json()).then(d=>JSON.parse(d.contents))
+    ]);
+    render(r);
+  }catch{
+    retry++;
+    if(retry<=MAX){
+      eventMeta.innerText=`Retry ${retry}/${MAX}`;
+      setTimeout(load,3000);
+    }else fail();
+  }
+}
+
+function render(d){
+  eventTitle.innerText=d.event.title;
+  eventMeta.innerText=`${d.event.sport} • ${d.event.match_type}`;
+  list.innerHTML=d.streams.map(s=>`
+    <div class="card">
+      <div class="ch-header">
+        <img class="ch-logo" src="${logo(s.provider,s.channel)}">
+        <div class="channel">${s.channel}</div>
+      </div>
+      <div class="meta">
+        <span class="badge">${s.language}</span>
+        <span class="badge">${s.quality}</span>
+        <span class="badge">${s.format}</span>
+        <span class="badge" style="color:#4facfe">${s.provider}</span>
+      </div>
+      <div class="buttons">
+        <button class="ns" onclick="play('${s.url}','ns')">NS PLAYER</button>
+        <button class="pf" onclick="play('${s.url}','pf')">PLAYIFY</button>
+        <button class="cp" onclick="copyURL('${s.url}')">COPY</button>
+      </div>
+    </div>`).join("");
+}
+
+function play(u,t){
+  const p=t==="ns"?"com.genuine.leone":"com.appnix.playify";
+  location.href=`intent:${u}#Intent;package=${p};end`;
+}
+function copyURL(u){
+  navigator.clipboard.writeText(u);
+  alert("Copied!");
+}
+function fail(){
+  list.style.display="none";
+  document.getElementById("error-container").style.display="block";
+  eventMeta.innerText="Connection Failed";
+}
+
+load();
+</script>
+
+</body>
+</html>

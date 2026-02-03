@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MafiaTV - Netflix Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e50914;
+            --dark-color: #141414;
+            --light-color: #f4f4f4;
+            --gray-color: #999;
+            --dark-gray: #222;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px 50px;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header.scrolled {
+            background-color: var(--dark-color);
+        }
+        
+        .logo {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gray-color);
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0,0,0,0.7);
+            border: 1px solid var(--gray-color);
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            width: 200px;
+        }
+        
+        .search-box button {
+            background: transparent;
+            border: none;
+            color: var(--light-color);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+        }
+        
+        /* Content Rows */
+        .content-section {
+            padding: 20px 50px;
+            margin-top: -100px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .content-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        
+        .content-row::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .content-item {
+            min-width: 200px;
+            transition: transform 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .content-item:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        
+        .content-item img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--dark-color);
+            margin: 50px auto;
+            max-width: 900px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            position: relative;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--dark-color) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .meta-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: var(--gray-color);
+        }
+        
+        .match {
+            color: #46d369;
+        }
+        
+        .modal-description {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .cast-crew {
+            margin-bottom: 20px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Player Modal */
+        .player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1001;
+        }
+        
+        .player-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #player {
+            width: 80%;
+            max-width: 1200px;
+            height: 80vh;
+        }
+        
+        .close-player {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-box {
+                width: 150px;
+            }
+            
+            .hero {
+                height: 60vh;
+                padding: 0 20px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .content-item {
+                min-width: 150px;
+            }
+            
+            .modal-content {
+                margin: 20px auto;
+                width: 95%;
+            }
+            
+            .modal-header {
+                height: 250px;
+            }
+            
+            #player {
+                width: 95%;
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <a href="#" class="logo">MAFIATV</a>
+        <div class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#" id="movies-link">Movies</a>
+            <a href="#" id="series-link">TV Shows</a>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title">Loading...</h1>
+            <p class="hero-description" id="hero-description">Loading description...</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="play-hero-btn">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="btn btn-secondary" id="info-hero-btn">
+                    <i class="fas fa-info-circle"></i> More Info
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <div id="content-sections">
+        <div class="content-section" style="text-align: center; padding: 50px;">
+            <div class="spinner"></div>
+            <p>Loading content...</p>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <span class="close-modal" id="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modal-title">Title</h2>
+                <div class="meta-info">
+                    <span class="match" id="modal-match">98% Match</span>
+                    <span id="modal-year">2023</span>
+                    <span id="modal-runtime">2h 15m</span>
+                    <span id="modal-ua">U/A 16+</span>
+                    <span id="modal-hd">HD</span>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" id="modal-play-btn">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> My List
+                    </button>
+                </div>
+                <p class="modal-description" id="modal-description">Description</p>
+                <div class="cast-crew">
+                    <p><strong>Cast: </strong><span id="modal-cast">Cast members</span></p>
+                    <p><strong>Genres: </strong><span id="modal-genres">Genres</span></p>
+                </div>
+                <h3>More Like This</h3>
+                <div class="content-row" id="similar-content">
+                    <!-- Similar content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Modal -->
+    <div class="player-modal" id="player-modal">
+        <span class="close-player" id="close-player">&times;</span>
+        <div class="player-container">
+            <div id="player"></div>
+        </div>
+    </div>
+
+    <!-- JW Player Library -->
+    <script src="https://cdn.jwplayer.com/libraries/8x38y0bV.js"></script>
+    
+    <script>
+        // API endpoints
+        const API_BASE = "https://mov.mafiatv.live/apis/v1/";
+        const HOME_API = `${API_BASE}?action=get_home_screen`;
+        const USER_SESSION_API = `${API_BASE}?action=start_session`;
+        const MOVIE_LIST_API = `${API_BASE}?action=get_movies_screen`;
+        const SERIES_LIST_API = `${API_BASE}?action=get_series_screen`;
+        const SEARCH_API = `${API_BASE}?action=search&query=`;
+        const DETAILS_API = `${API_BASE}?action=get_content_detail&query=`;
+        const SEASON_API = `${API_BASE}?action=get_season_detail&query=`;
+        const PLAYBACK_API = `${API_BASE}?action=get_playback&query=`;
+
+        // DOM elements
+        const header = document.getElementById('main-header');
+        const heroSection = document.getElementById('hero-section');
+        const heroTitle = document.getElementById('hero-title');
+        const heroDescription = document.getElementById('hero-description');
+        const playHeroBtn = document.getElementById('play-hero-btn');
+        const infoHeroBtn = document.getElementById('info-hero-btn');
+        const contentSections = document.getElementById('content-sections');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const moviesLink = document.getElementById('movies-link');
+        const seriesLink = document.getElementById('series-link');
+        const detailModal = document.getElementById('detail-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalHeader = document.getElementById('modal-header');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMatch = document.getElementById('modal-match');
+        const modalYear = document.getElementById('modal-year');
+        const modalRuntime = document.getElementById('modal-runtime');
+        const modalUa = document.getElementById('modal-ua');
+        const modalHd = document.getElementById('modal-hd');
+        const modalDescription = document.getElementById('modal-description');
+        const modalCast = document.getElementById('modal-cast');
+        const modalGenres = document.getElementById('modal-genres');
+        const modalPlayBtn = document.getElementById('modal-play-btn');
+        const similarContent = document.getElementById('similar-content');
+        const playerModal = document.getElementById('player-modal');
+        const closePlayer = document.getElementById('close-player');
+        const playerContainer = document.getElementById('player');
+
+        // Global variables
+        let currentHeroContent = null;
+        let currentContentId = null;
+        let currentContentType = null;
+        let jwPlayerInstance = null;
+        let isLoading = false;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            initSession();
+            setupEventListeners();
+            loadHomeContent();
+        });
+
+        // Show loading state
+        function showLoading() {
+            contentSections.innerHTML = `
+                <div class="content-section" style="text-align: center; padding: 50px;">
+                    <div class="spinner"></div>
+                    <p>Loading content...</p>
+                </div>
+            `;
+        }
+
+        // Show error state
+        function showError(message) {
+            contentSections.innerHTML = `
+                <div class="content-section" style="text-align: center; padding: 50px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h3>Error Loading Content</h3>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" id="retry-btn">Try Again</button>
+                </div>
+            `;
+            
+            document.getElementById('retry-btn').addEventListener('click', () => {
+                showLoading();
+                loadHomeContent();
+            });
+        }
+
+        // Fetch with error handling and CORS proxy
+        async function fetchData(url) {
+            if (isLoading) return;
+            isLoading = true;
+            
+            try {
+                // Use CORS proxy for development (remove in production)
+                const proxyUrl = '';
+                const fullUrl = proxyUrl ? `${proxyUrl}${url}` : url;
+                
+                const response = await fetch(fullUrl, {
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === 'error') {
+                    throw new Error(data.message || 'API returned an error');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showError(error.message);
+                return null;
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Initialize user session
+        async function initSession() {
+            try {
+                const data = await fetchData(USER_SESSION_API);
+                if (data) {
+                    console.log('Session initialized:', data);
+                }
+            } catch (error) {
+                console.error('Session init error:', error);
+            }
+        }
+
+        // Load home content
+        async function loadHomeContent() {
+            showLoading();
+            const data = await fetchData(HOME_API);
+            
+            if (data) {
+                contentSections.innerHTML = '';
+                
+                // Set hero section with first item from first category
+                if (data.data.length > 0 && data.data[0].list.length > 0) {
+                    const heroItem = data.data[0].list[0];
+                    currentHeroContent = heroItem;
+                    
+                    // Get details for hero item
+                    const details = await getContentDetails(heroItem.id);
+                    if (details) {
+                        updateHeroSection(details);
+                    }
+                }
+                
+                // Create content sections
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
+            }
+        }
+
+        // Update hero section
+        function updateHeroSection(details) {
+            heroTitle.textContent = details.title;
+            heroDescription.textContent = details.desc;
+            heroSection.style.backgroundImage = `url(${details.poster})`;
+            currentContentType = details.type;
+            
+            // Update hero buttons
+            playHeroBtn.onclick = () => playContent(currentHeroContent.id, details.type === 't');
+            infoHeroBtn.onclick = () => showContentDetails(currentHeroContent.id);
+        }
+
+        // Load movies content
+        async function loadMoviesContent() {
+            showLoading();
+            const data = await fetchData(MOVIE_LIST_API);
+            
+            if (data) {
+                contentSections.innerHTML = '';
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
+            }
+        }
+
+        // Load series content
+        async function loadSeriesContent() {
+            showLoading();
+            const data = await fetchData(SERIES_LIST_API);
+            
+            if (data) {
+                contentSections.innerHTML = '';
+                data.data.forEach(section => {
+                    createContentSection(section.title, section.list);
+                });
+            }
+        }
+
+        // Search content
+        async function searchContent(query) {
+            showLoading();
+            const data = await fetchData(`${SEARCH_API}${encodeURIComponent(query)}`);
+            
+            if (data) {
+                if (data.status === 'success') {
+                    contentSections.innerHTML = '';
+                    createContentSection(`Search Results for "${query}" (${data.data.count})`, data.data.list);
+                } else {
+                    contentSections.innerHTML = `
+                        <div class="content-section">
+                            <h2 class="section-title">No results found for "${query}"</h2>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Get content details
+        async function getContentDetails(contentId) {
+            const data = await fetchData(`${DETAILS_API}${contentId}`);
+            return data?.data || null;
+        }
+
+        // Get season details
+        async function getSeasonDetails(seasonId) {
+            const data = await fetchData(`${SEASON_API}${seasonId}`);
+            return data?.data || null;
+        }
+
+        // Get playback URL
+        async function getPlaybackUrl(contentId) {
+            const data = await fetchData(`${PLAYBACK_API}${contentId}`);
+            
+            if (data?.status === 'success') {
+                // Construct full URL
+                const streamPath = data.data.playback.stream;
+                const fullUrl = `https://mov.mafiatv.live/${streamPath}`;
+                
+                // Format tracks for JW Player
+                const tracks = data.data.playback.tracks
+                    .filter(track => track.kind === 'captions')
+                    .map(track => ({
+                        file: track.file.startsWith('//') ? `https:${track.file}` : track.file,
+                        label: track.label,
+                        kind: 'captions'
+                    }));
+                
+                return {
+                    url: fullUrl,
+                    tracks: tracks
+                };
+            }
+            return null;
+        }
+
+        // Create content section
+        function createContentSection(title, items) {
+            const section = document.createElement('div');
+            section.className = 'content-section';
+            
+            const sectionTitle = document.createElement('h2');
+            sectionTitle.className = 'section-title';
+            sectionTitle.textContent = title;
+            
+            const row = document.createElement('div');
+            row.className = 'content-row';
+            
+            items.forEach(item => {
+                const contentItem = document.createElement('div');
+                contentItem.className = 'content-item';
+                contentItem.dataset.id = item.id;
+                
+                const img = document.createElement('img');
+                img.src = item.poster;
+                img.alt = item.title || 'Content';
+                img.onerror = () => {
+                    img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
+                };
+                
+                contentItem.appendChild(img);
+                row.appendChild(contentItem);
+                
+                // Add click event to show details
+                contentItem.addEventListener('click', () => showContentDetails(item.id));
+            });
+            
+            section.appendChild(sectionTitle);
+            section.appendChild(row);
+            contentSections.appendChild(section);
+        }
+
+        // Show content details
+        async function showContentDetails(contentId) {
+            currentContentId = contentId;
+            const details = await getContentDetails(contentId);
+            
+            if (details) {
+                // Set modal content
+                modalTitle.textContent = details.title;
+                modalMatch.textContent = details.match;
+                modalYear.textContent = details.year;
+                modalRuntime.textContent = details.runtime;
+                modalUa.textContent = details.ua;
+                modalHd.textContent = details.hdsd;
+                modalDescription.textContent = details.desc;
+                modalCast.textContent = details.cast;
+                modalGenres.textContent = details.genre;
+                
+                // Set background image
+                modalHeader.style.backgroundImage = `url(${details.poster})`;
+                
+                // Store content type for playback
+                currentContentType = details.type;
+                
+                // Clear and load similar content
+                similarContent.innerHTML = '';
+                if (details.more_like_this?.length > 0) {
+                    details.more_like_this.forEach(item => {
+                        const contentItem = document.createElement('div');
+                        contentItem.className = 'content-item';
+                        contentItem.dataset.id = item.id;
+                        
+                        const img = document.createElement('img');
+                        img.src = item.poster;
+                        img.alt = 'Similar content';
+                        img.onerror = () => {
+                            img.src = 'https://via.placeholder.com/200x300?text=No+Poster';
+                        };
+                        
+                        contentItem.appendChild(img);
+                        similarContent.appendChild(contentItem);
+                        
+                        // Add click event to show details
+                        contentItem.addEventListener('click', () => showContentDetails(item.id));
+                    });
+                }
+                
+                // Show modal
+                detailModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Play content with JW Player
+        async function playContent(contentId, isSeries = false) {
+            if (isSeries) {
+                // For series, get the first episode of the first season
+                const details = await getContentDetails(contentId);
+                if (details?.season?.length > 0) {
+                    const seasonDetails = await getSeasonDetails(details.season[0].id);
+                    if (seasonDetails?.episodes?.length > 0) {
+                        contentId = seasonDetails.episodes[0].id;
+                    }
+                }
+            }
+            
+            const playbackData = await getPlaybackUrl(contentId);
+            if (playbackData) {
+                // Destroy existing player instance if it exists
+                if (jwPlayerInstance) {
+                    jwPlayerInstance.remove();
+                }
+                
+                // Setup JW Player
+                jwPlayerInstance = jwplayer('player').setup({
+                    file: playbackData.url,
+                    image: playbackData.poster || '',
+                    tracks: playbackData.tracks,
+                    width: '100%',
+                    height: '100%',
+                    autostart: true,
+                    captions: {
+                        color: '#FFF',
+                        fontSize: 14,
+                        backgroundOpacity: 0
+                    }
+                });
+                
+                // Show player modal
+                playerModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 100);
+            });
+            
+            // Hero section image fallback
+            heroSection.addEventListener('error', () => {
+                heroSection.style.backgroundImage = 'linear-gradient(to right, #141414, #333)';
+            }, true);
+            
+            // Play hero content
+            playHeroBtn.addEventListener('click', () => {
+                if (currentHeroContent) {
+                    playContent(currentHeroContent.id, currentContentType === 't');
+                }
+            });
+            
+            // Show hero content details
+            infoHeroBtn.addEventListener('click', () => {
+                if (currentHeroContent) {
+                    showContentDetails(currentHeroContent.id);
+                }
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                const query = searchInput.value.trim();
+                if (query) searchContent(query);
+            });
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query) searchContent(query);
+                }
+            });
+            
+            // Navigation links
+            moviesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadMoviesContent();
+            });
+            
+            seriesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadSeriesContent();
+            });
+            
+            // Modal close button
+            closeModal.addEventListener('click', () => {
+                detailModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Modal play button
+            modalPlayBtn.addEventListener('click', () => {
+                if (currentContentId) {
+                    playContent(currentContentId, currentContentType === 't');
+                    detailModal.style.display = 'none';
+                }
+            });
+            
+            // Player close button
+            closePlayer.addEventListener('click', () => {
+                playerModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                if (jwPlayerInstance) {
+                    jwPlayerInstance.pause();
+                }
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === detailModal) {
+                    detailModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+                
+                if (e.target === playerModal) {
+                    playerModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    if (jwPlayerInstance) {
+                        jwPlayerInstance.pause();
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

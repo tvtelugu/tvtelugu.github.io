@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - Premium Streaming</title>
+    <script src="https://cdn.jwplayer.com/libraries/abc123.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --red: #e50914;
+            --dark: #141414;
+            --dark-gray: #2d2d2d;
+            --gray: #808080;
+            --light-gray: #e5e5e5;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background-color: var(--dark);
+        }
+
+        .logo {
+            color: var(--red);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container input {
+            background-color: rgba(0,0,0,0.5);
+            border: 1px solid var(--gray);
+            padding: 7px 15px 7px 35px;
+            border-radius: 4px;
+            color: var(--white);
+            width: 200px;
+            transition: var(--transition);
+        }
+
+        .search-container input:focus {
+            background-color: rgba(0,0,0,0.8);
+            width: 250px;
+            outline: none;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 10px;
+            top: 8px;
+            color: var(--gray);
+        }
+
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            background: linear-gradient(45deg, #e50914, #b1060f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Hero section */
+        .hero {
+            height: 80vh;
+            position: relative;
+            background: linear-gradient(to top, var(--dark) 0%, transparent 50%), 
+                        url('https://source.unsplash.com/random/1920x1080/?movie') no-repeat center center/cover;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 50px 100px;
+        }
+
+        .hero-content {
+            max-width: 40%;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .hero-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--light-gray);
+        }
+
+        .hero-rating {
+            color: #46d369;
+        }
+
+        .hero-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .btn-play {
+            background-color: var(--white);
+            color: var(--dark);
+        }
+
+        .btn-play:hover {
+            background-color: rgba(255,255,255,0.8);
+        }
+
+        .btn-info {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: var(--white);
+        }
+
+        .btn-info:hover {
+            background-color: rgba(109, 109, 110, 0.5);
+        }
+
+        /* Content rows */
+        .content-section {
+            padding: 30px 50px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .content-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+
+        .content-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-item {
+            min-width: 220px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .content-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .content-item img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+        }
+
+        .content-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 20px 10px 10px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .content-item:hover .content-info {
+            opacity: 1;
+        }
+
+        .content-title {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .content-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        /* Player modal */
+        .player-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .player-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .player-container {
+            width: 80%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        #player {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        .close-player {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 5px solid var(--dark-gray);
+            border-top: 5px solid var(--red);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            margin-top: 30px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .hero-content {
+                max-width: 60%;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .hero {
+                padding: 0 20px 50px;
+                height: 70vh;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .content-item {
+                min-width: 180px;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                height: 60vh;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .content-item {
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation -->
+    <header id="header">
+        <a href="#" class="logo">STREAMFLIX</a>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Series</a></li>
+            <li><a href="#">New & Popular</a></li>
+            <li><a href="#">My List</a></li>
+        </ul>
+        <div class="nav-icons">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search...">
+            </div>
+            <div class="profile-icon">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero section with featured content -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Stranger Worlds</h1>
+            <div class="hero-info">
+                <span class="hero-rating">98% Match</span>
+                <span>2023</span>
+                <span>16+</span>
+                <span>2 Seasons</span>
+            </div>
+            <p class="hero-description">
+                When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and a strange little girl.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play" onclick="playFeatured()">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="btn btn-info">
+                    <i class="fas fa-info-circle"></i> More Info
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content sections -->
+    <section class="content-section">
+        <h2 class="section-title">Popular on StreamFlix</h2>
+        <div class="content-row" id="popular-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">Trending Now</h2>
+        <div class="content-row" id="trending-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">Top Movies</h2>
+        <div class="content-row" id="movies-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">TV Shows</h2>
+        <div class="content-row" id="series-content">
+            <!-- Content will be loaded here -->
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <!-- Video player modal -->
+    <div class="player-modal" id="player-modal">
+        <div class="player-container">
+            <button class="close-player" onclick="closePlayer()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="player"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">FAQ</a>
+            <a href="#">Help Center</a>
+            <a href="#">Account</a>
+            <a href="#">Media Center</a>
+            <a href="#">Investor Relations</a>
+            <a href="#">Jobs</a>
+            <a href="#">Ways to Watch</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy</a>
+            <a href="#">Cookie Preferences</a>
+            <a href="#">Corporate Information</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Speed Test</a>
+            <a href="#">Legal Notices</a>
+            <a href="#">Only on StreamFlix</a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 StreamFlix, Inc. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // API endpoints
+        const API_BASE = "https://mov.mafiatv.live/apis/v1/";
+        const HOME_API = `${API_BASE}?action=get_home_screen`;
+        const USER_SESSION_API = `${API_BASE}?action=start_session`;
+        const MOVIE_LIST_API = `${API_BASE}?action=get_movies_screen`;
+        const SERIES_LIST_API = `${API_BASE}?action=get_series_screen`;
+        const SEARCH_API = `${API_BASE}?action=search&query=`;
+        const DETAILS_API = `${API_BASE}?action=get_content_detail&query=`;
+        const SEASON_API = `${API_BASE}?action=get_season_detail&query=`;
+        const PLAYBACK_API = `${API_BASE}?action=get_playback&query=`;
+
+        // Sample data for demonstration
+        // In a real app, you would fetch from the actual API endpoints
+        const sampleContent = {
+            popular: [
+                { id: 1, title: "The Dark Knight", year: 2008, rating: 94, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,action" },
+                { id: 2, title: "Inception", year: 2010, rating: 87, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,sci-fi" },
+                { id: 3, title: "Breaking Bad", year: 2008, rating: 96, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,crime" },
+                { id: 4, title: "Stranger Things", year: 2016, rating: 91, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" },
+                { id: 5, title: "The Matrix", year: 1999, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,sci-fi" },
+                { id: 6, title: "Game of Thrones", year: 2011, rating: 89, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,fantasy" },
+                { id: 7, title: "Interstellar", year: 2014, rating: 86, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,space" }
+            ],
+            trending: [
+                { id: 8, title: "Oppenheimer", year: 2023, rating: 93, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,history" },
+                { id: 9, title: "Barbie", year: 2023, rating: 83, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,comedy" },
+                { id: 10, title: "The Last of Us", year: 2023, rating: 96, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 11, title: "John Wick 4", year: 2023, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,action" },
+                { id: 12, title: "Succession", year: 2018, rating: 92, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 13, title: "The Mandalorian", year: 2019, rating: 88, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" }
+            ],
+            movies: [
+                { id: 14, title: "Pulp Fiction", year: 1994, rating: 94, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" },
+                { id: 15, title: "Fight Club", year: 1999, rating: 88, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 16, title: "Forrest Gump", year: 1994, rating: 85, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 17, title: "The Shawshank Redemption", year: 1994, rating: 93, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,drama" },
+                { id: 18, title: "Goodfellas", year: 1990, rating: 96, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" },
+                { id: 19, title: "The Godfather", year: 1972, rating: 97, type: "movie", thumbnail: "https://source.unsplash.com/random/220x124/?movie,crime" }
+            ],
+            series: [
+                { id: 20, title: "The Crown", year: 2016, rating: 91, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" },
+                { id: 21, title: "Black Mirror", year: 2011, rating: 89, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,sci-fi" },
+                { id: 22, title: "The Witcher", year: 2019, rating: 82, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,fantasy" },
+                { id: 23, title: "Wednesday", year: 2022, rating: 85, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,comedy" },
+                { id: 24, title: "Money Heist", year: 2017, rating: 84, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,crime" },
+                { id: 25, title: "Squid Game", year: 2021, rating: 95, type: "series", thumbnail: "https://source.unsplash.com/random/220x124/?tv,drama" }
+            ]
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load content
+            renderContent('popular-content', sampleContent.popular);
+            renderContent('trending-content', sampleContent.trending);
+            renderContent('movies-content', sampleContent.movies);
+            renderContent('series-content', sampleContent.series);
+
+            // Setup header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Setup search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch(searchInput.value);
+                }
+            });
+        });
+
+        // Render content to a section
+        function renderContent(sectionId, contentArray) {
+            const section = document.getElementById(sectionId);
+            section.innerHTML = '';
+            
+            contentArray.forEach(item => {
+                const contentItem = document.createElement('div');
+                contentItem.className = 'content-item';
+                contentItem.innerHTML = `
+                    <img src="${item.thumbnail}" alt="${item.title}">
+                    <div class="content-info">
+                        <h3 class="content-title">${item.title}</h3>
+                        <div class="content-meta">
+                            <span>${item.year}</span>
+                            <span>${item.type === 'movie' ? 'Movie' : 'TV Show'}</span>
+                            <span><i class="fas fa-star"></i> ${item.rating}%</span>
+                        </div>
+                    </div>
+                `;
+                contentItem.addEventListener('click', () => {
+                    if (item.type === 'movie') {
+                        playContent(item.id, item.title);
+                    } else {
+                        showSeriesDetails(item.id);
+                    }
+                });
+                section.appendChild(contentItem);
+            });
+        }
+
+        // Play featured content
+        function playFeatured() {
+            playContent(1, "Stranger Worlds");
+        }
+
+        // Play content in the player
+        function playContent(contentId, title) {
+            // In a real app, you would fetch the playback URL from PLAYBACK_API
+            // For demo purposes, we'll use a sample video
+            const videoUrl = "https://cdn.jwplayer.com/manifests/pZxWPRg4.m3u8";
+            
+            const playerModal = document.getElementById('player-modal');
+            playerModal.classList.add('active');
+            
+            // Initialize JWPlayer
+            const player = jwplayer("player").setup({
+                file: videoUrl,
+                title: title,
+                width: "100%",
+                aspectratio: "16:9",
+                autostart: true,
+                controls: true,
+                repeat: false,
+                primary: "html5",
+                skin: {
+                    name: "netflix"
+                }
+            });
+            
+            // Save player instance for later use
+            window.currentPlayer = player;
+        }
+
+        // Close the player
+        function closePlayer() {
+            const playerModal = document.getElementById('player-modal');
+            playerModal.classList.remove('active');
+            
+            if (window.currentPlayer) {
+                window.currentPlayer.remove();
+                window.currentPlayer = null;
+            }
+        }
+
+        // Show series details (would be implemented in a real app)
+        function showSeriesDetails(seriesId) {
+            alert(`Would show details for series ID: ${seriesId}\nIn a real app, this would display seasons and episodes.`);
+        }
+
+        // Perform search (would be implemented in a real app)
+        function performSearch(query) {
+            alert(`Would search for: "${query}"\nIn a real app, this would call the SEARCH_API.`);
+        }
+    </script>
+</body>
+</html>
