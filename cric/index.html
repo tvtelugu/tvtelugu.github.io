@@ -30,15 +30,21 @@ body{
 h1{font-size:18px;margin:0}
 .pulse{
   width:10px;height:10px;background:var(--live);border-radius:50%;
-  box-shadow:0 0 0 rgba(255,0,0,.4);animation:pulse 1.5s infinite
+  box-shadow:0 0 0 rgba(255,0,0,.4);
+  animation:pulse 1.5s infinite
 }
 @keyframes pulse{
   0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
   70%{box-shadow:0 0 0 10px rgba(255,0,0,0)}
   100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
-.sub-title{text-align:center;font-size:11px;color:var(--accent);margin-bottom:20px;text-transform:uppercase}
-
+.sub-title{
+  text-align:center;
+  font-size:11px;
+  color:var(--accent);
+  margin-bottom:20px;
+  text-transform:uppercase
+}
 .skeleton{
   background:var(--card);
   border-radius:16px;
@@ -59,8 +65,12 @@ h1{font-size:18px;margin:0}
   0%{transform:translateX(-100%)}
   100%{transform:translateX(100%)}
 }
-.sk-line{height:12px;background:rgba(255,255,255,.1);border-radius:4px;margin-bottom:10px}
-
+.sk-line{
+  height:12px;
+  background:rgba(255,255,255,.1);
+  border-radius:4px;
+  margin-bottom:10px
+}
 .card{
   background:var(--card);
   border-radius:16px;
@@ -73,13 +83,35 @@ h1{font-size:18px;margin:0}
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
-.ch-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.ch-logo{width:42px;height:42px;background:#fff;border-radius:8px;object-fit:contain;padding:3px}
+.ch-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px
+}
+.ch-logo{
+  width:42px;
+  height:42px;
+  background:#fff;
+  border-radius:8px;
+  object-fit:contain;
+  padding:3px
+}
 .channel{font-size:16px;font-weight:600;flex:1}
-
-.meta{font-size:11px;color:#94a3b8;display:flex;gap:5px;margin-bottom:15px;flex-wrap:wrap}
-.badge{background:rgba(255,255,255,.1);padding:3px 8px;border-radius:50px;font-size:10px}
-
+.meta{
+  font-size:11px;
+  color:#94a3b8;
+  display:flex;
+  gap:5px;
+  margin-bottom:15px;
+  flex-wrap:wrap
+}
+.badge{
+  background:rgba(255,255,255,.1);
+  padding:3px 8px;
+  border-radius:50px;
+  font-size:10px
+}
 .buttons{display:flex;gap:8px}
 button{
   flex:1;
@@ -93,8 +125,11 @@ button{
 .ns{background:#ff3d71;color:#fff}
 .pf{background:#00d1ff;color:#fff}
 .cp{background:#fff;color:#000}
-
-#error-container{display:none;text-align:center;padding:40px 20px}
+#error-container{
+  display:none;
+  text-align:center;
+  padding:40px 20px
+}
 .retry-btn{
   background:var(--accent);
   color:#000;
@@ -135,28 +170,21 @@ button{
 </div>
 
 <script>
-/* injected by GitHub Actions */
-const JSON_URL="__JSON_STREAM_URL__";
+/* 🔐 injected by GitHub Actions */
+const JSON_URL = "__JSON_STREAM_URL__";
 
-let retry=0,MAX=3;
-
-function logo(p,c){
-  const n=(p||c).toLowerCase();
-  if(n.includes("hotstar"))return"https://logo.clearbit.com/hotstar.com";
-  if(n.includes("willow"))return"https://logo.clearbit.com/willow.tv";
-  if(n.includes("tnt"))return"https://logo.clearbit.com/tntsports.co.uk";
-  if(n.includes("star"))return"https://logo.clearbit.com/startv.com";
-  return`https://ui-avatars.com/api/?name=${encodeURIComponent(c)}&color=fff`;
-}
+let retry = 0;
+const MAX = 3;
 
 async function load(){
-  const t=`${JSON_URL}?v=${Date.now()}`;
+  const url = `${JSON_URL}?v=${Date.now()}`;
   try{
-    const r=await Promise.any([
-      fetch(t,{cache:"no-store"}).then(x=>x.json()),
-      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(t)}`).then(x=>x.json()).then(d=>JSON.parse(d.contents))
+    const data = await Promise.any([
+      fetch(url,{cache:"no-store"}).then(r=>r.json()),
+      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+        .then(r=>r.json()).then(d=>JSON.parse(d.contents))
     ]);
-    render(r);
+    render(data);
   }catch{
     retry++;
     if(retry<=MAX){
@@ -167,12 +195,12 @@ async function load(){
 }
 
 function render(d){
-  eventTitle.innerText=d.event.title;
-  eventMeta.innerText=`${d.event.sport} • ${d.event.match_type}`;
-  list.innerHTML=d.streams.map(s=>`
+  eventTitle.innerText = d.event.title;
+  eventMeta.innerText = `${d.event.sport} • ${d.event.match_type}`;
+  list.innerHTML = d.streams.map(s=>`
     <div class="card">
       <div class="ch-header">
-        <img class="ch-logo" src="${logo(s.provider,s.channel)}">
+        <img class="ch-logo" src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.channel)}&color=fff">
         <div class="channel">${s.channel}</div>
       </div>
       <div class="meta">
@@ -186,12 +214,13 @@ function render(d){
         <button class="pf" onclick="play('${s.url}','pf')">PLAYIFY</button>
         <button class="cp" onclick="copyURL('${s.url}')">COPY</button>
       </div>
-    </div>`).join("");
+    </div>
+  `).join("");
 }
 
 function play(u,t){
-  const p=t==="ns"?"com.genuine.leone":"com.appnix.playify";
-  location.href=`intent:${u}#Intent;package=${p};end`;
+  const p = t==="ns" ? "com.genuine.leone" : "com.appnix.playify";
+  location.href = `intent:${u}#Intent;package=${p};end`;
 }
 function copyURL(u){
   navigator.clipboard.writeText(u);
