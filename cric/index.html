@@ -184,7 +184,7 @@ async function load(){
       fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
         .then(r=>r.json()).then(d=>JSON.parse(d.contents))
     ]);
-    render(data);
+    render(data); 
   }catch{
     retry++;
     if(retry<=MAX){
