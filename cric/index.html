@@ -24,18 +24,12 @@ body{
 }
 .header-container{text-align:center;margin-bottom:16px}
 .main-logo{max-width:180px;width:50%}
-
-.title-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
+.title-row{display:flex;align-items:center;justify-content:center;gap:8px}
 .pulse{
   width:10px;height:10px;
   background:var(--live);
   border-radius:50%;
-  animation:pulse 1.5s infinite;
+  animation:pulse 1.5s infinite
 }
 @keyframes pulse{
   0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
@@ -43,43 +37,32 @@ body{
   100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
 h1{font-size:18px;margin:0}
-.sub-title{
-  text-align:center;
-  font-size:11px;
-  color:var(--accent);
-  margin-bottom:16px;
-}
+.sub-title{text-align:center;font-size:11px;color:var(--accent);margin-bottom:16px}
 
 .card{
   background:var(--card);
   border-radius:14px;
   padding:14px;
   margin-bottom:12px;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08)
 }
-.ch-header{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
+.ch-header{display:flex;gap:10px;align-items:center}
 .ch-logo{
   width:42px;height:42px;
-  background:#fff;
-  border-radius:8px;
-  padding:3px;
+  background:#fff;border-radius:8px;padding:3px
 }
 .channel{font-weight:600}
 .meta{
   margin:10px 0;
   display:flex;
   gap:6px;
-  flex-wrap:wrap;
+  flex-wrap:wrap
 }
 .badge{
   font-size:10px;
   padding:3px 8px;
   border-radius:50px;
-  background:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.12)
 }
 .buttons{display:flex;gap:6px}
 button{
@@ -88,7 +71,7 @@ button{
   border:none;
   border-radius:10px;
   font-size:11px;
-  font-weight:700;
+  font-weight:700
 }
 .ns{background:#ff3d71;color:#fff}
 .pf{background:#00d1ff;color:#fff}
@@ -97,7 +80,7 @@ button{
 #error{
   display:none;
   text-align:center;
-  margin-top:40px;
+  margin-top:40px
 }
 </style>
 </head>
@@ -125,16 +108,17 @@ button{
 /* injected by GitHub Actions */
 const JSON_URL = "https://pasteking.u0k.workers.dev/3qsxt.json";
 
-fetch(JSON_URL + "?v=" + Date.now(), { cache: "no-store" })
+/* 🔥 CORS-SAFE FETCH */
+const PROXY = "https://api.allorigins.win/raw?url=";
+
+fetch(PROXY + encodeURIComponent(JSON_URL + "?v=" + Date.now()))
   .then(res => {
     if (!res.ok) throw new Error("HTTP " + res.status);
     return res.json();
   })
-  .then(data => {
-    render(data);
-  })
+  .then(data => render(data))
   .catch(err => {
-    console.error("Fetch failed:", err);
+    console.error(err);
     document.getElementById("error").style.display = "block";
     document.getElementById("eventMeta").innerText = "Connection Failed";
   });
@@ -164,13 +148,12 @@ function render(data){
   `).join("");
 }
 
-function play(url,type){
-  const pkg = type==="ns"
+function play(u,t){
+  const pkg = t==="ns"
     ? "com.genuine.leone"
     : "com.appnix.playify";
-  location.href = `intent:${decodeURIComponent(url)}#Intent;package=${pkg};end`;
+  location.href = `intent:${decodeURIComponent(u)}#Intent;package=${pkg};end`;
 }
-
 function copyURL(u){
   navigator.clipboard.writeText(u);
   alert("URL Copied");
