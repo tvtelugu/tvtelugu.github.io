@@ -11,7 +11,6 @@
 :root{
   --bg:#0b0f1a;
   --card:rgba(255,255,255,.06);
-  --shimmer:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.08) 50%,rgba(255,255,255,0) 100%);
   --accent:#4facfe;
   --live:#ff0000;
 }
@@ -20,125 +19,85 @@ body{
   margin:0;
   background:var(--bg);
   color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-family:system-ui,Segoe UI,Roboto;
   padding:16px;
-  min-height:100vh;
 }
-.header-container{text-align:center;margin-bottom:20px}
+.header-container{text-align:center;margin-bottom:16px}
 .main-logo{max-width:180px;width:50%}
-.title-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0}
-h1{font-size:18px;margin:0}
+
+.title-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
 .pulse{
-  width:10px;height:10px;background:var(--live);border-radius:50%;
-  box-shadow:0 0 0 rgba(255,0,0,.4);
-  animation:pulse 1.5s infinite
+  width:10px;height:10px;
+  background:var(--live);
+  border-radius:50%;
+  animation:pulse 1.5s infinite;
 }
 @keyframes pulse{
   0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
   70%{box-shadow:0 0 0 10px rgba(255,0,0,0)}
   100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
+h1{font-size:18px;margin:0}
 .sub-title{
   text-align:center;
   font-size:11px;
   color:var(--accent);
-  margin-bottom:20px;
-  text-transform:uppercase
+  margin-bottom:16px;
 }
-.skeleton{
-  background:var(--card);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-  height:130px;
-  position:relative;
-  overflow:hidden
-}
-.skeleton::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:var(--shimmer);
-  animation:shimmer 1.2s infinite
-}
-@keyframes shimmer{
-  0%{transform:translateX(-100%)}
-  100%{transform:translateX(100%)}
-}
-.sk-line{
-  height:12px;
-  background:rgba(255,255,255,.1);
-  border-radius:4px;
-  margin-bottom:10px
-}
+
 .card{
   background:var(--card);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-  border:1px solid rgba(255,255,255,.1);
-  animation:fadeIn .4s ease-out
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+  border:1px solid rgba(255,255,255,.08);
 }
 .ch-header{
   display:flex;
+  gap:10px;
   align-items:center;
-  gap:12px;
-  margin-bottom:12px
 }
 .ch-logo{
-  width:42px;
-  height:42px;
+  width:42px;height:42px;
   background:#fff;
   border-radius:8px;
-  object-fit:contain;
-  padding:3px
+  padding:3px;
 }
-.channel{font-size:16px;font-weight:600;flex:1}
+.channel{font-weight:600}
 .meta{
-  font-size:11px;
-  color:#94a3b8;
+  margin:10px 0;
   display:flex;
-  gap:5px;
-  margin-bottom:15px;
-  flex-wrap:wrap
+  gap:6px;
+  flex-wrap:wrap;
 }
 .badge{
-  background:rgba(255,255,255,.1);
+  font-size:10px;
   padding:3px 8px;
   border-radius:50px;
-  font-size:10px
+  background:rgba(255,255,255,.12);
 }
-.buttons{display:flex;gap:8px}
+.buttons{display:flex;gap:6px}
 button{
   flex:1;
-  padding:12px 5px;
+  padding:10px;
   border:none;
   border-radius:10px;
   font-size:11px;
   font-weight:700;
-  cursor:pointer
 }
 .ns{background:#ff3d71;color:#fff}
 .pf{background:#00d1ff;color:#fff}
 .cp{background:#fff;color:#000}
-#error-container{
+
+#error{
   display:none;
   text-align:center;
-  padding:40px 20px
-}
-.retry-btn{
-  background:var(--accent);
-  color:#000;
-  padding:12px 24px;
-  border-radius:10px;
-  border:none;
-  font-weight:bold;
-  margin-top:15px;
-  cursor:pointer
+  margin-top:40px;
 }
 </style>
 </head>
@@ -151,88 +110,71 @@ button{
 
 <div class="title-row">
   <div class="pulse"></div>
-  <h1 id="eventTitle">Connecting...</h1>
+  <h1 id="eventTitle">Loading…</h1>
 </div>
-<div id="eventMeta" class="sub-title">Establishing Secure Stream</div>
+<div id="eventMeta" class="sub-title">Fetching live streams</div>
 
-<div id="list">
-  <div class="skeleton">
-    <div class="sk-line" style="width:70%"></div>
-    <div class="sk-line" style="width:40%"></div>
-    <div class="sk-line" style="margin-top:25px"></div>
-  </div>
-</div>
+<div id="list"></div>
 
-<div id="error-container">
-  <div style="font-size:40px">⚠️</div>
-  <p>Unable to load streams.</p>
-  <button class="retry-btn" onclick="location.reload()">RETRY</button>
+<div id="error">
+  <h3>⚠️ Unable to load streams</h3>
+  <button onclick="location.reload()">Retry</button>
 </div>
 
 <script>
-/* 🔐 injected by GitHub Actions */
+/* injected by GitHub Actions */
 const JSON_URL = "__JSON_STREAM_URL__";
 
-let retry = 0;
-const MAX = 3;
+fetch(JSON_URL + "?v=" + Date.now(), { cache: "no-store" })
+  .then(res => {
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  })
+  .then(data => {
+    render(data);
+  })
+  .catch(err => {
+    console.error("Fetch failed:", err);
+    document.getElementById("error").style.display = "block";
+    document.getElementById("eventMeta").innerText = "Connection Failed";
+  });
 
-async function load(){
-  const url = `${JSON_URL}?v=${Date.now()}`;
-  try{
-    const data = await Promise.any([
-      fetch(url,{cache:"no-store"}).then(r=>r.json()),
-      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
-        .then(r=>r.json()).then(d=>JSON.parse(d.contents))
-    ]);
-    render(data); 
-  }catch{
-    retry++;
-    if(retry<=MAX){
-      eventMeta.innerText=`Retry ${retry}/${MAX}`;
-      setTimeout(load,3000);
-    }else fail();
-  }
-}
+function render(data){
+  eventTitle.innerText = data.event.title;
+  eventMeta.innerText = `${data.event.sport} • ${data.event.match_type}`;
 
-function render(d){
-  eventTitle.innerText = d.event.title;
-  eventMeta.innerText = `${d.event.sport} • ${d.event.match_type}`;
-  list.innerHTML = d.streams.map(s=>`
+  list.innerHTML = data.streams.map(s => `
     <div class="card">
       <div class="ch-header">
-        <img class="ch-logo" src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.channel)}&color=fff">
-        <div class="channel">${s.channel}</div>
+        <img class="ch-logo"
+          src="https://ui-avatars.com/api/?name=${encodeURIComponent(s.language)}&color=fff">
+        <div class="channel">${s.language}</div>
       </div>
       <div class="meta">
-        <span class="badge">${s.language}</span>
         <span class="badge">${s.quality}</span>
         <span class="badge">${s.format}</span>
-        <span class="badge" style="color:#4facfe">${s.provider}</span>
+        <span class="badge">${s.provider}</span>
       </div>
       <div class="buttons">
-        <button class="ns" onclick="play('${s.url}','ns')">NS PLAYER</button>
-        <button class="pf" onclick="play('${s.url}','pf')">PLAYIFY</button>
+        <button class="ns" onclick="play('${encodeURIComponent(s.url)}','ns')">NS</button>
+        <button class="pf" onclick="play('${encodeURIComponent(s.url)}','pf')">PLAY</button>
         <button class="cp" onclick="copyURL('${s.url}')">COPY</button>
       </div>
     </div>
   `).join("");
 }
 
-function play(u,t){
-  const p = t==="ns" ? "com.genuine.leone" : "com.appnix.playify";
-  location.href = `intent:${u}#Intent;package=${p};end`;
-}
-function copyURL(u){
-  navigator.clipboard.writeText(u);
-  alert("Copied!");
-}
-function fail(){
-  list.style.display="none";
-  document.getElementById("error-container").style.display="block";
-  eventMeta.innerText="Connection Failed";
+function play(url,type){
+  const pkg = type==="ns"
+    ? "com.genuine.leone"
+    : "com.appnix.playify";
+  location.href = `intent:${decodeURIComponent(url)}#Intent;package=${pkg};end`;
 }
 
-load();
+function copyURL(u){
+  navigator.clipboard.writeText(u);
+  alert("URL Copied");
+}
 </script>
 
 </body>
