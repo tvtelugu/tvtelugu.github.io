@@ -14,9 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Inject JSON URL
+      - name: Inject JSON URL (SAFE)
         run: |
-          sed -i "s|__JSON_STREAM_URL__|${{ secrets.JSON_STREAM_URL }}|g" cric/index.html
+          URL=$(printf '%s' "${{ secrets.JSON_STREAM_URL }}")
+          sed -i "s|__JSON_STREAM_URL__|$URL|g" cric/index.html
+
+      - name: Verify Injection
+        run: |
+          grep "__JSON_STREAM_URL__" -n cric/index.html || echo "Injection OK"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
