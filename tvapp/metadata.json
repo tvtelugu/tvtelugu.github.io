@@ -1,0 +1,5 @@
+{
+  "name": "JStar IPTV",
+  "description": "A professional-grade IPTV player with support for DASH, HLS, and ClearKey DRM protected streams. Features a modern OTT-style interface with token-based access control.",
+  "requestFramePermissions": []
+}
